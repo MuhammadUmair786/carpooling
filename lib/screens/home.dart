@@ -1,9 +1,13 @@
 import 'dart:math';
 
 import 'package:carpooling_app/providers/theme.dart';
+import 'package:carpooling_app/screens/profile.dart';
+import 'package:carpooling_app/screens/vehicle.dart';
+import 'package:carpooling_app/widgets/bottomNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geocoding/geocoding.dart';
 
 class Home extends StatefulWidget {
   // var app  = AppBar().;
@@ -13,24 +17,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<Marker> _markers = [];
   @override
   Widget build(BuildContext context) {
     // double height = AppBar.;
-    // GoogleMapController _controller = GoogleMapController();
-
-    final CameraPosition _initialPosition =
-        CameraPosition(target: LatLng(33.5787971, 73.0392253));
-
-    final List<Marker> markers = [];
-
-    addMarker(cordinate) {
-      int id = Random().nextInt(100);
-
-      setState(() {
-        markers.add(
-            Marker(position: cordinate, markerId: MarkerId(id.toString())));
-      });
-    }
+    // GoogleMapController _controller;
+    // = GoogleMapController();
+    // final CameraPosition _initialPosition =
+    //     CameraPosition(target: LatLng(33.5787971, 73.0392253));
+    // GoogleMapController? _mapController;
+    // final LatLng _center = const LatLng(33.578891, 73.039483); //my location rwp
+    // void _onMapCreated(GoogleMapController controller) {
+    //   _mapController = controller;
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -74,75 +73,245 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: GoogleMap(
-        initialCameraPosition: _initialPosition,
-        mapType: MapType.terrain,
-        onMapCreated: (controller) {
-          setState(() {
-            // _controller = controller;
-          });
-        },
-        markers: markers.toSet(),
-        onTap: (cordinate) {
-          // _controller.animateCamera(CameraUpdate.newLatLng(cordinate));
-          addMarker(cordinate);
-        },
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     _controller.animateCamera(CameraUpdate.zoomOut());
-      //   },
-      //   child: Icon(Icons.zoom_out),
-      // ),
-      bottomNavigationBar: BottomNavBar(),
-    );
-  }
-}
-
-class BottomNavBar extends StatefulWidget {
-  @override
-  _BottomNavBarState createState() => _BottomNavBarState();
-}
-
-class _BottomNavBarState extends State<BottomNavBar> {
-  double _iconSize = 40;
-  // Color _iconColor =
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              iconSize: _iconSize,
-              icon: Icon(
-                Icons.car_rental,
-                color: Theme.of(context).accentColor,
+      drawer: Drawer(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              child: Center(
+                child: Column(
+                  children: [
+                    SizedBox(height: 30),
+                    ClipOval(
+                      // backgroundColor: Colors.amber,
+                      // radius: 30,
+                      child: Image.network(
+                        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                        width: 130,
+                        height: 130,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Text(
+                      "Muhammad",
+                      textScaleFactor: 1.7,
+                    ),
+                  ],
+                ),
               ),
-              onPressed: () {
-                print("");
-              }),
-          Icon(
-            Icons.car_rental,
-          ),
-          Icon(
-            Icons.chat,
-            size: _iconSize,
-          ),
-          Icon(
-            Icons.home,
-            size: _iconSize,
-          ),
-          Icon(
-            Icons.notifications,
-            size: _iconSize,
-          ),
-          Icon(
-            Icons.settings,
-            size: _iconSize,
-          )
-        ],
+            ),
+            SizedBox(height: 15),
+            Container(
+              height: 2,
+              width: double.infinity,
+              color: Colors.red[400],
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.person),
+                  SizedBox(width: 10),
+                  Text(
+                    "Profile",
+                    textScaleFactor: 1.5,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Vehicle()),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.local_car_wash),
+                  SizedBox(width: 10),
+                  Text(
+                    "Vehicles",
+                    textScaleFactor: 1.5,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.account_balance_outlined),
+                  SizedBox(width: 10),
+                  Text(
+                    "Account",
+                    textScaleFactor: 1.5,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.save_outlined),
+                  SizedBox(width: 10),
+                  Text(
+                    "Saved Templates",
+                    textScaleFactor: 1.5,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.contact_support_outlined),
+                  SizedBox(width: 10),
+                  Text(
+                    "Customer Support",
+                    textScaleFactor: 1.5,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.history),
+                  SizedBox(width: 10),
+                  Text(
+                    "History",
+                    textScaleFactor: 1.5,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.favorite_outline_sharp),
+                  SizedBox(width: 10),
+                  Text(
+                    "Favourites",
+                    textScaleFactor: 1.5,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.logout_sharp),
+                  SizedBox(width: 10),
+                  Text(
+                    "Logout",
+                    textScaleFactor: 1.5,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body:
+
+          // GoogleMap(
+          //   onMapCreated: (GoogleMapController controller) {
+          //     _mapController = controller;
+          //   },
+          //   initialCameraPosition: CameraPosition(
+          //     target: _center,
+          //     zoom: 17.0,
+          //   ),
+          //   // myLocationEnabled: true,
+          //   // trafficEnabled: true,
+          //   markers: _markers.toSet(),
+          //   onTap: (cordinate) {
+          //     print(cordinate);
+          //     // List<Placemark> placemarks = await placemarkFromCoordinates(
+          //     //     cordinate.latitude, cordinate.longitude);
+          //     // print(placemarks[0]);
+          //     // _mapController!.animateCamera(CameraUpdate.newLatLng(cordinate));
+          //     // addMarker(cordinate);
+          //     // setState(() {
+          //     // _markers = [];
+          //     setState(() {
+          //       _markers.add(
+          //         Marker(
+          //           markerId: MarkerId(cordinate.toString()),
+          //           position: cordinate,
+          //           draggable: true,
+          //           onDragEnd: (dragEndPosition) {
+          //             print(dragEndPosition.toString() + " end point");
+          //           },
+          //         ),
+          //       );
+          //     });
+          //     // setState(() {
+          //     //   print(_markers.length.toString() + "marker length ");
+          //     // });
+          //     // });
+          //     print(_markers);
+          //     // print()
+          //   },
+          // ),
+
+          Container(
+              child: Center(
+        child: Image.network(
+            "https://images.squarespace-cdn.com/content/v1/5a12cfb1cf81e08b62ab6535/1578499190047-Q2R9PDXJXX25U51GKNSV/ke17ZwdGBToddI8pDm48kPoswlzjSVMM-SxOp7CV59BZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZamWLI2zvYWH8K3-s_4yszcp2ryTI0HqTOaaUohrI8PI7Hk5b7wKtplcrxPf3ag-g6VC0ObVEO8cEICumLtlwuA/carpool.png"),
+      )),
+      bottomNavigationBar: BottomNavBar(
+        selected: 3,
       ),
     );
   }
 }
+
+
+// GoogleMap(
+//         initialCameraPosition: _initialPosition,
+//         mapType: MapType.terrain,
+//         onMapCreated: (controller) {
+//           setState(() {
+//             _controller = controller;
+//           });
+//         },
+//         markers: markers.toSet(),
+//         onTap: (cordinate) {
+//           // _controller.animateCamera(CameraUpdate.newLatLng(cordinate));
+//           addMarker(cordinate);
+//         },
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//           // _controller.animateCamera(CameraUpdate.zoomOut());
+//         },
+//         child: Icon(Icons.zoom_out),
+//       ),

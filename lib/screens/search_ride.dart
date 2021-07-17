@@ -1,17 +1,60 @@
+import 'package:carpooling_app/screens/rides.dart';
+import 'package:carpooling_app/widgets/bottomNavBar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class SearchRide extends StatelessWidget {
+class SearchRide extends StatefulWidget {
+  @override
+  _SearchRideState createState() => _SearchRideState();
+}
+
+class _SearchRideState extends State<SearchRide> {
+  GoogleMapController? _mapController;
+  List<Marker> _markers = [];
+
+  final LatLng _center = const LatLng(33.578891, 73.039483); //my location rwp
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Column(
+        child: Stack(
           children: [
-            SizedBox(height: 23),
+            GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                _mapController = controller;
+              },
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 17.0,
+              ),
+              myLocationEnabled: true,
+              trafficEnabled: true,
+              markers: _markers.toSet(),
+              onTap: (cordinate) {
+                print(cordinate);
+
+                setState(() {
+                  _markers.add(
+                    Marker(
+                      markerId: MarkerId(cordinate.toString()),
+                      position: cordinate,
+                      draggable: true,
+                      onDragEnd: (dragEndPosition) {
+                        print(dragEndPosition.toString() + " end point");
+                      },
+                    ),
+                  );
+                });
+                print(_markers);
+              },
+            ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 25),
+              margin: EdgeInsets.symmetric(horizontal: 15),
+              color: Colors.white,
+              height: 175,
               child: Column(
                 children: [
+                  SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -74,8 +117,22 @@ class SearchRide extends StatelessWidget {
                 ],
               ),
             ),
-            Text("Below there is map ....")
           ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        selected: 1,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Rides()),
+          );
+        },
+        child: Icon(
+          Icons.search,
+          size: 30,
         ),
       ),
     );

@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:carpooling_app/widgets/bottomNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddVehicle extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     double? deviceWidth = MediaQuery.of(context).size.width;
@@ -24,16 +26,16 @@ class AddVehicle extends StatelessWidget {
     //     }
     //   });
     // }
-
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Form(
-          autovalidateMode: AutovalidateMode.always,
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.always,
             child: Column(
               children: [
-                SizedBox(height: 100),
+                SizedBox(height: 30),
                 Row(
                   children: [
                     // Container(
@@ -113,9 +115,13 @@ class AddVehicle extends StatelessWidget {
                       labelText: 'Vehicle Name',
                       hintText: "Honda Civic 2018 or Honda-125 2020"),
                   textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.name,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter some text';
+                    }
+                    if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+                      return 'Enter valid Name';
                     }
                     return null;
                   },
@@ -126,32 +132,40 @@ class AddVehicle extends StatelessWidget {
                       border: OutlineInputBorder(),
                       labelText: 'Vehicle Color',
                       hintText: "Red"),
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.name,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter some text';
                     }
+                    if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+                      return 'Enter valid Name';
+                    }
                     return null;
                   },
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   children: [
                     Expanded(
                       child: TextFormField(
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
                             labelText: 'City Code',
                             hintText: "RIW"),
                         textCapitalization: TextCapitalization.characters,
+                        keyboardType: TextInputType.name,
 
                         // inputFormatters: [FilteringTextInputFormatter.],
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter some text';
                           }
-                          if (value.length > 2) {
-                            return 'Please enter a valid milage Value';
+                          if (value.length > 3) {
+                            return 'Please enter a City Code';
+                          }
+                          if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+                            return 'Enter valid Name';
                           }
                           return null;
                         },
@@ -166,13 +180,15 @@ class AddVehicle extends StatelessWidget {
                             hintText: "2981"),
                         textCapitalization: TextCapitalization.words,
                         keyboardType: TextInputType.number,
-                        // inputFormatters: [FilteringTextInputFormatter.],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter only numeric Values';
                           }
-                          if (value.length > 2) {
-                            return 'Please enter a valid milage Value';
+                          if (!RegExp(r'^[0-9 ]+$').hasMatch(value)) {
+                            return 'Enter valid Name';
                           }
                           return null;
                         },
@@ -191,7 +207,7 @@ class AddVehicle extends StatelessWidget {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter only numeric Values';
+                      return 'Must fill this Feild';
                     }
                     if (value.length > 2) {
                       return 'Please enter a valid milage Value';
@@ -200,13 +216,30 @@ class AddVehicle extends StatelessWidget {
                   },
                 ),
                 Container(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                        onPressed: () {}, child: Text("Add Vehicle")))
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Vehicle Added Sucessfully',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text("Add Vehicle"),
+                  ),
+                ),
               ],
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        selected: 3,
       ),
     );
   }

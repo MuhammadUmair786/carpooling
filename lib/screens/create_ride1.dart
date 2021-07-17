@@ -1,6 +1,12 @@
 // import 'dart:html';
 
+import 'package:carpooling_app/screens/create_ride2.dart';
+import 'package:carpooling_app/screens/map.dart';
+import 'package:carpooling_app/widgets/bottomNavBar.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jiffy/jiffy.dart';
 
 class CreateRide1 extends StatelessWidget {
@@ -15,77 +21,123 @@ class CreateRide1 extends StatelessWidget {
   bool? isSwitched = false;
 
   String? _radioGroupValue;
-
+  String startPlaceName = "Choose Starting Point";
+  String endPlaceName = "Choose Destination Point";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 130),
-            Row(
-              children: [
-                Expanded(
-                  flex: 10,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 1.5),
+            SizedBox(height: 30),
+            StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Row(
+                  children: [
+                    Expanded(
+                      flex: 10,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 1.5),
+                          ),
+                        ),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                        padding: EdgeInsets.all(12),
+                        width: double.maxFinite,
+                        child: Text(
+                          startPlaceName,
+                          textScaleFactor: 1.4,
+                        ),
                       ),
                     ),
-                    margin: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                    padding: EdgeInsets.all(12),
-                    width: double.maxFinite,
-                    child: Text(
-                      "Choose Starting Point",
-                      textScaleFactor: 1.4,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.trip_origin,
-                        size: 30,
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.trip_origin,
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          LatLng result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => G_Map()),
+                          );
+
+                          List<Placemark> placemarks =
+                              await placemarkFromCoordinates(
+                                  result.latitude, result.longitude);
+
+                          setState(() {
+                            startPlaceName =
+                                // "new value";
+                                placemarks[0].name.toString() +
+                                    ", " +
+                                    placemarks[0].locality.toString() +
+                                    ", " +
+                                    placemarks[0].country.toString();
+                          });
+                          // print(placemarks[0]);
+                        },
                       ),
-                      onPressed: () {
-                        print("open map screen");
-                      }),
-                ),
-              ],
+                    ),
+                  ],
+                );
+              },
             ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 10,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 1.5),
+            StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Row(
+                  children: [
+                    Expanded(
+                      flex: 10,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 1.5),
+                          ),
+                        ),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+                        padding: EdgeInsets.all(12),
+                        width: double.maxFinite,
+                        child: Text(
+                          endPlaceName,
+                          textScaleFactor: 1.4,
+                        ),
                       ),
                     ),
-                    margin: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-                    padding: EdgeInsets.all(12),
-                    width: double.maxFinite,
-                    child: Text(
-                      "Choose Destination Point",
-                      textScaleFactor: 1.4,
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.location_on,
+                            size: 30,
+                          ),
+                          onPressed: () async {
+                            LatLng result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => G_Map()),
+                            );
+                            List<Placemark> placemarks =
+                                await placemarkFromCoordinates(
+                                    result.latitude, result.longitude);
+                            setState(() {
+                              endPlaceName =
+                                  // "new value";
+                                  placemarks[0].name.toString() +
+                                      ", " +
+                                      placemarks[0].locality.toString() +
+                                      ", " +
+                                      placemarks[0].country.toString();
+                            });
+                            // print(placemarks[0]);
+                          }),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.location_on,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        print("open map screen");
-                      }),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
             Row(
               children: [
@@ -129,7 +181,7 @@ class CreateRide1 extends StatelessWidget {
             //   )
             //   ,)
             // ],),
-            Text("Select Vehcle...pending"),
+            // Text("Select Vehcle...pending"),
 
             StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
@@ -312,12 +364,20 @@ class CreateRide1 extends StatelessWidget {
               margin: EdgeInsets.only(right: 10),
               alignment: Alignment.centerRight,
               child: ElevatedButton(
-                onPressed: () {},
-                child: Text("Save and Next"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateRide2()),
+                  );
+                },
+                child: Text("Save and Move Next"),
               ),
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        selected: 2,
       ),
     );
   }
