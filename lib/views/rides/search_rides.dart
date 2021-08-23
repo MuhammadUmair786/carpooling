@@ -1,8 +1,10 @@
-import 'package:carpooling_app/widgets/bottomNavBar.dart';
+import 'package:carpooling_app/views/rides/requestRide.dart';
+import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class Rides extends StatelessWidget {
+class SearchRides extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +32,6 @@ class Rides extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavBar(
-        selected: 1,
-      ),
     );
   }
 }
@@ -45,9 +44,7 @@ class RideItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
       padding: EdgeInsets.all(10),
-      // height: 40,
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 0.5, color: Colors.grey),
@@ -60,28 +57,45 @@ class RideItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  ClipOval(
-                    // backgroundColor: Colors.amber,
-                    // radius: 30,
-                    child: Image.network(
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
                       "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
-                      width: 55,
-                      height: 55,
-                      fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: 20),
+                  SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Name",
-                        textScaleFactor: 1.3,
+                      // Text(
+                      //   "Name",
+                      //   textScaleFactor: 1.3,
+                      // ),
+                      Container(
+                        width: Get.width / 2,
+                        alignment: Alignment.topLeft,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: CustomText(
+                            text: "Uzair Abbasi",
+                            size: 20,
+                          ),
+                        ),
                       ),
                       Row(
                         children: [
                           Icon(Icons.school_sharp), SizedBox(width: 5),
-                          Text("Comsats"), //Company detail or anything
+                          Container(
+                            width: Get.width / 2.2,
+                            alignment: Alignment.topLeft,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: CustomText(
+                                text: "Comsats Islambad",
+                                // size: 18,
+                              ),
+                            ),
+                          ) //Company detail or anything
                         ],
                       ),
                     ],
@@ -95,24 +109,25 @@ class RideItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                        padding: EdgeInsets.all(10),
-                        child: CircularPercentIndicator(
-                          radius: 45.0,
-                          lineWidth: 4.0,
-                          animation: true,
-                          percent: 0.8,
-                          center: Text(
-                            // percent.toString() + "%",
-                            "80%",
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                          ),
-                          // backgroundColor: Colors.grey[300],
-                          circularStrokeCap: CircularStrokeCap.round,
-                          progressColor: Colors.green,
-                        )),
+                      padding: EdgeInsets.all(10),
+                      child: CircularPercentIndicator(
+                        radius: 45.0,
+                        lineWidth: 4.0,
+                        animation: true,
+                        percent: 0.8,
+                        center: Text(
+                          // percent.toString() + "%",
+                          "80%",
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                        ),
+                        // backgroundColor: Colors.grey[300],
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: Colors.green,
+                      ),
+                    ),
                     Text(
                       "Match",
                       style: TextStyle(
@@ -139,7 +154,17 @@ class RideItem extends StatelessWidget {
                           size: 20,
                         ),
                       ),
-                      Text("Street # 4, 22 No.")
+                      Container(
+                        width: Get.width / 2.8,
+                        alignment: Alignment.topLeft,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: CustomText(
+                            text: "Street # 4, 22 No.",
+                            // size: 2,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   // SizedBox(height: 5),
@@ -151,7 +176,18 @@ class RideItem extends StatelessWidget {
                         // like green from governmnet
                         size: 30,
                       ),
-                      Text("Comsats, Islamabad")
+                      // Text(),
+                      Container(
+                        width: Get.width / 2.8,
+                        alignment: Alignment.topLeft,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: CustomText(
+                            text: "Comsats, Islamabad",
+                            // size: 2,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -163,7 +199,17 @@ class RideItem extends StatelessWidget {
                     Icons.directions_car_sharp,
                     size: 35,
                   ),
-                  Text("Through Fazabad")
+                  Container(
+                    width: Get.width / 2.8,
+                    alignment: Alignment.topLeft,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText(
+                        text: "Through Fazabad",
+                        // size: 2,
+                      ),
+                    ),
+                  ),
                 ],
               )
             ],
@@ -252,7 +298,6 @@ class RideItem extends StatelessWidget {
                     //           Icon(Icons
                     //               .airline_seat_legroom_reduced_sharp),
                     //           Text("2/3"),
-
                     //           // Text("avilable"),
                     //         ],
                     //       ),
@@ -268,14 +313,15 @@ class RideItem extends StatelessWidget {
                     // ),
                     TextButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Request Send',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
+                          Get.to(()=>RequestRide());
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   SnackBar(
+                          //     content: Text(
+                          //       'Request Send',
+                          //       textAlign: TextAlign.center,
+                          //     ),
+                          //   ),
+                          // );
                         },
                         child: Container(
                           // color: Colors.grey[200],

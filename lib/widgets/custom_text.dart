@@ -12,10 +12,12 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: TextAlign.justify,
       style: TextStyle(
           fontSize: size ?? 16,
           color: color ?? Colors.black,
-          fontWeight: weight ?? FontWeight.normal),
+          fontWeight: weight ?? FontWeight.normal,
+          decoration: TextDecoration.none),
     );
   }
 }

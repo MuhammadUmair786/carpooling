@@ -23,17 +23,25 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^5.0.0
+  # google maps
   google_maps_flutter: ^2.0.6
+  geocoding: ^2.0.0 # geolocator also perform such functionalty so deleet it after 
+  #image slider
+  carousel_slider: ^4.0.0
+  #star_rating
+  getwidget: ^2.0.3
+  flutter_rating_bar: ^4.0.0
+  #dropdown search
+  search_choices: ^2.0.7
+  dropdown_search: ^0.6.1 #remove later on
+  
   percent_indicator: ^3.0.1
   jiffy: ^4.1.0
-  dropdown_search: ^0.6.1
   image_picker: ^0.7.5+2
-  flutter_slidable: ^0.6.0
-  geocoding: ^2.0.0
   http: ^0.13.3
   get: ^4.1.4
   otp_text_field: ^1.1.1
+  curved_navigation_bar: ^1.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
