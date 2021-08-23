@@ -3,6 +3,10 @@
    <application
         android:label="carpooling_app"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY" 
+   android:value="AIzaSyCPzwC9FosS13gpAaTrI3VcKvwDhByjEqQ"/>
+   
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -38,4 +42,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <!-- for getting device location in andriod -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 </manifest>
