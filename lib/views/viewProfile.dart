@@ -15,9 +15,17 @@ class ViewProfile extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(Icons.arrow_back)),
+              ),
               Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(vertical: 15),
+                margin: EdgeInsets.only(bottom: 15),
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(
                       "https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80 "),

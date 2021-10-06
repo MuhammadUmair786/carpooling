@@ -1,19 +1,98 @@
 import 'package:carpooling_app/controllers/profileSettingController.dart';
+import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class GetWorkingDetails extends StatelessWidget {
+class GetWorkingDetails extends StatefulWidget {
   final bool isreadonly;
-  // final bool isStudent = false;
-  // final bool isEmployee = false;
-  // final TextEditingController _licenseController = TextEditingController();
-  // final TextEditingController _vehicleController = TextEditingController();
 
   GetWorkingDetails({required this.isreadonly});
 
-  final _controller = Get.put(ProfileController());
+  @override
+  _GetWorkingDetailsState createState() => _GetWorkingDetailsState();
+}
+
+class _GetWorkingDetailsState extends State<GetWorkingDetails> {
+  bool isStudent = false;
+  bool isEmployee = false;
+  bool isBusiness = false;
+
+  Color selectedColor = Colors.blue;
+  List<bool> isSelected = [false, false, false];
+
+  TextEditingController _statusController = TextEditingController();
+  //student
+  TextEditingController _instController = TextEditingController();
+  TextEditingController _stdAddressController = TextEditingController();
+  TextEditingController _degreeController = TextEditingController();
+  //employee
+  TextEditingController _jobNatureController = TextEditingController();
+  TextEditingController _companyController = TextEditingController();
+  TextEditingController _empAddressController = TextEditingController();
+  TextEditingController _designationController = TextEditingController();
+  //self business
+  TextEditingController _businessNameController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+
+  final _stdformKey = GlobalKey<FormState>();
+  final _empformKey = GlobalKey<FormState>();
+  final _busiformKey = GlobalKey<FormState>();
+
+  _clearControlers() {
+    _statusController.clear();
+
+    _addressController.clear();
+    _businessNameController.clear();
+
+    _jobNatureController.clear();
+    _companyController.clear();
+    _empAddressController.clear();
+    _designationController.clear();
+
+    _statusController.clear();
+
+    _instController.clear();
+    _stdAddressController.clear();
+
+    _degreeController.clear();
+  }
+
+  _textFormFeiled(TextEditingController cont, String hint) {
+    return TextFormField(
+      controller: cont,
+      style: TextStyle(
+        fontSize: 20,
+        // fontWeight: FontWeight.w500,
+        color: Colors.white,
+      ),
+      // inputFormatters: [
+      //   FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+      // ],
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(fontSize: 16, color: Colors.white),
+        fillColor: Colors.grey[500],
+        filled: true,
+        errorStyle: TextStyle(fontSize: 18),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      ),
+      keyboardType: TextInputType.text,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return '???';
+        }
+        return null;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,333 +107,326 @@ class GetWorkingDetails extends StatelessWidget {
               alignment: Alignment.center,
               child: CustomText(
                 text: "Pending", //verified, failed
-                color: Colors.red,
+                color: Colors.white,
               ))
         ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            height: Get.height -
-                MediaQuery.of(context).padding.top -
-                AppBar().preferredSize.height,
+            // height: Get.height -
+            //     MediaQuery.of(context).padding.top -
+            //     AppBar().preferredSize.height,
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: [
-                SizedBox(height: 25),
-                //
-                ////
-                /////
-                /////
-                ///////
-                /////
-                /////
-                /////
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                Obx(() {
-                  return Column(
-                    children: [
-                      DropdownSearch<String>(
-                        mode: Mode.MENU,
-                        showSelectedItem: true,
-                        items: [
-                          "Student",
-                          "Employee",
-                          "Self-Business",
-                        ],
-                        label: "Status",
-                        hint: "Choose your Status",
-                        maxHeight: 160,
-                        onChanged: (selected) {
-                          if (selected == "Student") {
-                            _controller.isStatus(typeID: 1);
-                          } else if (selected == "Employee") {
-                            _controller.isStatus(typeID: 2);
-                          } else if (selected == "Self-Business") {
-                            _controller.isStatus(typeID: 3);
-                          }
-                        },
-                        // popupItemDisabled: (String s) => s.startsWith('I'),
-                        // onChanged: print,
-                        // selectedItem: "Employee",
-                        // dropdownSearchDecoration: InputDecoration(
-                        // icon: Icon(
-                        //   Icons.motorcycle_sharp,
-                        //   color: Colors.amber,
-                        //   size: 30,
-                        // ),
-                        // labelStyle: TextStyle(fontSize: 20),
-                        // border: OutlineInputBorder(
-                        //   borderSide: BorderSide(),
-                        //   borderRadius:
-                        //       const BorderRadius.all(Radius.circular(14.0)),
-                        // ),
-                        // ),
-                      ),
-                      SizedBox(height: 15),
-                      if (_controller.isStudent.isTrue)
-                        Container(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Institute',
-                                    hintText:
-                                        "Enter your School/College/University name"),
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  //there must be space so it allow spaces
-                                  if (!RegExp(r'^[0-9a-zA-Z ]+$')
-                                      .hasMatch(value)) {
-                                    return 'Enter valid Name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Institute Address',
-                                    hintText: "Enter your Institute Address"),
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  //there must be space so it allow spaces
-                                  if (!RegExp(r'^[0-9a-zA-Z ]+$')
-                                      .hasMatch(value)) {
-                                    return 'Enter valid Name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Degree',
-                                    hintText: "Enter your class/degree name"),
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  //there must be space so it allow spaces
-                                  if (!RegExp(r'^[0-9a-zA-Z ]+$')
-                                      .hasMatch(value)) {
-                                    return 'Enter valid Name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (_controller.isEmployee.isTrue)
-                        Container(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Column(
-                            children: [
-                              // SizedBox(height: 15),
-                              DropdownSearch<String>(
-                                mode: Mode.MENU,
-                                showSelectedItem: true,
-                                items: [
-                                  "Government",
-                                  "Private",
-                                ],
-                                label: "Nature",
-                                hint: "Choose the nature of your job",
-                                maxHeight: 180,
-                                // onChanged: (selected) {
-
-                                // },
-                              ),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Company',
-                                    hintText: "Enter your Company/Office name"),
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  //there must be space so it allow spaces
-                                  if (!RegExp(r'^[0-9a-zA-Z ]+$')
-                                      .hasMatch(value)) {
-                                    return 'Enter valid Name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Address',
-                                    hintText: "Enter your Company Address"),
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  //there must be space so it allow spaces
-                                  if (!RegExp(r'^[0-9a-zA-Z ]+$')
-                                      .hasMatch(value)) {
-                                    return 'Enter valid Name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Designation',
-                                    hintText:
-                                        "Designation i.e. Assistant Professor, Shift Incharge"),
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  //there must be space so it allow spaces
-                                  if (!RegExp(r'^[a-zA-Z ]+$')
-                                      .hasMatch(value)) {
-                                    return 'Enter valid Name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (_controller.isBusiness.isTrue)
-                        Container(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Column(
-                            children: [
-                              // SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Title',
-                                    hintText: "Enter your Business Title"),
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  //there must be space so it allow spaces
-                                  if (!RegExp(r'^[0-9a-zA-Z ]+$')
-                                      .hasMatch(value)) {
-                                    return 'Enter valid Name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 15),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Address',
-                                    hintText: "Enter your Office Address"),
-                                textCapitalization: TextCapitalization.words,
-                                keyboardType: TextInputType.name,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  //there must be space so it allow spaces
-                                  if (!RegExp(r'^[0-9a-zA-Z ]+$')
-                                      .hasMatch(value)) {
-                                    return 'Enter valid Name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 15),
+                  alignment: Alignment.center,
+                  child: ToggleButtons(
+                    borderColor: Colors.transparent,
+                    fillColor: selectedColor.withOpacity(0.2),
+                    borderWidth: 5,
+                    selectedBorderColor: Colors.transparent,
+                    // borderRadius: BorderRadius.circular(10),
+                    // renderBorder: false,
+                    children: <Widget>[
+                      workingTypeItem(
+                          Icons.menu_book_rounded, Colors.orange, "Student"),
+                      workingTypeItem(
+                          Icons.emoji_people, Colors.green, "Employee"),
+                      workingTypeItem(Icons.business_center_rounded, Colors.red,
+                          "Business"),
                     ],
-                  );
-                }),
-
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-                ///
-
-                /////
-                /////
-                /////
-                ///
-                ///
-                Spacer(),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
-                    primary: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(35),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: CustomText(
-                    text: "Submit Details",
-                    size: 20,
-                    weight: FontWeight.bold,
+                    onPressed: (int index) {
+                      setState(() {
+                        for (int i = 0; i < isSelected.length; i++) {
+                          isSelected[i] = i == index;
+                        }
+                        if (index == 0) {
+                          _statusController.text = "Student";
+                          isStudent = true;
+                          isEmployee = false;
+                          isBusiness = false;
+                          // widget.controller.text = "Male";
+                        } else if (index == 1) {
+                          _statusController.text = "Employee";
+                          isStudent = false;
+                          isEmployee = true;
+                          isBusiness = false;
+                          // widget.controller.text = "Female";
+                        } else {
+                          _statusController.text = "Business";
+                          isStudent = false;
+                          isEmployee = false;
+                          isBusiness = true;
+                          // widget.controller.text = "None";
+                        }
+                      });
+                    },
+                    isSelected: isSelected,
                   ),
                 ),
-                SizedBox(height: 20),
+                Column(
+                  children: [
+                    if (isStudent)
+                      Form(
+                        key: _stdformKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Institute",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            _textFormFeiled(_instController,
+                                "Enter your School/College/University name"),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Address",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            _textFormFeiled(_stdAddressController,
+                                "Enter your Institute Address"),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Degree",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            _textFormFeiled(_degreeController,
+                                "Enter your class/degree name"),
+                          ],
+                        ),
+                      ),
+                    if (isEmployee)
+                      Form(
+                        key: _empformKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Job Nature",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            Container(
+                              height: 46,
+                              child: Theme(
+                                data: ThemeData(
+                                  textTheme: TextTheme(
+                                      subtitle1: TextStyle(
+                                    fontSize: 20,
+                                    // fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  )),
+                                ),
+                                child: DropdownSearch<String>(
+                                  // .collapsed(hintText: "Province",border: Border.),
+                                  popupBackgroundColor: Colors.grey[400],
+
+                                  mode: Mode.MENU,
+
+                                  dropdownSearchDecoration: InputDecoration(
+                                    hintText: 'Choose nature of your Job',
+                                    hintStyle: TextStyle(
+                                        fontSize: 16, color: Colors.white),
+                                    fillColor: Colors.grey,
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 15),
+                                  ),
+                                  maxHeight: 170,
+                                  showSelectedItem: true,
+                                  items: [
+                                    "Government",
+                                    "Private",
+                                    "MultiNational",
+                                  ],
+                                  onChanged: (value) {
+                                    _jobNatureController.text = value!;
+                                  },
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Name",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            _textFormFeiled(_companyController,
+                                "Enter your Company/Industry name"),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Address",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            _textFormFeiled(_empAddressController,
+                                "Enter your Company/Industry Address"),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Designation",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            _textFormFeiled(_designationController,
+                                "Enter your designation"),
+                          ],
+                        ),
+                      ),
+                    if (isBusiness)
+                      Form(
+                        key: _busiformKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Name",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            _textFormFeiled(_businessNameController,
+                                "Enter name of your Business"),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const CustomText(
+                                text: "Address",
+                                // weight: FontWeight.bold,
+                                size: 22,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            _textFormFeiled(_addressController,
+                                "Enter your Office Address"),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: Container(
+        alignment: Alignment.center,
+        height: 60,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(Get.width / 1.5, 40),
+            primary: Colors.blue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(35),
+            ),
+          ),
+          onPressed: () {
+            if (isStudent && _stdformKey.currentState!.validate()) {
+              UserDatabase.addWorkingDetails(data: {
+                "type": "std",
+                "institute": _instController.text,
+                "adress": _stdAddressController.text,
+                "degree": _degreeController.text,
+              });
+              _clearControlers();
+            } else if (isEmployee && _empformKey.currentState!.validate()) {
+              UserDatabase.addWorkingDetails(data: {
+                "type": "emp",
+                "company_name": _companyController.text,
+                "adress": _empAddressController.text,
+                "designation": _designationController.text,
+              });
+              _clearControlers();
+            } else if (isBusiness && _busiformKey.currentState!.validate()) {
+              UserDatabase.addWorkingDetails(data: {
+                "type": "business",
+                "name": _businessNameController.text,
+                "adress": _addressController.text,
+              });
+              _clearControlers();
+            }
+
+            // if (_formKey.currentState!.validate() && _image != null) {
+            //   UserDatabase.addLicense(
+            //       area: _areaController.text,
+            //       license: _licenseController.text,
+            //       vehicle: _vehicleController.text,
+            //       image: _image!);
+            // }
+            // if (_image == null) {
+            //   setState(() {
+            //     showImgError = true;
+            //   });
+            // }
+          },
+          child: CustomText(
+            text: "Submit Details",
+            size: 20,
+            weight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container workingTypeItem(IconData icon, Color col, String title) {
+    return Container(
+      // height: 60,
+      // width: 70,
+      // margin: EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+          border: Border.all(color: col),
+          borderRadius: BorderRadius.circular(10)),
+      padding: EdgeInsets.all(10),
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: col,
+            size: 35,
+          ),
+          CustomText(
+            text: title,
+            color: col,
+            size: 18,
+          )
+        ],
       ),
     );
   }

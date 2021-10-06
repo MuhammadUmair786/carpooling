@@ -1,26 +1,55 @@
 import 'package:carpooling_app/views/rides/requestRide.dart';
+import 'package:carpooling_app/views/rides/ride_filters.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class SearchRides extends StatelessWidget {
+class SearchRidesResponse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 45,
+        title: Text("Matching Rides"),
+        centerTitle: true,
+        actions: [
+          Container(
+              margin: EdgeInsets.only(right: 15),
+              child: IconButton(
+                  splashRadius: 20,
+                  // color: Colors.yellow,
+                  onPressed: () {
+                    Get.to(() => RideFilter());
+                  },
+                  icon: Icon(Icons.filter_list_alt))
+
+              //  InkWell(
+              //   onTap: () {
+              //     Get.to(() => RideFilter());
+              //   },
+              //   child: Icon(
+              //     Icons.filter_list_alt,
+              //     // size: 30,
+              //     // color: Colors.yellow,
+              //   ),
+              // ),
+              ),
+        ],
+      ),
       body: Container(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.arrow_back_sharp),
-                  Text("MATCHING RIDES"),
-                  Icon(Icons.filter_list_alt)
-                ],
-              ),
+              // SizedBox(height: 30),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Icon(Icons.arrow_back_sharp),
+              //     Text("MATCHING RIDES"),
+              //     Icon(Icons.filter_list_alt)
+              //   ],
+              // ),
               Column(
                 children: [
                   RideItem(),
@@ -37,14 +66,10 @@ class SearchRides extends StatelessWidget {
 }
 
 class RideItem extends StatelessWidget {
-  const RideItem({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 0.5, color: Colors.grey),
@@ -95,7 +120,7 @@ class RideItem extends StatelessWidget {
                                 // size: 18,
                               ),
                             ),
-                          ) //Company detail or anything
+                          ), //Company detail or anything
                         ],
                       ),
                     ],
@@ -103,37 +128,32 @@ class RideItem extends StatelessWidget {
                 ],
               ),
               Container(
+                // height: 120,
                 margin: EdgeInsets.only(right: 8),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: CircularPercentIndicator(
-                        radius: 45.0,
-                        lineWidth: 4.0,
-                        animation: true,
-                        percent: 0.8,
-                        center: Text(
-                          // percent.toString() + "%",
-                          "80%",
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black),
-                        ),
-                        // backgroundColor: Colors.grey[300],
-                        circularStrokeCap: CircularStrokeCap.round,
-                        progressColor: Colors.green,
+                    CircularPercentIndicator(
+                      radius: 45.0,
+                      lineWidth: 4.0,
+                      animation: true,
+                      percent: 0.8,
+                      center: Text(
+                        // percent.toString() + "%",
+                        "80%",
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black),
                       ),
+                      // backgroundColor: Colors.grey[300],
+                      circularStrokeCap: CircularStrokeCap.round,
+                      progressColor: Colors.green,
                     ),
-                    Text(
-                      "Match",
-                      style: TextStyle(
-                          // fontSize: 15.0,
-                          // fontWeight: FontWeight.w600,
-                          color: Colors.black54),
+                    CustomText(
+                      text: "Match",
+                      size: 14,
                     )
                   ],
                 ),
@@ -141,7 +161,7 @@ class RideItem extends StatelessWidget {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
@@ -313,7 +333,7 @@ class RideItem extends StatelessWidget {
                     // ),
                     TextButton(
                         onPressed: () {
-                          Get.to(()=>RequestRide());
+                          Get.to(() => RequestRide());
                           // ScaffoldMessenger.of(context).showSnackBar(
                           //   SnackBar(
                           //     content: Text(

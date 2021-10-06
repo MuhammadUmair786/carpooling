@@ -1,9 +1,12 @@
-import 'package:carpooling_app/views/rides/postRide.dart';
+import 'package:carpooling_app/views/login.dart';
+
 import 'package:carpooling_app/views/settings/appereance.dart';
 import 'package:carpooling_app/views/settings/notificationsetting.dart';
 import 'package:carpooling_app/views/settings/privacy.dart';
 import 'package:carpooling_app/views/settings/profile.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:carpooling_app/widgets/showLoading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +34,15 @@ class Setting extends StatelessWidget {
                   Get.to(() => Appearence());
                 }),
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    showLoading();
+
+                    await FirebaseAuth.instance.signOut().whenComplete(() {
+                      Get.offAll(() => Login());
+                      Get.reset();
+                    });
+                    dismissLoadingWidget();
+                  },
                   child: Container(
                     // padding: EdgeInsets.symmetric(horizontal: 15),
                     margin: EdgeInsets.symmetric(vertical: 10),

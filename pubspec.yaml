@@ -25,15 +25,28 @@ dependencies:
     sdk: flutter
   # google maps
   google_maps_flutter: ^2.0.6
-  geocoding: ^2.0.0 # geolocator also perform such functionalty so deleet it after 
+  geocoding: ^2.0.0 
+  geolocator: ^7.6.0 
+  #flutter_google_places: ^0.3.0
+  flutter_polyline_points: ^1.0.0 #for drawing routes on map
+  # dio: ^4.0.0 #most probably the another solution for http dependecy
+  google_sign_in: ^5.1.0
+  
   #image slider
   carousel_slider: ^4.0.0
   #star_rating
   getwidget: ^2.0.3
   flutter_rating_bar: ^4.0.0
   #dropdown search
-  search_choices: ^2.0.7
-  dropdown_search: ^0.6.1 #remove later on
+  dropdown_search: ^0.6.1
+
+  #When using the BoM, don't specify versions in Firebase dependencies
+  #firebase
+  firebase_core:
+  firebase_auth:
+  cloud_firestore:
+  firebase_storage:
+
   
   percent_indicator: ^3.0.1
   jiffy: ^4.1.0
@@ -42,6 +55,7 @@ dependencies:
   get: ^4.1.4
   otp_text_field: ^1.1.1
   curved_navigation_bar: ^1.0.1
+ 
 
 
   # The following adds the Cupertino Icons font to your application.

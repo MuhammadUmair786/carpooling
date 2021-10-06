@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carpooling_app/views/drawer/addCash.dart';
 
 import 'package:carpooling_app/widgets/custom_text.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,6 +30,14 @@ class Home extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  // TextButton(
+                  //   onPressed: () {
+                  //     // currentUser!.reload();
+                  //     print(Auth.currentUser!.providerData[0].displayName);
+
+                  //   },
+                  //   child: Text("check"),
+                  // ),
                   Container(
                     margin: EdgeInsets.only(bottom: 10),
                     child: Stack(
@@ -57,18 +67,30 @@ class Home extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Container(
-                                      width: Get.width / 2,
-                                      child: FittedBox(
-                                          // fit: BoxFit.fitHeight,
-                                          child: CustomText(
-                                        text: "MUHAMMAD ALI Khan Naizi",
-                                      ))),
-                                  SizedBox(width: 5),
-                                  Icon(Icons.verified)
-                                ],
+                              Container(
+                                width: Get.width / 1.5,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      flex: 3,
+                                      child: Text(
+                                        "Uzair Iqbal",
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        textAlign: TextAlign.justify,
+                                        // textScaleFactor: 1.2,
+                                        style: TextStyle(
+                                            decoration: TextDecoration.none,
+                                            fontSize: 22,
+                                            // fontWeight: FontWeight.,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Icon(Icons.verified)
+                                  ],
+                                ),
                               ),
                               SizedBox(height: 3),
                               CustomText(
@@ -100,7 +122,9 @@ class Home extends StatelessWidget {
                                                   BorderRadius.circular(20),
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Get.to(() => AddCash());
+                                          },
                                           child: Text(
                                             "Add Cash",
                                           )),
@@ -198,25 +222,22 @@ class Home extends StatelessWidget {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 150,
+                          height: 200,
                           child: CarouselSlider(
                             items: [
                               Image.network(
                                   "https://picsum.photos/250?image=9"),
                               Image.network(
-                                  "https://picsum.photos/250?image=9"),
+                                  "https://picsum.photos/250?image=8"),
                               Image.network(
-                                  "https://picsum.photos/250?image=9"),
+                                  "https://picsum.photos/250?image=7"),
                             ],
                             options: CarouselOptions(
-                              // onPageChanged: (pg, reason) {
-                              //   setState(() {
-                              //     currentPage = pg;
-                              //   });
-                              // },
+                              // aspectRatio: 1.5,
                               enlargeCenterPage: true,
-                              // enlargeStrategy : CenterPageEnlargeStrategy.height,
-                              height: 200,
+                              // enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                              // height: 200,
+
                               autoPlay: true,
                               autoPlayInterval: const Duration(seconds: 2),
                               autoPlayAnimationDuration:

@@ -1,3 +1,4 @@
+import 'package:carpooling_app/views/viewProfile.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -374,10 +375,15 @@ class TabsView extends StatelessWidget {
                 Positioned(
                   // screenWidth/2 - side margin - image half length
                   left: Get.width / 2 - 20 - 20,
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(
-                      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(() => ViewProfile());
+                    },
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(
+                        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                      ),
                     ),
                   ),
                 ),
@@ -646,10 +652,15 @@ class TabsView extends StatelessWidget {
                 Positioned(
                   // screenWidth/2 - side margin - image half length
                   left: Get.width / 2 - 20 - 20,
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(
-                      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(() => ViewProfile());
+                    },
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(
+                        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                      ),
                     ),
                   ),
                 ),
