@@ -36,222 +36,214 @@ class GetNominee extends StatelessWidget {
         toolbarHeight: _appbarHeight,
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          height:
-              Get.height - MediaQuery.of(context).padding.top - _appbarHeight
-          // AppBar().preferredSize.height
-          ,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.blue, width: 3),
-                    ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        height: Get.height - MediaQuery.of(context).padding.top - _appbarHeight
+        // AppBar().preferredSize.height
+        ,
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.blue, width: 3),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: CustomText(
-                    text: "Name",
-                    // weight: FontWeight.bold,
-                    size: 22,
-                    color: Colors.blue,
-                  ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: CustomText(
+                  text: "Name",
+                  // weight: FontWeight.bold,
+                  size: 22,
+                  color: Colors.blue,
                 ),
-                TextFormField(
-                  controller: _nameController,
-                  style: _textStyle,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
-                  ],
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    hintText: 'Enter Name',
-                    hintStyle: TextStyle(fontSize: 16, color: Colors.white),
-                    fillColor: Colors.grey,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              ),
+              TextFormField(
+                controller: _nameController,
+                style: _textStyle,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
+                ],
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  hintText: 'Enter Name',
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.white),
+                  fillColor: Colors.grey,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
                   ),
-                  textCapitalization: TextCapitalization.words,
-                  keyboardType: TextInputType.name,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '???';
-                    }
-                    return null;
-                  },
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: CustomText(
-                    text: "Relation",
-                    // weight: FontWeight.bold,
-                    size: 22,
-                    color: Colors.blue,
-                  ),
+                textCapitalization: TextCapitalization.words,
+                keyboardType: TextInputType.name,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return '???';
+                  }
+                  return null;
+                },
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: CustomText(
+                  text: "Relation",
+                  // weight: FontWeight.bold,
+                  size: 22,
+                  color: Colors.blue,
                 ),
-                InkWell(
-                  onTap: () async {
-                    Get.bottomSheet(
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 45,
-                              height: 5,
-                              color: Colors.grey,
-                              margin: EdgeInsets.symmetric(vertical: 12),
+              ),
+              InkWell(
+                onTap: () async {
+                  Get.bottomSheet(
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 45,
+                            height: 5,
+                            color: Colors.grey,
+                            margin: EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          Container(
+                            child: Column(
+                              children: [
+                                nomineeBottomSheetItem(Colors.green, "Father"),
+                                nomineeBottomSheetItem(Colors.green, "Mother"),
+                                nomineeBottomSheetItem(Colors.green, "Brother"),
+                                nomineeBottomSheetItem(Colors.green, "Sister"),
+                                nomineeBottomSheetItem(Colors.green, "Husband"),
+                                nomineeBottomSheetItem(Colors.green, "Wife"),
+                                nomineeBottomSheetItem(Colors.green, "Son"),
+                                nomineeBottomSheetItem(
+                                    Colors.green, "Daughter"),
+                                nomineeBottomSheetItem(Colors.teal, "Uncle"),
+                                nomineeBottomSheetItem(Colors.teal, "Aunt"),
+                                nomineeBottomSheetItem(Colors.teal, "Friend"),
+                              ],
                             ),
-                            Container(
-                              child: Column(
-                                children: [
-                                  nomineeBottomSheetItem(
-                                      Colors.green, "Father"),
-                                  nomineeBottomSheetItem(
-                                      Colors.green, "Mother"),
-                                  nomineeBottomSheetItem(
-                                      Colors.green, "Brother"),
-                                  nomineeBottomSheetItem(
-                                      Colors.green, "Sister"),
-                                  nomineeBottomSheetItem(
-                                      Colors.green, "Husband"),
-                                  nomineeBottomSheetItem(Colors.green, "Wife"),
-                                  nomineeBottomSheetItem(Colors.green, "Son"),
-                                  nomineeBottomSheetItem(
-                                      Colors.green, "Daughter"),
-                                  nomineeBottomSheetItem(Colors.teal, "Uncle"),
-                                  nomineeBottomSheetItem(Colors.teal, "Aunt"),
-                                  nomineeBottomSheetItem(Colors.teal, "Friend"),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30.0),
-                          topRight: Radius.circular(30.0),
-                        ),
+                    ),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
                       ),
-                    );
-                  },
-                  child: AbsorbPointer(
-                    child: TextFormField(
-                      // maxLines: null,
-                      controller: _relationController,
-                      style: _textStyle,
-                      decoration: InputDecoration(
-                        hintText: 'Relation',
-                        hintStyle: TextStyle(fontSize: 16, color: Colors.white),
-                        fillColor: Colors.grey,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    ),
+                  );
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    // maxLines: null,
+                    controller: _relationController,
+                    style: _textStyle,
+                    decoration: InputDecoration(
+                      hintText: 'Relation',
+                      hintStyle: TextStyle(fontSize: 16, color: Colors.white),
+                      fillColor: Colors.grey,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
                       ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                     ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: const CustomText(
-                    text: "Phone Number",
-                    // weight: FontWeight.bold,
-                    size: 22,
-                    color: Colors.blue,
-                  ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: const CustomText(
+                  text: "Phone Number",
+                  // weight: FontWeight.bold,
+                  size: 22,
+                  color: Colors.blue,
                 ),
-                TextFormField(
-                  controller: _phoneController,
-                  maxLength: 10,
-                  style: _textStyle,
-                  textInputAction: TextInputAction.done,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                  ],
-                  decoration: InputDecoration(
-                    prefixIconConstraints: BoxConstraints(
-                      minWidth: 20,
-                    ),
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: CustomText(
-                        text: "+92",
-                        size: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                    hintText: 'Enter Phone Number',
-                    hintStyle: TextStyle(fontSize: 16, color: Colors.white),
-                    fillColor: Colors.grey,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 2, horizontal: 15),
+              ),
+              TextFormField(
+                controller: _phoneController,
+                maxLength: 10,
+                style: _textStyle,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                ],
+                decoration: InputDecoration(
+                  prefixIconConstraints: BoxConstraints(
+                    minWidth: 20,
                   ),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '???';
-                    }
-                    if (value.startsWith('0')) {
-                      return 'must\'nt start with 0';
-                    }
-                    if (value.length < 10 || value.isEmpty) {
-                      return 'Invalid';
-                    }
-                    return null;
-                  },
-                ),
-                Spacer(),
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(Get.width / 1.5, 40),
-                      primary: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(35),
-                      ),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        UserDatabase.addNomineeDetails(
-                            name: _nameController.text,
-                            relation: _relationController.text,
-                            phone: "+92" + _phoneController.text);
-                      }
-                    },
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: CustomText(
-                      text: "Upload Details",
-                      size: 20,
-                      // weight: FontWeight.bold,
+                      text: "+92",
+                      size: 18,
                       color: Colors.white,
                     ),
                   ),
+                  hintText: 'Enter Phone Number',
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.white),
+                  fillColor: Colors.grey,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 2, horizontal: 15),
                 ),
-                SizedBox(height: 20),
-              ],
-            ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return '???';
+                  }
+                  if (value.startsWith('0')) {
+                    return 'must\'nt start with 0';
+                  }
+                  if (value.length < 10 || value.isEmpty) {
+                    return 'Invalid';
+                  }
+                  return null;
+                },
+              ),
+              Spacer(),
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(Get.width / 1.5, 40),
+                    primary: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(35),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      UserDatabase.addNomineeDetails(
+                          name: _nameController.text,
+                          relation: _relationController.text,
+                          phone: "+92" + _phoneController.text);
+                    }
+                  },
+                  child: CustomText(
+                    text: "Upload Details",
+                    size: 20,
+                    // weight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
           ),
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:carpooling_app/views/drawer/balance.dart';
 import 'package:carpooling_app/views/drawer/favourites.dart';
 import 'package:carpooling_app/views/drawer/history.dart';
 import 'package:carpooling_app/views/drawer/savedTemplate.dart';
+import 'package:carpooling_app/views/drawer/statistics.dart';
 import 'package:carpooling_app/views/helpSupport/helpAndSupport.dart';
 import 'package:carpooling_app/views/home.dart';
 import 'package:carpooling_app/views/notifications.dart';
@@ -59,10 +60,13 @@ class BottomNavBar extends StatelessWidget {
             "carpooling",
             style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
           ),
+          backgroundColor: Colors.blue.withOpacity(0.8),
+
+          // foregroundColor: Colors.black,
           iconTheme: IconThemeData(color: Colors.white, size: 30),
           actionsIconTheme: IconThemeData(color: Colors.white, size: 30),
           centerTitle: true,
-          backgroundColor: Colors.blue[400],
+          // backgroundColor: Colors.blue[400],
           actions: [
             Container(
               margin: EdgeInsets.only(right: 10),
@@ -155,7 +159,7 @@ class BottomNavBar extends StatelessWidget {
                     Get.to(() => SavedTemplate());
                   }),
                   drawerItem(Icons.query_stats, "Statistics", () {
-                    // Get.to(() => ViewProfile());
+                    Get.to(() => Statistics());
                   }),
                   drawerItem(Icons.support_agent, "Help & Support", () {
                     Get.to(() => HelpAndSupport());
@@ -211,10 +215,10 @@ class BottomNavBar extends StatelessWidget {
             const Icon(Icons.chat, size: _iconsize),
             const Icon(Icons.settings, size: _iconsize),
           ],
-          color: Colors.blue[400]!,
+          color: Colors.blue.withOpacity(0.8),
           buttonBackgroundColor: Colors
               // .transparent,
-              .blue
+              .purple
               .withOpacity(0.1),
           backgroundColor: Colors.transparent,
           animationCurve: Curves.easeInOut,

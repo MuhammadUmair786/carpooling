@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ProfileItem extends StatelessWidget {
   final String title;
-  final String? value;
+  final String value;
   final IconData icon;
   final Function() func;
 
@@ -48,7 +48,7 @@ class ProfileItem extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: CustomText(
-                          text: value ?? "",
+                          text: value,
                           size: 20,
                         ),
                       ),

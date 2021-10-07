@@ -51,117 +51,117 @@ class _GetCNICState extends State<GetCNIC> {
       ),
       body: Material(
         // color: Colors.teal,
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: const CustomText(
-                      text: "CNIC",
-                      // weight: FontWeight.bold,
-                      size: 22,
-                      color: Colors.blue,
-                    ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: const CustomText(
+                    text: "CNIC",
+                    // weight: FontWeight.bold,
+                    size: 22,
+                    color: Colors.blue,
                   ),
-                  TextFormField(
-                    readOnly: widget.isreadonly,
-                    controller: _cnicController,
-                    style: _textStyle,
-                    maxLength: 13,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                    ],
-                    decoration: InputDecoration(
-                      hintText: 'Enter Your CNIC',
-                      hintStyle: TextStyle(fontSize: 16, color: Colors.white),
-                      fillColor: Colors.grey,
-                      filled: true,
-                      errorStyle: TextStyle(fontSize: 18),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                ),
+                TextFormField(
+                  readOnly: widget.isreadonly,
+                  controller: _cnicController,
+                  style: _textStyle,
+                  maxLength: 13,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: 'Enter Your CNIC',
+                    hintStyle: TextStyle(fontSize: 16, color: Colors.white),
+                    fillColor: Colors.grey,
+                    filled: true,
+                    errorStyle: TextStyle(fontSize: 18),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
                     ),
-                    // textCapitalization: TextCapitalization.words,
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '???';
-                      }
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  ),
+                  // textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return '???';
+                    }
 
-                      return null;
-                    },
+                    return null;
+                  },
+                ),
+                // const SizedBox(height: 25),
+                Container(
+                  alignment: Alignment.topLeft,
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: const CustomText(
+                    text: "Upload Image",
+                    // weight: FontWeight.bold,
+                    size: 22,
+                    color: Colors.blue,
                   ),
-                  // const SizedBox(height: 25),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: const CustomText(
-                      text: "Upload Image",
-                      // weight: FontWeight.bold,
-                      size: 22,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  InkWell(
-                    onTap: () {
-                      Get.bottomSheet(
-                        SafeArea(
-                          child: Container(
-                            height: 180,
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 40,
-                                  height: 5,
-                                  color: Colors.grey,
-                                  margin: EdgeInsets.symmetric(vertical: 10),
+                ),
+                const SizedBox(height: 15),
+                InkWell(
+                  onTap: () {
+                    Get.bottomSheet(
+                      SafeArea(
+                        child: Container(
+                          height: 180,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 5,
+                                color: Colors.grey,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 20, horizontal: 15),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    getImgBottomSheetItem(
+                                      Icons.camera,
+                                      Colors.blue,
+                                      ImageSource.camera,
+                                      "Camera",
+                                    ),
+                                    getImgBottomSheetItem(
+                                      Icons.image,
+                                      Colors.green,
+                                      ImageSource.gallery,
+                                      "Gallery",
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 20, horizontal: 15),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      getImgBottomSheetItem(
-                                        Icons.camera,
-                                        Colors.blue,
-                                        ImageSource.camera,
-                                        "Camera",
-                                      ),
-                                      getImgBottomSheetItem(
-                                        Icons.image,
-                                        Colors.green,
-                                        ImageSource.gallery,
-                                        "Gallery",
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
                         ),
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30.0),
-                            topRight: Radius.circular(30.0),
-                          ),
+                      ),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
                         ),
-                      );
-                    },
-                    child: _image == null
-                        ? Container(
+                      ),
+                    );
+                  },
+                  child: _image == null
+                      ? Center(
+                          child: Container(
                             width: Get.width / 3,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
@@ -201,25 +201,25 @@ class _GetCNICState extends State<GetCNIC> {
                                 ),
                               ],
                             ),
-                          )
-                        : Container(
-                            height: 200,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Image.file(_image!, fit: BoxFit.fill),
                           ),
-                  ),
-                  if (showImgError)
-                    const Align(
-                      alignment: Alignment.bottomLeft,
-                      child: CustomText(
-                        text: "upload Front Side of CNIC",
-                        color: Colors.red,
-                      ),
+                        )
+                      : Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Image.file(_image!, fit: BoxFit.fill),
+                        ),
+                ),
+                if (showImgError)
+                  const Align(
+                    alignment: Alignment.bottomLeft,
+                    child: CustomText(
+                      text: "upload Front Side of CNIC",
+                      color: Colors.red,
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
         ),

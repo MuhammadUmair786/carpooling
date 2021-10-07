@@ -22,7 +22,10 @@ class MyThemes {
     scaffoldBackgroundColor: Colors.white,
     primaryColor: Colors.white,
     colorScheme: ColorScheme.light(),
-    iconTheme: IconThemeData(color: Colors.red, opacity: 0.8),
+    iconTheme: IconThemeData(
+      color: Colors.red,
+      // opacity: 0.8
+    ),
     accentColor: Colors.amber,
   );
 }

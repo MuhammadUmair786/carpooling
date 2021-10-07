@@ -1,4 +1,5 @@
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class Vehicle extends StatelessWidget {
   Container vehicleItem() {
     return Container(
       // margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 0.4),
@@ -60,7 +61,7 @@ class Vehicle extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                radius: 45,
+                radius: 40,
                 backgroundImage: NetworkImage(
                   "https://images.unsplash.com/photo-1612997951749-ae9c3fffaef3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
                 ),
@@ -83,6 +84,7 @@ class Vehicle extends StatelessWidget {
                     text: "21 KM/L",
                     color: Colors.orange,
                     size: 20,
+                    weight: FontWeight.bold,
                   )
                 ],
               ),
@@ -90,7 +92,7 @@ class Vehicle extends StatelessWidget {
           ),
           Icon(
             Icons.delete,
-            size: 30,
+            size: 25,
           )
         ],
       ),

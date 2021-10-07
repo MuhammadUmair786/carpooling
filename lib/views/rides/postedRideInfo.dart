@@ -3,6 +3,7 @@ import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class PostedRideInfo extends StatelessWidget {
@@ -19,7 +20,7 @@ class PostedRideInfo extends StatelessWidget {
             child: Icon(
               Icons.delete_forever,
               size: 30,
-              color: Colors.red,
+              color: Colors.white,
             ),
           ),
         ],
@@ -29,13 +30,47 @@ class PostedRideInfo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Container(
+              //     height: 150,
+              //     width: double.infinity,
+              //     child: Text(
+              //       "Map with origion destination ",
+              //     ),
+              //     color: Colors.lightGreenAccent),
+
               Container(
-                  height: 150,
-                  width: double.infinity,
-                  child: Text(
-                    "Map with origion destination ",
+                height: 250,
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: const LatLng(33.578891, 73.039483),
+                    zoom: 17.0,
                   ),
-                  color: Colors.lightGreenAccent),
+                  // compassEnabled: false,
+                  // markers: _markers.toSet(),
+                  // zoomControlsEnabled: false,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                  trafficEnabled: true,
+                  onTap: (cordinate) {
+                    // _currentCoordinates = cordinate;
+                    // // print(cordinate);
+                    // setState(() {
+                    //   _markers = [];
+                    //   _markers.add(
+                    //     Marker(
+                    //       markerId: MarkerId(cordinate.toString()),
+                    //       position: cordinate,
+                    //       draggable: true,
+                    //       onDragEnd: (dragEndPosition) {
+                    //         // print(dragEndPosition.toString() + " end point");
+                    //       },
+                    //     ),
+                    //   );
+                    // });
+                  },
+                ),
+              ),
+
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -115,7 +150,7 @@ class PostedRideInfo extends StatelessWidget {
         CustomText(text: title, size: 14),
         CustomText(
           text: value,
-          weight: FontWeight.bold,
+          weight: FontWeight.w500,
           size: 20,
         )
       ],
@@ -144,7 +179,7 @@ class TabsView extends StatelessWidget {
           ),
           Container(
             height:
-                400, //set this height according to the list size in postedRideInfo SCreen
+                200, //set this height according to the list size in postedRideInfo SCreen
             child: TabBarView(children: [
               //confirmed passangers
               ListView(
