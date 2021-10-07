@@ -31,6 +31,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0 #for drawing routes on map
   # dio: ^4.0.0 #most probably the another solution for http dependecy
   google_sign_in: ^5.1.0
+
   
   #image slider
   carousel_slider: ^4.0.0
@@ -50,7 +51,7 @@ dependencies:
   
   percent_indicator: ^3.0.1
   jiffy: ^4.1.0
-  image_picker: ^0.7.5+2
+  image_picker: ^0.8.4+2
   http: ^0.13.3
   get: ^4.1.4
   otp_text_field: ^1.1.1

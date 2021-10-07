@@ -1,11 +1,9 @@
-import 'package:carpooling_app/controllers/profileSettingController.dart';
 import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GetWorkingDetails extends StatefulWidget {
   final bool isreadonly;
@@ -112,234 +110,232 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            // height: Get.height -
-            //     MediaQuery.of(context).padding.top -
-            //     AppBar().preferredSize.height,
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  alignment: Alignment.center,
-                  child: ToggleButtons(
-                    borderColor: Colors.transparent,
-                    fillColor: selectedColor.withOpacity(0.2),
-                    borderWidth: 5,
-                    selectedBorderColor: Colors.transparent,
-                    // borderRadius: BorderRadius.circular(10),
-                    // renderBorder: false,
-                    children: <Widget>[
-                      workingTypeItem(
-                          Icons.menu_book_rounded, Colors.orange, "Student"),
-                      workingTypeItem(
-                          Icons.emoji_people, Colors.green, "Employee"),
-                      workingTypeItem(Icons.business_center_rounded, Colors.red,
-                          "Business"),
-                    ],
-                    onPressed: (int index) {
-                      setState(() {
-                        for (int i = 0; i < isSelected.length; i++) {
-                          isSelected[i] = i == index;
-                        }
-                        if (index == 0) {
-                          _statusController.text = "Student";
-                          isStudent = true;
-                          isEmployee = false;
-                          isBusiness = false;
-                          // widget.controller.text = "Male";
-                        } else if (index == 1) {
-                          _statusController.text = "Employee";
-                          isStudent = false;
-                          isEmployee = true;
-                          isBusiness = false;
-                          // widget.controller.text = "Female";
-                        } else {
-                          _statusController.text = "Business";
-                          isStudent = false;
-                          isEmployee = false;
-                          isBusiness = true;
-                          // widget.controller.text = "None";
-                        }
-                      });
-                    },
-                    isSelected: isSelected,
-                  ),
-                ),
-                Column(
-                  children: [
-                    if (isStudent)
-                      Form(
-                        key: _stdformKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Institute",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            _textFormFeiled(_instController,
-                                "Enter your School/College/University name"),
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Address",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            _textFormFeiled(_stdAddressController,
-                                "Enter your Institute Address"),
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Degree",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            _textFormFeiled(_degreeController,
-                                "Enter your class/degree name"),
-                          ],
-                        ),
-                      ),
-                    if (isEmployee)
-                      Form(
-                        key: _empformKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Job Nature",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            Container(
-                              height: 46,
-                              child: Theme(
-                                data: ThemeData(
-                                  textTheme: TextTheme(
-                                      subtitle1: TextStyle(
-                                    fontSize: 20,
-                                    // fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  )),
-                                ),
-                                child: DropdownSearch<String>(
-                                  // .collapsed(hintText: "Province",border: Border.),
-                                  popupBackgroundColor: Colors.grey[400],
-
-                                  mode: Mode.MENU,
-
-                                  dropdownSearchDecoration: InputDecoration(
-                                    hintText: 'Choose nature of your Job',
-                                    hintStyle: TextStyle(
-                                        fontSize: 16, color: Colors.white),
-                                    fillColor: Colors.grey,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 15),
-                                  ),
-                                  maxHeight: 170,
-                                  showSelectedItem: true,
-                                  items: [
-                                    "Government",
-                                    "Private",
-                                    "MultiNational",
-                                  ],
-                                  onChanged: (value) {
-                                    _jobNatureController.text = value!;
-                                  },
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Name",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            _textFormFeiled(_companyController,
-                                "Enter your Company/Industry name"),
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Address",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            _textFormFeiled(_empAddressController,
-                                "Enter your Company/Industry Address"),
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Designation",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            _textFormFeiled(_designationController,
-                                "Enter your designation"),
-                          ],
-                        ),
-                      ),
-                    if (isBusiness)
-                      Form(
-                        key: _busiformKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Name",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            _textFormFeiled(_businessNameController,
-                                "Enter name of your Business"),
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const CustomText(
-                                text: "Address",
-                                // weight: FontWeight.bold,
-                                size: 22,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            _textFormFeiled(_addressController,
-                                "Enter your Office Address"),
-                          ],
-                        ),
-                      ),
+        child: Container(
+          // height: Get.height -
+          //     MediaQuery.of(context).padding.top -
+          //     AppBar().preferredSize.height,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: ListView(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                child: ToggleButtons(
+                  borderColor: Colors.transparent,
+                  fillColor: selectedColor.withOpacity(0.2),
+                  borderWidth: 5,
+                  selectedBorderColor: Colors.transparent,
+                  // borderRadius: BorderRadius.circular(10),
+                  // renderBorder: false,
+                  children: <Widget>[
+                    workingTypeItem(
+                        Icons.menu_book_rounded, Colors.orange, "Student"),
+                    workingTypeItem(
+                        Icons.emoji_people, Colors.green, "Employee"),
+                    workingTypeItem(
+                        Icons.business_center_rounded, Colors.red, "Business"),
                   ],
+                  onPressed: (int index) {
+                    setState(() {
+                      for (int i = 0; i < isSelected.length; i++) {
+                        isSelected[i] = i == index;
+                      }
+                      if (index == 0) {
+                        _statusController.text = "Student";
+                        isStudent = true;
+                        isEmployee = false;
+                        isBusiness = false;
+                        // widget.controller.text = "Male";
+                      } else if (index == 1) {
+                        _statusController.text = "Employee";
+                        isStudent = false;
+                        isEmployee = true;
+                        isBusiness = false;
+                        // widget.controller.text = "Female";
+                      } else {
+                        _statusController.text = "Business";
+                        isStudent = false;
+                        isEmployee = false;
+                        isBusiness = true;
+                        // widget.controller.text = "None";
+                      }
+                    });
+                  },
+                  isSelected: isSelected,
                 ),
-              ],
-            ),
+              ),
+              Column(
+                children: [
+                  if (isStudent)
+                    Form(
+                      key: _stdformKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Institute",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          _textFormFeiled(_instController,
+                              "Enter your School/College/University name"),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Address",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          _textFormFeiled(_stdAddressController,
+                              "Enter your Institute Address"),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Degree",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          _textFormFeiled(_degreeController,
+                              "Enter your class/degree name"),
+                        ],
+                      ),
+                    ),
+                  if (isEmployee)
+                    Form(
+                      key: _empformKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Job Nature",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          Container(
+                            height: 46,
+                            child: Theme(
+                              data: ThemeData(
+                                textTheme: TextTheme(
+                                    subtitle1: TextStyle(
+                                  fontSize: 20,
+                                  // fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                )),
+                              ),
+                              child: DropdownSearch<String>(
+                                // .collapsed(hintText: "Province",border: Border.),
+                                popupBackgroundColor: Colors.grey[400],
+
+                                mode: Mode.MENU,
+
+                                dropdownSearchDecoration: InputDecoration(
+                                  hintText: 'Choose nature of your Job',
+                                  hintStyle: TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                  fillColor: Colors.grey,
+                                  filled: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 15),
+                                ),
+                                maxHeight: 170,
+                                showSelectedItem: true,
+                                items: [
+                                  "Government",
+                                  "Private",
+                                  "MultiNational",
+                                ],
+                                onChanged: (value) {
+                                  _jobNatureController.text = value!;
+                                },
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Name",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          _textFormFeiled(_companyController,
+                              "Enter your Company/Industry name"),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Address",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          _textFormFeiled(_empAddressController,
+                              "Enter your Company/Industry Address"),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Designation",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          _textFormFeiled(
+                              _designationController, "Enter your designation"),
+                        ],
+                      ),
+                    ),
+                  if (isBusiness)
+                    Form(
+                      key: _busiformKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Name",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          _textFormFeiled(_businessNameController,
+                              "Enter name of your Business"),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const CustomText(
+                              text: "Address",
+                              // weight: FontWeight.bold,
+                              size: 22,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          _textFormFeiled(
+                              _addressController, "Enter your Office Address"),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

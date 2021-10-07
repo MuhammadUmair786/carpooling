@@ -232,7 +232,7 @@ class BasicSetting extends StatelessWidget {
                     icon: Icons.email,
                     value: Get.find<AuthController>().user!.email != null
                         ? Get.find<AuthController>().user!.email.toString()
-                        : "",
+                        : "Not Added Yet",
                     func: () {
                       Get.to(() => EmailVerificationScreen());
                     }),
