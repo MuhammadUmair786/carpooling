@@ -1,4 +1,5 @@
 import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/views/chatscreen.dart';
 import 'package:carpooling_app/views/drawer/balance.dart';
 import 'package:carpooling_app/views/drawer/favourites.dart';
 import 'package:carpooling_app/views/drawer/history.dart';
@@ -184,14 +185,15 @@ class BottomNavBar extends StatelessWidget {
               SearchRide(),
               RideScreen(),
               Home(),
-              Container(
-                child: Center(
-                  child: Text(
-                    'Message',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                ),
-              ),
+              ChatPage(),
+              // Container(
+              //   child: Center(
+              //     child: Text(
+              //       'Message',
+              //       style: TextStyle(fontSize: 30),
+              //     ),
+              //   ),
+              // ),
               Setting(),
             ],
           ),
