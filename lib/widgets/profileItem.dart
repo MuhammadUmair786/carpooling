@@ -42,17 +42,18 @@ class ProfileItem extends StatelessWidget {
                       size: 20,
                     ),
                     SizedBox(height: 3),
-                    Container(
-                      // width: Get.width / 2,
-                      alignment: Alignment.topLeft,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: CustomText(
-                          text: value,
-                          size: 20,
+                    if (value.isNotEmpty)
+                      Container(
+                        // width: Get.width / 2,
+                        alignment: Alignment.topLeft,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: CustomText(
+                            text: value,
+                            size: 20,
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               )

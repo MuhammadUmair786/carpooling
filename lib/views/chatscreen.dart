@@ -5,28 +5,14 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
+// import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
 
-// void main() {
-//   initializeDateFormatting().then((_) => runApp(const MyApp()));
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       home: ChatPage(),
-//     );
-//   }
-// }
-
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  final String name;
+  const ChatPage({required this.name});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -51,6 +37,7 @@ class _ChatPageState extends State<ChatPage> {
   void _handleAtachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
+      // backgroundColor: Colors.red,
       builder: (BuildContext context) {
         return SafeArea(
           child: SizedBox(
@@ -184,9 +171,17 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.name,
+          textScaleFactor: 1.1,
+        ),
+      ),
       body: SafeArea(
         bottom: false,
         child: Chat(
+          theme: DefaultChatTheme(
+              inputBackgroundColor: Colors.blue.withOpacity(0.8)),
           messages: _messages,
           onAttachmentPressed: _handleAtachmentPressed,
           onMessageTap: _handleMessageTap,

@@ -353,7 +353,9 @@ class _GetLicenseState extends State<GetLicense> {
                             width: Get.width / 3,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              border: Border.all(
+                                  color:
+                                      showImgError ? Colors.red : Colors.grey),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Row(
@@ -395,8 +397,7 @@ class _GetLicenseState extends State<GetLicense> {
                 ),
               ),
               if (showImgError)
-                const Align(
-                  alignment: Alignment.bottomLeft,
+                Center(
                   child: CustomText(
                     text: "upload License Images",
                     color: Colors.red,
@@ -486,6 +487,7 @@ class _GetLicenseState extends State<GetLicense> {
         setState(() {
           if (pickedFile != null) {
             _image = File(pickedFile.path);
+            showImgError = false;
           } else {
             print('No image selected.');
           }

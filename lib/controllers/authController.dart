@@ -1,5 +1,8 @@
+import 'package:carpooling_app/models/UserModel.dart';
 import 'package:carpooling_app/views/settings/email_verification.dart';
 import 'package:carpooling_app/widgets/showLoading.dart';
+import 'package:carpooling_app/widgets/showSnackBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,19 +11,40 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
   Rx<User?> _firebaseUser = Rx<User?>(null);
+  Rx<UserModel?> _userData = Rx<UserModel?>(null);
 
-  // var _googleUser = GoogleSignIn();
-  // var _googleAccount = Rx<GoogleSignInAccount?>(null);
-  User? get user => _firebaseUser.value;
+  User? get userfb => _firebaseUser.value;
+  UserModel? get userData => _userData.value;
+  // UserModel
 
   @override
   onInit() {
     super.onInit();
     _firebaseUser.value = _auth.currentUser;
     _firebaseUser.bindStream(_auth.userChanges());
+
+    // _userData.value = UserModel(id: userfb!.uid);
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userfb!.uid)
+        .get()
+        .then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+      if (documentSnapshot.exists) {
+        _userData.value =
+            UserModel.fromDocumentSnapshot(snapshot: documentSnapshot);
+        // print('Document exists on the database');
+        // print(documentSnapshot.data());
+      } else {
+        print("User document not found");
+      }
+    });
+    // _userData.value =
+    //     UserModel(id: _firebaseUser.value!.uid.toString(), thisUser: true);
   }
 
   linkEmail() async {
+    // _firebaseUser.
     try {
       showLoading();
       var _googleAccount = await GoogleSignIn().signIn();
@@ -33,31 +57,10 @@ class AuthController extends GetxController {
 
       _auth.currentUser!.linkWithCredential(googelCredential).then((user) {
         _auth.userChanges();
-        // // print(user.uid);
-        // print("account merger");
-        // print("\n\n\n\n PHOTO URL\n\n");
-        // print(_googleAccount.value!.photoUrl);
 
         dismissLoadingWidget();
         Get.to(() => EmailVerificationScreen());
-        Get.snackbar(
-          "default title",
-          "defalt message",
-          titleText: Text(
-            "Email Added Sucessfully",
-            textScaleFactor: 1.3,
-          ),
-          messageText: Text(
-            "",
-            textScaleFactor: 1.2,
-          ),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.black,
-          colorText: Colors.black,
-          backgroundGradient: LinearGradient(
-            colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-          ),
-        );
+        showSnackBar("Email Added Sucessfully", "");
       }).catchError((error) {
         print(error.toString());
         dismissLoadingWidget();
@@ -83,25 +86,8 @@ class AuthController extends GetxController {
       });
     } catch (ex) {
       dismissLoadingWidget();
-      //if account not merge
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "Oops!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "Something wents wrong, Try Again",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      //if account not merge]
+      showErrorSnackBar();
     }
   }
 }

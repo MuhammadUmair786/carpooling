@@ -1,11 +1,11 @@
-// import 'package:carousel_slider/carousel_slider.dart';
-import 'package:carpooling_app/views/drawer/addCash.dart';
-import 'package:carpooling_app/views/drawer/statistics.dart';
+import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/views/rides/postedRideInfo.dart';
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
 
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
@@ -13,6 +13,8 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+
+import 'drawer/addCash.dart';
 
 // Color begroundColor = Colors.purple.withOpacity(0.2);
 
@@ -27,8 +29,20 @@ class Home extends StatelessWidget {
 
 // class _HomeState extends State<Home> {
   // List<Marker> _markers = [];
+  var _controller = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
+    // final Stream<DocumentSnapshot<Map<String, dynamic>>> _usersStream =
+    //     FirebaseFirestore.instance
+    //         .collection('users')
+    //         .doc(Get.find<AuthController>().userfb!.uid)
+    //         .snapshots();
+    // _usersStream.listen(
+    //   (data) {
+    //     // print(data.get('name'));
+    //     xsd = data.get('name');
+    //   },
+    // );
     return SafeArea(
       child: Scaffold(
         body: RefreshIndicator(
@@ -42,25 +56,50 @@ class Home extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  TextButton(
+                      onPressed: () {
+                        print(_controller.userData!.postedRidesList);
+                      },
+                      child: Text("dfsdsdgsd")),
                   // TextButton(
-                  //   onPressed: () {
-                  //     // currentUser!.reload();
-                  //     print(Auth.currentUser!.providerData[0].displayName);
+                  // onPressed: () {
+                  // currentUser!.reload();
+                  // print(Auth.currentUser!.providerData[0].displayName);
+                  // print(Get.find<AuthController>().userData!.name);
+                  //  = "fd";
+                  // Stream
+                  //  var documentStream =
 
+                  // var x = documentStream;
+
+                  // print("length === " + documentStream['saf']);
+
+                  // final Stream<DocumentSnapshot<Map<String, dynamic>>>
+                  //     _usersStream = FirebaseFirestore.instance
+                  //         .collection('users')
+                  //         .doc(Get.find<AuthController>().userfb!.uid)
+                  //         .snapshots();
+                  // _usersStream.listen(
+                  //   (data) {
+                  //     print(data.get('name'));
                   //   },
-                  //   child: Text("check"),
+                  // );
+                  // },
+                  // child: Text("check"),
                   // ),
+                  // Text(controller.userData!.name, textScaleFactor: 1.5),
                   Container(
                     padding: EdgeInsets.only(bottom: 10),
                     // color: Color.fromRGBO(187, 134, 252, 1),
                     // color: begroundColor,
-                    color: Color.fromRGBO(187, 134, 252, 0.5),
+                    color: Colors.blue.withOpacity(0.5),
+                    // Color.fromRGBO(187, 134, 252, 0.5),
 
                     child: Stack(
                       children: [
                         Container(
                           height: 70,
-                          color: Colors.purple,
+                          color: Colors.blue.withOpacity(0.8),
                           // width: 200,
                         ),
                         Container(
@@ -91,7 +130,7 @@ class Home extends StatelessWidget {
                                     Flexible(
                                       flex: 3,
                                       child: Text(
-                                        "Uzair Iqbal",
+                                        _controller.userData!.name,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         textAlign: TextAlign.justify,
@@ -357,9 +396,10 @@ class _DisplayDiscountDetailsState extends State<DisplayDiscountDetails> {
           }
         });
       },
-      child: Container(
+      child: AnimatedContainer(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        color: Color.fromRGBO(187, 134, 252, 0.5),
+        color: Colors.blue.withOpacity(0.5),
+        duration: Duration(seconds: 2),
         child: Column(
           children: [
             Row(

@@ -91,7 +91,10 @@ class Setting extends StatelessWidget {
               size: 22,
             ),
             Spacer(),
-            Icon(Icons.arrow_forward_ios_rounded)
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 15,
+            )
           ],
         ),
       ),

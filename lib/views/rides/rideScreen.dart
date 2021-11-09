@@ -1,3 +1,4 @@
+import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/views/rides/postedRideInfo.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
@@ -5,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RideScreen extends StatelessWidget {
-  const RideScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -44,6 +43,7 @@ class RideScreen extends StatelessWidget {
 class PostedRides extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var rideList = Get.find<AuthController>().userData!.postedRidesList;
     return Scaffold(
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 10),
@@ -76,8 +76,14 @@ class PostedRides extends StatelessWidget {
                   ),
                 ),
               ),
-              postedRideItem(),
-              postedRideItem(),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 12,
+                  itemBuilder: (cont, index) {
+                    return postedRideItem();
+                  }),
+              // postedRideItem(),
+              // postedRideItem(),
             ],
           ),
         ),
@@ -168,7 +174,7 @@ class PostedRides extends StatelessWidget {
   Widget postedRideItem() {
     return InkWell(
       onTap: () {
-        Get.to(() => PostedRideInfo());
+        // Get.to(() => PostedRideInfo());
       },
       child: Container(
         padding: EdgeInsets.all(13),

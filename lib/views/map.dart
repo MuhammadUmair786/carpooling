@@ -2,6 +2,7 @@
 // import 'package:http/http.dart' as http;
 // import 'package:dropdown_search/dropdown_search.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:carpooling_app/widgets/showSnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,7 +20,7 @@ class _GMapState extends State<GMap> {
   List<Marker> _markers = [];
 
   final LatLng _center = const LatLng(33.578891, 73.039483);
-  late LatLng _currentCoordinates;
+  LatLng? _currentCoordinates;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +107,11 @@ class _GMapState extends State<GMap> {
                               ),
                             ),
                             onPressed: () {
-                              Get.back(result: _currentCoordinates);
+                              if (_currentCoordinates != null) {
+                                Get.back(result: _currentCoordinates);
+                              } else {
+                                showErrorSnackBar();
+                              }
                             },
                             child: CustomText(
                               text: "Confirm Location",

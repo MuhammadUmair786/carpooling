@@ -1,5 +1,6 @@
 import 'package:carpooling_app/controllers/authController.dart';
-import 'package:carpooling_app/views/chatscreen.dart';
+import 'package:carpooling_app/views/chating/chat1.dart';
+
 import 'package:carpooling_app/views/drawer/balance.dart';
 import 'package:carpooling_app/views/drawer/favourites.dart';
 import 'package:carpooling_app/views/drawer/history.dart';
@@ -68,18 +69,15 @@ class BottomNavBar extends StatelessWidget {
           centerTitle: true,
           // backgroundColor: Colors.blue[400],
           actions: [
-            Container(
-              margin: EdgeInsets.only(right: 10),
-              child: InkWell(
-                onTap: () {
-                  Get.to(() => NotificationsScreen());
-                },
-                child: Icon(
-                  Icons.notifications,
-                  // size: 30,
-                  // color: Colors.yellow,
-                ),
-              ),
+            IconButton(
+              onPressed: () {
+                Get.to(() => NotificationsScreen());
+              },
+              splashRadius: 25,
+              splashColor: Colors.teal,
+              icon: Icon(Icons.notifications),
+              // size: 30,
+              // color: Colors.yellow,
             ),
           ],
         ),
@@ -98,8 +96,10 @@ class BottomNavBar extends StatelessWidget {
                         // 10% of the width, so there are ten blinds.
                         colors: <Color>[
                           Colors.lightGreen,
-                          Colors.lightBlueAccent,
-                          Colors.green
+
+                          Colors.lightBlue,
+                          // Colors.lightBlueAccent,
+                          Colors.blue
                         ], // red to yellow
                         tileMode: TileMode
                             .decal, // repeats the gradient over the canvas
@@ -108,17 +108,24 @@ class BottomNavBar extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          radius: 45,
-                          backgroundImage: NetworkImage(
-                            Get.find<AuthController>()
-                                    .user!
+                        Get.find<AuthController>()
+                                    .userfb!
                                     .providerData[0]
-                                    .photoURL ??
-                                "",
-                            // "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
-                          ),
-                        ),
+                                    .photoURL ==
+                                null
+                            ? CircleAvatar(
+                                radius: 45,
+                                backgroundImage:
+                                    AssetImage('assets/no_img.jpg'))
+                            : CircleAvatar(
+                                radius: 45,
+                                backgroundImage: NetworkImage(
+                                  Get.find<AuthController>()
+                                      .userfb!
+                                      .providerData[0]
+                                      .photoURL
+                                      .toString(),
+                                )),
                         SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +196,7 @@ class BottomNavBar extends StatelessWidget {
               SearchRide(),
               RideScreen(),
               Home(),
-              ChatPage(),
+              Chat1(),
               // Container(
               //   child: Center(
               //     child: Text(

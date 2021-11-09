@@ -1,6 +1,8 @@
+import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/views/bottomnavbar.dart';
 import 'package:carpooling_app/views/startingdetails.dart';
 import 'package:carpooling_app/widgets/showLoading.dart';
+import 'package:carpooling_app/widgets/showSnackBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -180,7 +182,9 @@ class LoginController extends GetxController {
         .get()
         .then((value) {
       if (value.exists) {
-        print(value.toString());
+        // print(value.toString());
+        Get.put(AuthController(), permanent: true);
+
         Get.offAll(() => BottomNavBar());
       } else {
         Get.offAll(() => StartingDetails());
@@ -195,36 +199,17 @@ class LoginController extends GetxController {
         .collection('users')
         .doc(auth.currentUser!.uid)
         .set({
-      // 'map1': {
-      //   'key1': 'value1',
-      //   'key2': 'value2',
-      // }
+      "id": auth.currentUser!.uid.toString(),
       "name": name,
       "dob": dob.microsecondsSinceEpoch,
     }).then((value) {
       print("User initial Details Added");
+      Get.put(AuthController(), permanent: true);
       Get.offAll(BottomNavBar());
     }).catchError((error) {
       print("Failed to add user initial Details: $error");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "Oops!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "Something wents wrong, Try Again",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      showErrorSnackBar();
     });
 
     // FirebaseFirestore.instance.collection("users").doc(userid).update(data)

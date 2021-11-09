@@ -17,7 +17,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class ProfileSetting extends StatelessWidget {
   // final TextEditingController _dateController = TextEditingController();
-  final controller = Get.put(ProfileController());
+  // final controller = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +59,7 @@ class ProfileSetting extends StatelessWidget {
 }
 
 class BasicSetting extends StatelessWidget {
+  final _controller = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -177,7 +178,7 @@ class BasicSetting extends StatelessWidget {
                           fit: BoxFit.scaleDown,
                           child: CustomText(
                               text: Get.find<AuthController>()
-                                  .user!
+                                  .userfb!
                                   .phoneNumber
                                   .toString(),
                               size: 25,
@@ -230,8 +231,8 @@ class BasicSetting extends StatelessWidget {
                 ProfileItem(
                     title: "Email",
                     icon: Icons.email,
-                    value: Get.find<AuthController>().user!.email != null
-                        ? Get.find<AuthController>().user!.email.toString()
+                    value: _controller.userfb!.email != null
+                        ? _controller.userfb!.email.toString()
                         : "Not Added Yet",
                     func: () {
                       Get.to(() => EmailVerificationScreen());
@@ -251,7 +252,10 @@ class BasicSetting extends StatelessWidget {
                 ProfileItem(
                     title: "Nominee",
                     icon: Icons.accessibility_new,
-                    value: "Father",
+                    value: _controller.userData!.nomineeDetails
+                            .containsKey('relation')
+                        ? _controller.userData!.nomineeDetails['relation']
+                        : "Not Added Yet",
                     func: () {
                       Get.to(() => GetNominee());
                     }),

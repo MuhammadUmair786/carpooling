@@ -1,6 +1,6 @@
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 import 'package:get/get.dart';
 
 import 'package:getwidget/getwidget.dart';

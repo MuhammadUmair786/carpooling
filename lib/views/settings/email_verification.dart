@@ -16,14 +16,14 @@ class EmailVerificationScreen extends StatelessWidget {
               margin: EdgeInsets.only(right: 15),
               alignment: Alignment.center,
               child: CustomText(
-                text: _controller.user!.emailVerified
+                text: _controller.userfb!.emailVerified
                     ? "Verified"
                     : "Pending", //verified, failed
                 color: Colors.white,
               ))
         ],
       ),
-      body: _controller.user!.emailVerified ? showEmailInfo() : linkEmail(),
+      body: _controller.userfb!.emailVerified ? showEmailInfo() : linkEmail(),
     );
   }
 
@@ -68,12 +68,12 @@ class EmailVerificationScreen extends StatelessWidget {
           CircleAvatar(
             radius: 50,
             backgroundImage: NetworkImage(
-              _controller.user!.providerData[0].photoURL.toString(),
+              _controller.userfb!.providerData[0].photoURL.toString(),
             ),
           ),
           SizedBox(height: 20),
           CustomText(
-            text: _controller.user!.providerData[0].displayName.toString(),
+            text: _controller.userfb!.providerData[0].displayName.toString(),
             color: Colors.blue,
             size: 22,
             weight: FontWeight.bold,
@@ -84,7 +84,7 @@ class EmailVerificationScreen extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: CustomText(
-                text: _controller.user!.providerData[0].email.toString(),
+                text: _controller.userfb!.providerData[0].email.toString(),
                 size: 20,
                 // color: Colors.cyan,
               ),

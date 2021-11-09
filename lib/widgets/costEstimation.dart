@@ -1,6 +1,5 @@
-import 'package:carpooling_app/views/vehicle/vehicle.dart';
-
-estimateCost(double distance, double milage, bool ac, double fuel, Vehicle vc) {
+double fuel = 146;
+double estimateCost(double distance, double milage, bool ac) {
   if (ac) {
     return (distance * fuel) / (milage - 2);
   } else {
@@ -8,24 +7,24 @@ estimateCost(double distance, double milage, bool ac, double fuel, Vehicle vc) {
   }
 }
 
-double modelAdjustment(double milage, double model) {
-  if (model >= 2017) {
-    return milage;
-  } else if (model >= 2012 && model < 2017) {
-    return milage - 1;
-  } else if (model >= 2007 && model < 2012) {
-    return milage - 1.5;
-  } else if (model >= 2003 && model < 2007) {
-    return milage - 2;
+double modelAdjustment(int milage, int year) {
+  if (year >= 2017) {
+    return milage.toDouble();
+  } else if (year >= 2012 && year < 2017) {
+    return milage.toDouble() - 1;
+  } else if (year >= 2007 && year < 2012) {
+    return milage.toDouble() - 1.5;
+  } else if (year >= 2003 && year < 2007) {
+    return milage.toDouble() - 2;
   } else {
-    return milage - 2.5;
+    return milage.toDouble() - 2.5;
   }
 }
 
 // engineType = 1 non-hybrid
 // engineType = 2 hybrid
 // engineType = 3 Bike
-double getMilage(double engineType, double cc) {
+int getMilage(int engineType, int cc) {
   if (engineType == 1) {
     if (cc == 800) {
       return 20;
@@ -40,7 +39,7 @@ double getMilage(double engineType, double cc) {
     } else {
       return 7;
     }
-  } else if (engineType == 1) {
+  } else if (engineType == 2) {
     if (cc == 1500) {
       return 21;
     } else {
@@ -55,12 +54,12 @@ double getMilage(double engineType, double cc) {
   }
 }
 
-double verifyMilage(double milage, double engineType, double cc, double model) {
-  double expected = modelAdjustment(getMilage(engineType, cc), model);
+double verifyMilage(int milage, int engineType, int cc, int year) {
+  double expected = modelAdjustment(getMilage(engineType, cc), year);
 
   if ((milage - expected).abs() > 2) {
     return expected;
   } else {
-    return milage;
+    return milage.toDouble();
   }
 }

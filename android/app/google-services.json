@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "689759674898",
-    "project_id": "carpooling-fyp2022",
-    "storage_bucket": "carpooling-fyp2022.appspot.com"
+    "project_number": "690261612052",
+    "project_id": "carpooling-6959d",
+    "storage_bucket": "carpooling-6959d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:689759674898:android:36f9904dc4ff520c5a6ecb",
+        "mobilesdk_app_id": "1:690261612052:android:57891edac26aa926077901",
         "android_client_info": {
           "package_name": "com.example.carpooling_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "689759674898-gqsbelcrhclfmi3dks21gc9ivfpuk51g.apps.googleusercontent.com",
+          "client_id": "690261612052-bemjt6cki1fu6smsjt6l4fndq47el5e5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.carpooling_app",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "689759674898-js29u33tebdpk1d70karc8j34uur72ta.apps.googleusercontent.com",
+          "client_id": "690261612052-3vt107kpt7ci6p29vv0njf605i4gu16q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAPNUpEaj0-0tO9PyfUNMZTmX9UmyOnFuE"
+          "current_key": "AIzaSyDEiArRJg8QdgATPevCeNjwRqDl4L3-4Ak"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "689759674898-js29u33tebdpk1d70karc8j34uur72ta.apps.googleusercontent.com",
+              "client_id": "690261612052-3vt107kpt7ci6p29vv0njf605i4gu16q.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

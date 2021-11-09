@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:carpooling_app/widgets/costEstimation.dart';
+import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
-import 'package:carpooling_app/widgets/custom_text_field.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +18,7 @@ class AddVehicle extends StatefulWidget {
 class _AddVehicleState extends State<AddVehicle> {
   List<bool> colorSelectedList = [
     false,
-    false,
+    true,
     false,
     false,
     false,
@@ -30,10 +29,10 @@ class _AddVehicleState extends State<AddVehicle> {
     false
   ];
   List<bool> vehicleSelectedList = [
-    false,
+    true,
     false,
   ];
-  bool isAC = false;
+  // bool isAC = false;
 
   List<String> carEngineList = [
     "800 CC",
@@ -52,7 +51,6 @@ class _AddVehicleState extends State<AddVehicle> {
     "125 CC",
     "150 CC",
   ];
-
   List<String> carCompanyList = [
     "Honda",
     "Toyota",
@@ -65,12 +63,16 @@ class _AddVehicleState extends State<AddVehicle> {
     "Yamaha",
     "Other",
   ];
+  List<String> yearList = [];
+
   Color selectedColor = Colors.teal;
   IconData vehicleIcon = Icons.time_to_leave;
   bool isBike = false;
   TextEditingController _companyController = TextEditingController();
   TextEditingController _modelController = TextEditingController();
-  TextEditingController _colorController = TextEditingController();
+  TextEditingController _yearController = TextEditingController();
+  TextEditingController _colorController =
+      TextEditingController(text: "4278190080");
   TextEditingController _engineController = TextEditingController();
   TextEditingController _engineTypeController = TextEditingController();
   TextEditingController _alphaTypeController = TextEditingController();
@@ -83,86 +85,107 @@ class _AddVehicleState extends State<AddVehicle> {
   final _formKey = GlobalKey<FormState>();
   bool showImgError = false;
 
-  _dropDown(
-      String hint, List<String> itemList, TextEditingController controller) {
-    return Container(
-      height: 46,
-      child: Theme(
-        data: ThemeData(
-          textTheme: TextTheme(
-              subtitle1: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          )),
-        ),
-        child: DropdownSearch<String>(
-          popupBackgroundColor: Colors.grey[300],
-          mode: Mode.MENU,
-          dropdownSearchDecoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(fontSize: 16, color: Colors.black),
-            fillColor: Colors.grey[200],
-            filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          ),
-          maxHeight: itemList.length <= 3 ? itemList.length * 60 : 4 * 60,
-          showSelectedItem: true,
-          items: itemList,
-          onChanged: (value) {
-            controller.text = value!;
-          },
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    for (int i = DateTime.now().year; i >= 1985; i--) {
+      yearList.add(i.toString());
+    }
   }
 
-  _textFormFeiled(TextEditingController cont, String hint, int length,
-      TextInputType keyboard, String matching) {
-    return SizedBox(
-      // height: 53,
-      child: TextFormField(
-        controller: cont,
-        style: TextStyle(
+  _dropDown(String hint, List<String> itemList,
+      TextEditingController controller, bool showSearch) {
+    return Theme(
+      data: ThemeData(
+        textTheme: TextTheme(
+            subtitle1: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w500,
           color: Colors.black,
-        ),
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(matching)),
-        ],
-        maxLength: length,
-        decoration: InputDecoration(
+        )),
+      ),
+      child: DropdownSearch<String>(
+        popupBackgroundColor: Colors.grey[300],
+        mode: Mode.MENU,
+        showSearchBox: showSearch,
+        dropdownSearchDecoration: InputDecoration(
           hintText: hint,
           hintStyle: TextStyle(fontSize: 16, color: Colors.black),
           fillColor: Colors.grey[200],
-          filled: true,
           errorStyle: TextStyle(fontSize: 18),
+          filled: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,
           ),
-          counter: Offstage(),
-          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          contentPadding: EdgeInsets.symmetric(vertical: 0.1, horizontal: 15),
         ),
-        keyboardType: keyboard,
-        textCapitalization: TextCapitalization.characters,
         validator: (value) {
-          if (value!.isEmpty) {
+          if (value == null) {
             return '???';
           }
-          if (hint == "Model" &&
-              (int.parse(value) < 1970 ||
-                  int.parse(value) > DateTime.now().year)) {
-            return "not a valid Model";
+          if (value.isEmpty) {
+            return '???';
           }
           return null;
         },
+        maxHeight: itemList.length <= 4 ? itemList.length * 60 : 300,
+        showSelectedItem: true,
+        items: itemList,
+        onChanged: (value) {
+          controller.text = value!;
+        },
       ),
+    );
+  }
+
+  _textFormFeiled(
+      TextEditingController cont,
+      String hint,
+      int length,
+      TextInputType keyboard,
+      String matching,
+      TextCapitalization textCapitalization) {
+    return TextFormField(
+      controller: cont,
+      textInputAction: TextInputAction.next,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        color: Colors.black,
+      ),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(
+          RegExp(matching),
+        ),
+      ],
+      maxLength: length,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+        fillColor: Colors.grey[200],
+        filled: true,
+        errorStyle: TextStyle(fontSize: 18),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        counter: Offstage(),
+        contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+      ),
+      keyboardType: keyboard,
+      textCapitalization: textCapitalization,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return '???';
+        }
+        // if (hint == "Model" &&
+        //     (int.parse(value) < 1970 ||
+        //         int.parse(value) > DateTime.now().year)) {
+        //   return "not a valid Model";
+        // }
+        return null;
+      },
     );
   }
 
@@ -173,22 +196,23 @@ class _AddVehicleState extends State<AddVehicle> {
         elevation: 0,
         title: Text(
           "Register Your Vehicle",
-          textScaleFactor: 1.2,
+          textScaleFactor: 1.1,
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        // color: Colors.yellow[100],
-        child: Form(
-          key: _formKey,
+      body: Form(
+        key: _formKey,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
           child: ListView(
+            shrinkWrap: true,
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 15),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                // color: Colors.blue.withOpacity(0.5),
                 alignment: Alignment.center,
                 child: ToggleButtons(
                   borderColor: Colors.transparent,
-                  fillColor: selectedColor.withOpacity(0.2),
+                  fillColor: selectedColor.withOpacity(0.09),
                   borderWidth: 10,
                   selectedBorderColor: Colors.transparent,
                   // borderRadius: BorderRadius.circular(10),
@@ -197,7 +221,7 @@ class _AddVehicleState extends State<AddVehicle> {
                     chooseVehicleItem(
                         Icons.time_to_leave, Colors.orange, "Car"),
                     chooseVehicleItem(
-                        Icons.directions_bike, Colors.green, "Bike"),
+                        Icons.directions_bike, Colors.deepPurpleAccent, "Bike"),
                   ],
                   onPressed: (int index) {
                     setState(() {
@@ -207,37 +231,47 @@ class _AddVehicleState extends State<AddVehicle> {
                       if (index == 0) {
                         vehicleIcon = Icons.time_to_leave;
                         isBike = false;
+                        // Get.back();
+                        // Get.off(() => AddVehicle());
+                        // _companyController.clear();
+                        // _engineTypeController.clear();
+                        // _engineController.clear();
                       } else {
                         vehicleIcon = Icons.directions_bike;
                         isBike = true;
+                        // Get.back();
+                        // Get.off(() => AddVehicle());
+                        // _companyController.clear();
+                        // _engineTypeController.clear();
+                        // _engineController.clear();
                       }
                     });
                   },
                   isSelected: vehicleSelectedList,
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              _dropDown("Company", isBike ? bikeCompanyList : carCompanyList,
+                  _companyController, false),
+              SizedBox(height: 8),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: _dropDown(
-                        "Company",
-                        isBike ? bikeCompanyList : carCompanyList,
-                        _companyController),
+                    child: _textFormFeiled(
+                        _modelController,
+                        "Model",
+                        15,
+                        TextInputType.text,
+                        "[A-Za-z0-9 .]",
+                        TextCapitalization.words),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 5),
                   Expanded(
-                    child: _textFormFeiled(_modelController, "Model", 4,
-                        TextInputType.number, "[0-9]"),
-                  ),
+                    child: _dropDown("Year", yearList, _yearController, true),
+                  )
                 ],
               ),
-              SizedBox(
-                height: 10,
-              ),
+
               Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -277,6 +311,7 @@ class _AddVehicleState extends State<AddVehicle> {
                           } else if (index == 1) {
                             _colorController.text =
                                 Colors.black.value.toString();
+                            print(Colors.black.value.toString());
                           } else if (index == 2) {
                             _colorController.text =
                                 Colors.grey[800]!.value.toString();
@@ -309,49 +344,56 @@ class _AddVehicleState extends State<AddVehicle> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 8),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (!isBike)
                     Expanded(
-                      flex: 6,
                       child: _dropDown("Engine Type", ["Hybrid", "Non-Hybrid"],
-                          _engineTypeController),
+                          _engineTypeController, false),
                     ),
-                  if (!isBike) SizedBox(width: 10),
+                  if (!isBike) SizedBox(width: 5),
                   Expanded(
-                    flex: 5,
                     child: _dropDown(
                         "Engine",
                         isBike ? bikeEngineList : carEngineList,
-                        _engineController),
-                  ),
+                        _engineController,
+                        true),
+                  )
                 ],
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 8),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: _textFormFeiled(_alphaTypeController,
-                        "Alphabets (RIW)", 3, TextInputType.name, "[A-Z]"),
+                    child: _textFormFeiled(
+                        _alphaTypeController,
+                        "Alphabets (RIW)",
+                        3,
+                        TextInputType.name,
+                        "[A-Z]",
+                        TextCapitalization.characters),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 5),
                   Expanded(
-                    child: _textFormFeiled(_numericPartController,
-                        "Numeric (2981)", 4, TextInputType.number, "[0-9]"),
+                    child: _textFormFeiled(
+                        _numericPartController,
+                        "Numeric (2981)",
+                        4,
+                        TextInputType.number,
+                        "[0-9]",
+                        TextCapitalization.none),
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              // SizedBox(height: 10),
               _textFormFeiled(_milageController, "Milage (24 KM/L)", 2,
-                  TextInputType.number, "[0-9]"),
+                  TextInputType.number, "[0-9]", TextCapitalization.none),
               Container(
                 // height: 170,
-                margin: EdgeInsets.symmetric(vertical: 15),
+                margin: EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
                   // border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(20),
@@ -361,7 +403,7 @@ class _AddVehicleState extends State<AddVehicle> {
                     Get.bottomSheet(
                       SafeArea(
                         child: Container(
-                          height: 180,
+                          height: 160,
                           child: Column(
                             children: [
                               Container(
@@ -372,7 +414,7 @@ class _AddVehicleState extends State<AddVehicle> {
                               ),
                               Container(
                                 padding: EdgeInsets.symmetric(
-                                    vertical: 20, horizontal: 15),
+                                    vertical: 10, horizontal: 40),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -389,7 +431,7 @@ class _AddVehicleState extends State<AddVehicle> {
                                         "Gallery"),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -406,11 +448,13 @@ class _AddVehicleState extends State<AddVehicle> {
                   child: _image == null
                       ? Center(
                           child: Container(
-                            width: Get.width / 2.5,
+                            width: Get.width / 2.3,
                             padding: EdgeInsets.all(12),
                             margin: EdgeInsets.symmetric(vertical: 15),
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              border: Border.all(
+                                  color:
+                                      showImgError ? Colors.red : Colors.grey),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Row(
@@ -452,10 +496,9 @@ class _AddVehicleState extends State<AddVehicle> {
                 ),
               ),
               if (showImgError)
-                const Align(
-                  alignment: Alignment.bottomLeft,
+                Center(
                   child: CustomText(
-                    text: "upload License Images",
+                    text: "Upload Vehicle Image",
                     color: Colors.red,
                   ),
                 )
@@ -475,47 +518,25 @@ class _AddVehicleState extends State<AddVehicle> {
             ),
           ),
           onPressed: () {
+// GetStorage box = GetStorage();
+            // print(_companyController.text);
             if (
-
                 // isBike &&
-
-                _formKey.currentState!.validate()
-                // && _image != null
-
-                ) {
-              print("bike");
-              // UserDatabase.addWorkingDetails(data: {
-              //   "type": "std",
-              //   "institute": _instController.text,
-              //   "adress": _stdAddressController.text,
-              //   "degree": _degreeController.text,
-              // });
-              // _clearControlers();
+                _formKey.currentState!.validate() && _image != null) {
+              UserDatabase.addVehicle(
+                  vehicleType: isBike ? "Bike" : "Car",
+                  company: _companyController.text,
+                  model: _modelController.text,
+                  year: _yearController.text,
+                  color: _colorController.text,
+                  engine: _engineController.text,
+                  engineType: isBike ? "" : _engineTypeController.text,
+                  noAlp: _alphaTypeController.text,
+                  noNum: _numericPartController.text,
+                  milage: _milageController.text,
+                  image: _image);
             }
-            //
-            //else if (isEmployee && _empformKey.currentState!.validate()) {
-            //   UserDatabase.addWorkingDetails(data: {
-            //     "type": "emp",
-            //     "company_name": _companyController.text,
-            //     "adress": _empAddressController.text,
-            //     "designation": _designationController.text,
-            //   });
-            //   _clearControlers();
-            // } else if (isBusiness && _busiformKey.currentState!.validate()) {
-            //   UserDatabase.addWorkingDetails(data: {
-            //     "type": "business",
-            //     "name": _businessNameController.text,
-            //     "adress": _addressController.text,
-            //   });
-            //   _clearControlers();
-            // }
-            // if (_formKey.currentState!.validate() && _image != null) {
-            //   UserDatabase.addLicense(
-            //       area: _areaController.text,
-            //       license: _licenseController.text,
-            //       vehicle: _vehicleController.text,
-            //       image: _image!);
-            // }
+
             if (_image == null) {
               setState(() {
                 showImgError = true;
@@ -533,15 +554,16 @@ class _AddVehicleState extends State<AddVehicle> {
   }
 
   // _colorController.text = col.value.toString();
-  Container chooseVehicleItem(IconData icon, Color col, String title) {
+  Widget chooseVehicleItem(IconData icon, Color col, String title) {
     return Container(
       // height: 60,
       // width: 70,
       // margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-          border: Border.all(color: col, width: 3),
-          borderRadius: BorderRadius.circular(10)),
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        border: Border.all(color: col, width: 3),
+        borderRadius: BorderRadius.circular(25),
+      ),
+      padding: EdgeInsets.all(8),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -549,7 +571,7 @@ class _AddVehicleState extends State<AddVehicle> {
           Icon(
             icon,
             color: col,
-            size: 35,
+            size: 30,
           ),
           SizedBox(width: 5),
           CustomText(
@@ -574,6 +596,7 @@ class _AddVehicleState extends State<AddVehicle> {
         setState(() {
           if (pickedFile != null) {
             _image = File(pickedFile.path);
+            showImgError = false;
           } else {
             print('No image selected.');
           }

@@ -33,10 +33,14 @@ class DataSearch extends SearchDelegate<String> {
     // Actions for app b
     return [
       IconButton(
+          splashRadius: 25,
           onPressed: () {
-            query = " ";
+            query = "";
           },
-          icon: Icon(Icons.clear))
+          icon: Icon(
+            Icons.clear,
+            color: Colors.red,
+          ))
     ];
   }
 
@@ -80,18 +84,21 @@ class DataSearch extends SearchDelegate<String> {
         },
         leading: Icon(Icons.location_city),
         title: RichText(
-            text: TextSpan(
-                text: suggestionList[index].substring(0, query.length),
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                children: [
+          text: TextSpan(
+            text: suggestionList[index].substring(0, query.length),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            children: [
               TextSpan(
                 text: suggestionList[index].substring(query.length),
                 style: TextStyle(color: Colors.grey),
               )
-            ])),
+            ],
+          ),
+        ),
       ),
       itemCount: suggestionList.length,
     );
   }
+  // @override
+  // build
 }

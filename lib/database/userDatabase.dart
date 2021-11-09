@@ -1,18 +1,19 @@
 import 'dart:io';
 
 import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/views/vehicle/vehicle.dart';
+import 'package:carpooling_app/widgets/costEstimation.dart';
 import 'package:carpooling_app/widgets/showLoading.dart';
+import 'package:carpooling_app/widgets/showSnackBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
-// as firebase_storage;
 
 class UserDatabase {
   static var userDoc = FirebaseFirestore.instance
       .collection('users')
-      .doc(Get.find<AuthController>().user!.uid);
+      .doc(Get.find<AuthController>().userfb!.uid);
 
   static void addNomineeDetails(
       {required String name, required String relation, required String phone}) {
@@ -27,46 +28,12 @@ class UserDatabase {
     }).then((value) {
       // print("Nominee Details Added");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "Details Added Sucessfuly!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      showSnackBar("Details Added Sucessfuly!", "");
       // Get.offAll(BottomNavBar());
     }).catchError((error) {
       print("Failed to add user initial Details: $error");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "Oops!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "Something wents wrong, Try Again",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      showErrorSnackBar();
     });
   }
 
@@ -77,7 +44,7 @@ class UserDatabase {
     // upload image and get URL
 
     Reference reference =
-        storage.ref().child("cnic/${Get.find<AuthController>().user!.uid}");
+        storage.ref().child("cnic/${Get.find<AuthController>().userfb!.uid}");
 
     UploadTask uploadTask =
         reference.putFile(image); //Upload the file to firebase
@@ -96,46 +63,29 @@ class UserDatabase {
     }).then((value) {
       // print("Nominee Details Added");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "CNIC Details Added Sucessfuly!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "Wait for verification",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      showSnackBar("CNIC Details Added Sucessfuly!", "Wait for verification");
       // Get.offAll(BottomNavBar());
     }).catchError((error) {
       print("Failed to add cnic Details: $error");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "Oops!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "Something wents wrong, Try Again",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      showErrorSnackBar();
+    });
+  }
+
+  static void addWorkingDetails({required Map<String, Object?> data}) {
+    showLoading();
+    var _tempWorkingList = [data];
+    userDoc.update({
+      'workingDetails': FieldValue.arrayUnion(_tempWorkingList)
+    }).then((value) {
+      // print("Nominee Details Added");
+      dismissLoadingWidget();
+      showSnackBar("Working Details Added Sucessfuly!", "");
+      // Get.offAll(BottomNavBar());
+    }).catchError((error) {
+      print("Failed to add user initial Details: $error");
+      dismissLoadingWidget();
+      showErrorSnackBar();
     });
   }
 
@@ -148,8 +98,9 @@ class UserDatabase {
     FirebaseStorage storage = FirebaseStorage.instance;
     // upload image and get URL
 
-    Reference reference =
-        storage.ref().child("license/${Get.find<AuthController>().user!.uid}");
+    Reference reference = storage
+        .ref()
+        .child("license/${Get.find<AuthController>().userfb!.uid}");
 
     UploadTask uploadTask =
         reference.putFile(image); //Upload the file to firebase
@@ -170,97 +121,88 @@ class UserDatabase {
     }).then((value) {
       // print("Nominee Details Added");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "License Details Added Sucessfuly!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "Wait for verification",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      showSnackBar(
+          "License Details Added Sucessfuly!", "Wait for verification");
+
       // Get.offAll(BottomNavBar());
     }).catchError((error) {
-      print("Failed to add cnic Details: $error");
+      print("Failed to add license Details: $error");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "Oops!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "Something wents wrong, Try Again",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      showErrorSnackBar();
     });
   }
 
-  static void addWorkingDetails({required Map<String, Object?> data}) {
+  static Future<void> addVehicle(
+      {required String vehicleType,
+      required String company,
+      required String model,
+      required String year,
+      required String color,
+      String? engineType,
+      required String engine,
+      required String noAlp,
+      required String noNum,
+      required String milage,
+      required File? image}) async {
     showLoading();
-    var _tempWorkingList = [data];
+    FirebaseStorage storage = FirebaseStorage.instance;
+    // upload image and get URL
+
+    Reference reference = storage
+        .ref()
+        .child("vehicle/${Get.find<AuthController>().userfb!.uid}_$noNum");
+
+    UploadTask uploadTask =
+        reference.putFile(image!); //Upload the file to firebase
+
+    TaskSnapshot taskSnapshot = await uploadTask;
+
+    // Waits till the file is uploaded then stores the download url
+    String imgUrl = await taskSnapshot.ref.getDownloadURL();
+
+    // engineType = 1 non-hybrid
+// engineType = 2 hybrid
+// engineType = 3 Bike
+    int sendingEngineType = 1;
+    if (vehicleType == "Bike") {
+      sendingEngineType = 3;
+    } else if (engineType == "Hybrid") {
+      sendingEngineType = 2;
+    }
+    double verifiedMilage = verifyMilage(
+        int.parse(milage),
+        sendingEngineType,
+        int.parse(engine.toString().substring(0, (engine.length - 3))),
+        int.parse(year));
+
+    var _tempvehicileList = [
+      {
+        "id": Get.find<AuthController>().userfb!.uid.toString().substring(18),
+        "vehicleType": vehicleType,
+        "company": company,
+        "model": model,
+        "year": year,
+        "color": color,
+        "engineType": engineType ?? "",
+        "engine": engine,
+        "noAlp": noAlp,
+        "noNum": noNum,
+        "milage": verifiedMilage,
+        "img_url": imgUrl,
+      }
+    ];
+    // print(_tempvehicileList.toString());
+
     userDoc.update({
-      'workingDetails': FieldValue.arrayUnion(_tempWorkingList)
+      'vehicles': FieldValue.arrayUnion(_tempvehicileList),
     }).then((value) {
-      // print("Nominee Details Added");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "Working Details Added Sucessfuly!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
-      // Get.offAll(BottomNavBar());
+      Get.to(() => Vehicle());
+      showSnackBar("Vehicle Added Sucessfuly!", "Wait for verification");
     }).catchError((error) {
-      print("Failed to add user initial Details: $error");
+      print("Failed to add Vehicle Details: $error");
       dismissLoadingWidget();
-      Get.snackbar(
-        "default title",
-        "defalt message",
-        titleText: Text(
-          "Oops!",
-          textScaleFactor: 1.3,
-        ),
-        messageText: Text(
-          "Something wents wrong, Try Again",
-          textScaleFactor: 1.2,
-        ),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
-      );
+      showErrorSnackBar();
     });
   }
 }

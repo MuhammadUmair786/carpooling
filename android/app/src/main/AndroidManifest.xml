@@ -4,7 +4,7 @@
         android:label="carpooling"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY" 
-   android:value="AIzaSyCPzwC9FosS13gpAaTrI3VcKvwDhByjEqQ"/>
+   android:value="AIzaSyDEiArRJg8QdgATPevCeNjwRqDl4L3-4Ak"/>
    
 
         <activity
