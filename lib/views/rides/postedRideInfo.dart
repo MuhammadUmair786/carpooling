@@ -1,15 +1,27 @@
+import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/models/rideModel.dart';
+import 'package:carpooling_app/views/rides/rideMap.dart';
 import 'package:carpooling_app/views/viewProfile.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:getwidget/colors/gf_color.dart';
+import 'package:getwidget/components/rating/gf_rating.dart';
+import 'package:getwidget/size/gf_size.dart';
+// import 'package:getwidget/getwidget.dart';
+// import 'package:dotted_line/dotted_line.dart';
+import 'package:jiffy/jiffy.dart';
 
 class PostedRideInfo extends StatelessWidget {
-  const PostedRideInfo({Key? key}) : super(key: key);
+  final RideModel ride;
+
+  PostedRideInfo({required this.ride});
+  var rideList = Get.find<AuthController>().userData!.vehicleList;
 
   @override
   Widget build(BuildContext context) {
+    // var x = rideList.firstWhere((item) == );
     return Scaffold(
       appBar: AppBar(
         title: Text("Ride Detail"),
@@ -36,48 +48,50 @@ class PostedRideInfo extends StatelessWidget {
               //       "Map with origion destination ",
               //     ),
               //     color: Colors.lightGreenAccent),
-
-              Container(
-                height: 250,
-                child: GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: const LatLng(33.578891, 73.039483),
-                    zoom: 17.0,
-                  ),
-                  // compassEnabled: false,
-                  // markers: _markers.toSet(),
-                  // zoomControlsEnabled: false,
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                  trafficEnabled: true,
-                  onTap: (cordinate) {
-                    // _currentCoordinates = cordinate;
-                    // // print(cordinate);
-                    // setState(() {
-                    //   _markers = [];
-                    //   _markers.add(
-                    //     Marker(
-                    //       markerId: MarkerId(cordinate.toString()),
-                    //       position: cordinate,
-                    //       draggable: true,
-                    //       onDragEnd: (dragEndPosition) {
-                    //         // print(dragEndPosition.toString() + " end point");
-                    //       },
-                    //     ),
-                    //   );
-                    // });
-                  },
-                ),
-              ),
+              // Container(
+              //   height: 250,
+              //   child: GoogleMap(
+              //     initialCameraPosition: CameraPosition(
+              //       target: const LatLng(33.578891, 73.039483),
+              //       zoom: 17.0,
+              //     ),
+              //     // compassEnabled: false,
+              //     // markers: _markers.toSet(),
+              //     // zoomControlsEnabled: false,
+              //     myLocationButtonEnabled: true,
+              //     myLocationEnabled: true,
+              //     trafficEnabled: true,
+              //     onTap: (cordinate) {
+              //       // _currentCoordinates = cordinate;
+              //       // // print(cordinate);
+              //       // setState(() {
+              //       //   _markers = [];
+              //       //   _markers.add(
+              //       //     Marker(
+              //       //       markerId: MarkerId(cordinate.toString()),
+              //       //       position: cordinate,
+              //       //       draggable: true,
+              //       //       onDragEnd: (dragEndPosition) {
+              //       //         // print(dragEndPosition.toString() + " end point");
+              //       //       },
+              //       //     ),
+              //       //   );
+              //       // });
+              //     },
+              //   ),
+              // ),
 
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.end,
+                  // crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     SizedBox(height: 15),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       padding: const EdgeInsets.all(10),
                       margin: EdgeInsets.symmetric(vertical: 10),
@@ -105,16 +119,19 @@ class PostedRideInfo extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              rideDetailItem("Posted", "5 days ago", 1),
-                              rideDetailItem("Expired", "12 Aug, 12:34 PM", 2),
+                              rideDetailItem("Posted",
+                                  Jiffy(ride.postedDate).fromNow(), 1),
+                              rideDetailItem("Expired", "------", 2),
                             ],
                           ),
                           SizedBox(height: 15),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              rideDetailItem("Start date", "12 Aug, 2020", 1),
-                              rideDetailItem("Start Time", "12:34 PM", 2),
+                              rideDetailItem("Start date",
+                                  Jiffy(ride.startDate).yMMMEd, 1),
+                              rideDetailItem(
+                                  "Start Time", ride.time.format(context), 2),
                             ],
                           ),
                           SizedBox(height: 15),
@@ -122,14 +139,130 @@ class PostedRideInfo extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               rideDetailItem(
-                                  "Gender Preference", "Male Only", 1),
-                              rideDetailItem("Vehicle", "Mehran 2018", 2),
+                                  "Gender Preference", ride.gender, 1),
+                              rideDetailItem("Vehicle", "mehran 2018", 2),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    TabsView(),
+                    Container(
+                      // height: 100,
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  children: [
+                                    Icon(Icons.trip_origin),
+                                    DottedLine(
+                                      direction: Axis.vertical,
+                                      lineLength: 55,
+                                      lineThickness: 3.0,
+                                      dashLength: 3.0,
+                                      // dashColor: Colors.black,
+                                      dashGradient: [Colors.red, Colors.blue],
+                                      dashRadius: 0.0,
+                                      dashGapLength: 3.0,
+                                      dashGapColor: Colors.transparent,
+                                      // dashGapGradient: [Colors.red, Colors.blue],
+                                      // dashGapRadius: 0.0,
+                                    ),
+                                    Icon(Icons.location_on),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Container(
+                                  height: 100,
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          ride.startingAddress,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          textAlign: TextAlign.justify,
+                                          // textScaleFactor: 1.2,
+                                          style: TextStyle(
+                                              decoration: TextDecoration.none,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.alt_route_outlined),
+                                            Text(
+                                              ride.route,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              textAlign: TextAlign.justify,
+                                              // textScaleFactor: 1.2,
+                                              style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          ride.endAddress,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          textAlign: TextAlign.justify,
+                                          // textScaleFactor: 1.2,
+                                          style: TextStyle(
+                                              decoration: TextDecoration.none,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black),
+                                        ),
+                                      ]),
+                                ),
+                              )
+                            ],
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Get.to(
+                                    () => RideMap(
+                                        origin: ride.startPoint,
+                                        destination: ride.endPoint),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(70, 35),
+                                  primary: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: CustomText(
+                                  text: "View on Map",
+                                  weight: FontWeight.w500,
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                    TabsView(
+                      requests: ride.requestList,
+                    ),
                   ],
                 ),
               )
@@ -137,6 +270,32 @@ class PostedRideInfo extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Row startEndItem(IconData ic, String locationName) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Icon(ic),
+        SizedBox(width: 5),
+        Container(
+          alignment: Alignment.topLeft,
+          width: Get.width / 1.9,
+          child: Text(
+            locationName,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            textAlign: TextAlign.justify,
+            // textScaleFactor: 1.2,
+            style: TextStyle(
+                decoration: TextDecoration.none,
+                fontSize: 18,
+                // fontWeight: FontWeight.,
+                color: Colors.black),
+          ),
+        ),
+      ],
     );
   }
 
@@ -150,7 +309,7 @@ class PostedRideInfo extends StatelessWidget {
         CustomText(
           text: value,
           weight: FontWeight.w500,
-          size: 20,
+          size: 18,
         )
       ],
     );
@@ -158,8 +317,13 @@ class PostedRideInfo extends StatelessWidget {
 }
 
 class TabsView extends StatelessWidget {
+  final List<dynamic> requestsList;
+
+  const TabsView({required this.requestsList});
+  // var requestedList =
   @override
   Widget build(BuildContext context) {
+    var requestedRide = requestsList.where((item));
     return DefaultTabController(
       length: 2,
       child: Column(
@@ -167,12 +331,12 @@ class TabsView extends StatelessWidget {
           TabBar(
             tabs: [
               Tab(
-                icon: Icon(Icons.directions_car),
-                child: Text("Confirmed"),
-              ),
-              Tab(
                 icon: Icon(Icons.request_page_sharp),
                 child: Text("Requests"),
+              ),
+              Tab(
+                icon: Icon(Icons.directions_car),
+                child: Text("Confirmed"),
               ),
             ],
           ),
@@ -180,20 +344,19 @@ class TabsView extends StatelessWidget {
             height:
                 200, //set this height according to the list size in postedRideInfo SCreen
             child: TabBarView(children: [
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  requestedPassangersItem(),
+                  requestedPassangersItem(),
+                ],
+              ),
               //confirmed passangers
               ListView(
                 shrinkWrap: true,
                 children: [
                   confirmedPassangersItem(),
                   confirmedPassangersItem(),
-                ],
-              ),
-
-              ListView(
-                shrinkWrap: true,
-                children: [
-                  requestedPassangersItem(),
-                  requestedPassangersItem(),
                 ],
               ),
             ]),

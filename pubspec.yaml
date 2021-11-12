@@ -60,6 +60,7 @@ dependencies:
   get: ^4.3.8
   otp_text_field: ^1.1.1
   curved_navigation_bar: ^1.0.1
+  dotted_line: ^3.1.0
  
 
 

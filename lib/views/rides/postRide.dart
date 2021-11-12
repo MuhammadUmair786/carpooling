@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/database/rideDatabase.dart';
 import 'package:carpooling_app/heplerMethods/findDistance.dart';
+import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/views/drawer/savedTemplate.dart';
 import 'package:carpooling_app/views/map.dart';
 import 'package:carpooling_app/widgets/costEstimation.dart';
@@ -17,15 +18,50 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jiffy/jiffy.dart';
 
 class PostRide extends StatefulWidget {
-  final int rideType;
+  RideModel? templateRide;
 
-  PostRide({required this.rideType});
+  PostRide({RideModel? this.templateRide});
 
   @override
   State<PostRide> createState() => _PostRideState();
 }
 
 class _PostRideState extends State<PostRide> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.templateRide != null) {
+      _startPointController.text = widget.templateRide!.startingAddress;
+      startPoint = widget.templateRide!.startPoint;
+      _endPointController.text = widget.templateRide!.endAddress;
+      endPoint = widget.templateRide!.endPoint;
+      _routeController.text = widget.templateRide!.route;
+      date = widget.templateRide!.startDate;
+      _dateController.text = Jiffy(date).yMMMMd;
+      time = widget.templateRide!.time;
+      _timeController.text = "${time.hour}:${time.minute} ${time.hourOfPeriod}";
+      _genderController.text = widget.templateRide!.gender;
+      for (int i = 0; i < vehicleList.length; i++) {
+        if (vehicleList[i]['id'] == widget.templateRide!.vehicleId) {
+          _vehicleController.text = vehicleList[i]['model'] +
+              " (" +
+              vehicleList[i]['noAlp'] +
+              " " +
+              vehicleList[i]['noNum'] +
+              ")";
+        }
+      }
+      // _vehicleController.text = vehicleList.where((element) {
+      //   element[''] == widget.templateRide!.vehicleId;
+      // }).toString();
+      vehicleId = widget.templateRide!.vehicleId;
+      vehicleImgUrl = widget.templateRide!.vehicleImg;
+      vehicleMilage = widget.templateRide!.vehicleMilage;
+      isAC = widget.templateRide!.isAc;
+      _messageController.text = widget.templateRide!.message;
+    }
+  }
+
   final TextEditingController _startPointController = TextEditingController();
 
   final TextEditingController _endPointController = TextEditingController();
@@ -44,6 +80,7 @@ class _PostRideState extends State<PostRide> {
   final TextEditingController _vehicleController = TextEditingController();
 
   late String vehicleId;
+  late String vehicleImgUrl;
   late double vehicleMilage;
   bool isAC = false;
 
@@ -177,50 +214,50 @@ class _PostRideState extends State<PostRide> {
                   SizedBox(
                     height: 23,
                   ),
-                  if (widget.rideType != 1)
-                    InkWell(
-                      onTap: () async {
-                        startPoint = await Get.to(
-                          () => GMap(
-                            labelNote: "Origin Of Your Ride",
-                          ),
-                        );
-
-                        // _startPointController.text = await getAddress(startPoint);
-                        if (startPoint != null) {
-                          List<Placemark> placemarks =
-                              await placemarkFromCoordinates(
-                                  startPoint!.latitude, startPoint!.longitude);
-
-                          _startPointController.text =
-                              placemarks[0].name.toString() +
-                                  ", " +
-                                  placemarks[0].locality.toString() +
-                                  ", " +
-                                  placemarks[0].country.toString();
-                        }
-                      },
-                      child: AbsorbPointer(
-                        child: TextFormField(
-                          maxLines: null,
-                          controller: _startPointController,
-                          style: style,
-                          decoration: decoration(
-                            label: "Starting Point",
-                            icon: Icons.trip_origin_rounded,
-                            iconColor: Colors.blue,
-                          ),
-                          textCapitalization: TextCapitalization.words,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Must Enter Starting Point';
-                            }
-                            return null;
-                          },
+                  // if (widget.rideType != 1)
+                  InkWell(
+                    onTap: () async {
+                      startPoint = await Get.to(
+                        () => GMap(
+                          labelNote: "Origin Of Your Ride",
                         ),
+                      );
+
+                      // _startPointController.text = await getAddress(startPoint);
+                      if (startPoint != null) {
+                        List<Placemark> placemarks =
+                            await placemarkFromCoordinates(
+                                startPoint!.latitude, startPoint!.longitude);
+
+                        _startPointController.text =
+                            placemarks[0].name.toString() +
+                                ", " +
+                                placemarks[0].locality.toString() +
+                                ", " +
+                                placemarks[0].country.toString();
+                      }
+                    },
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        maxLines: null,
+                        controller: _startPointController,
+                        style: style,
+                        decoration: decoration(
+                          label: "Starting Point",
+                          icon: Icons.trip_origin_rounded,
+                          iconColor: Colors.blue,
+                        ),
+                        textCapitalization: TextCapitalization.words,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Must Enter Starting Point';
+                          }
+                          return null;
+                        },
                       ),
                     ),
+                  ),
                   SizedBox(height: gapHeight),
                   InkWell(
                     onTap: () async {
@@ -288,84 +325,85 @@ class _PostRideState extends State<PostRide> {
                   // ),
                   // ),
                   SizedBox(height: gapHeight),
-                  if (widget.rideType != 1)
-                    InkWell(
-                      onTap: () async {
-                        try {
-                          date = (await showDatePicker(
-                            // currentDate: DateTime.now(),
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.now().add(Duration(days: 15)),
-                          ))!;
+                  // if (widget.rideType != 1)
+                  InkWell(
+                    onTap: () async {
+                      try {
+                        date = (await showDatePicker(
+                          // currentDate: DateTime.now(),
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(Duration(days: 15)),
+                        ).then((value) {
+                          _dateController.text = Jiffy([value]).yMMMMd;
+                        }))!;
 
-                          if (date != null)
-                            _dateController.text =
-                                Jiffy([date.year, date.minute, date.day])
-                                    .yMMMMd;
-                        } catch (ex) {
-                          print(ex);
-                        }
-                      },
-                      child: AbsorbPointer(
-                        child: TextFormField(
-                          maxLines: null,
-                          controller: _dateController,
-                          style: style,
-                          decoration: decoration(
-                            label: "Date",
-                            icon: Icons.date_range,
-                            iconColor: Colors.brown,
-                          ),
-                          textCapitalization: TextCapitalization.words,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter the date of your departure';
-                            }
-                            return null;
-                          },
+                        // if (date != null)
+                        //   _dateController.text =
+                        //       Jiffy([date]).yMMMMd;
+                      } catch (ex) {
+                        print(ex);
+                      }
+                    },
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        maxLines: null,
+                        controller: _dateController,
+                        style: style,
+                        decoration: decoration(
+                          label: "Date",
+                          icon: Icons.date_range,
+                          iconColor: Colors.brown,
                         ),
-                      ),
-                    ),
-                  SizedBox(height: gapHeight),
-                  if (widget.rideType != 1)
-                    InkWell(
-                      onTap: () async {
-                        try {
-                          time = (await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.now(),
-                          ))!;
-                          if (time != null) {
-                            _timeController.text = time.format(context);
+                        textCapitalization: TextCapitalization.words,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter the date of your departure';
                           }
-                        } catch (ex) {
-                          print(ex);
-                        }
-                      },
-                      child: AbsorbPointer(
-                        child: TextFormField(
-                          maxLines: null,
-                          controller: _timeController,
-                          style: style,
-                          decoration: decoration(
-                            label: "Time",
-                            icon: Icons.access_time,
-                            iconColor: Colors.red,
-                          ),
-                          textCapitalization: TextCapitalization.words,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter the time of your departure';
-                            }
-                            return null;
-                          },
-                        ),
+                          return null;
+                        },
                       ),
                     ),
+                  ),
+                  SizedBox(height: gapHeight),
+                  // if (widget.rideType != 1)
+                  InkWell(
+                    onTap: () async {
+                      try {
+                        time = (await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                        ))!;
+                        if (time != null) {
+                          _timeController.text = time.format(context);
+                        }
+                      } catch (ex) {
+                        print(ex);
+                      }
+                    },
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        maxLines: null,
+                        controller: _timeController,
+                        style: style,
+                        decoration: decoration(
+                          label: "Time",
+                          icon: Icons.access_time,
+                          iconColor: Colors.red,
+                        ),
+                        textCapitalization: TextCapitalization.words,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter the time of your departure';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
                   SizedBox(height: gapHeight),
                   InkWell(
                     onTap: () async {
@@ -729,6 +767,7 @@ class _PostRideState extends State<PostRide> {
       gender: _genderController.text,
       vehicleId: vehicleId,
       vehicleMilage: vehicleMilage,
+      vehicleImg: vehicleImgUrl,
       isAc: isAC,
       message: _messageController.text,
       isSavedTemplate: isSave,
@@ -779,9 +818,10 @@ class _PostRideState extends State<PostRide> {
       String model, String number, double milage) {
     return InkWell(
       onTap: () {
-        _vehicleController.text = company + " " + number;
+        _vehicleController.text = company + " (" + number + ")";
         vehicleId = id;
         vehicleMilage = milage;
+        vehicleImgUrl = imgUrl!;
         Get.back();
       },
       child: Container(

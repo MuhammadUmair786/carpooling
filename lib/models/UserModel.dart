@@ -13,7 +13,7 @@ class UserModel {
   Map<String, dynamic> cnicDetails = {};
   Map<String, dynamic> workingDetails = {};
   List<dynamic> vehicleList = [];
-  List<dynamic> postedRidesList = [];
+  List<RideModel> postedRidesList = [];
   // late String id;
   // late String id;
 
@@ -36,6 +36,7 @@ class UserModel {
 // .collection("ride")
 // .where("id", "==", "5eWDvE6dZ1R1ubVG0SvE")
     // var querySnapshots =
+    postedRidesList.clear();
     FirebaseFirestore.instance
         .collection('ride')
         .where("driverID", isEqualTo: Get.find<AuthController>().userfb!.uid)

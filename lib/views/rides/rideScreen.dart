@@ -1,39 +1,46 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/views/rides/postedRideInfo.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 
 class RideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: DefaultTabController(
-        length: 2,
-        child: Column(
-          children: [
-            TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(Icons.directions_car),
-                  child: Text("Posted"),
-                ),
-                Tab(
-                  icon: Icon(Icons.request_page_sharp),
-                  child: Text("Requested"),
-                ),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  PostedRides(),
-                  RequestedRides(),
+    return Material(
+      child: SafeArea(
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              TabBar(
+                tabs: [
+                  Tab(
+                    icon: Icon(Icons.directions_car),
+                    child: Text("Posted"),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.request_page_sharp),
+                    child: Text("Requested"),
+                  ),
                 ],
               ),
-            ),
-          ],
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    PostedRides(),
+                    RequestedRides(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -43,7 +50,7 @@ class RideScreen extends StatelessWidget {
 class PostedRides extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var rideList = Get.find<AuthController>().userData!.postedRidesList;
+    // var rideList = Get.find<AuthController>().userData!.postedRidesList;
     return Scaffold(
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 10),
@@ -52,11 +59,12 @@ class PostedRides extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  showDialog(
-                    barrierColor: Colors.grey.withOpacity(0.8),
-                    context: context,
-                    builder: (_) => dioloadChild(),
-                  );
+                  Get.to(() => PostRide());
+                  // showDialog(
+                  //   barrierColor: Colors.grey.withOpacity(0.8),
+                  //   context: context,
+                  //   builder: (_) => dioloadChild(),
+                  // );
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
@@ -76,11 +84,35 @@ class PostedRides extends StatelessWidget {
                   ),
                 ),
               ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 12,
-                  itemBuilder: (cont, index) {
-                    return postedRideItem();
+              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection("ride")
+                      .where('driverID',
+                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.docs.length == 0) {
+                        return Text("No ride found");
+                      }
+                      return Flex(
+                        direction: Axis.vertical,
+                        children: snapshot.data!.docs.map((e) {
+                          return postedRideItem(
+                              RideModel.fromDocumentSnapshot(snapshot: e),
+                              context);
+                        }).toList(),
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    // return ListView.builder(
+                    //     shrinkWrap: true,
+                    //     itemCount: rideList.length,
+                    //     physics: NeverScrollableScrollPhysics(),
+                    //     itemBuilder: (cont, index) {
+                    //       return postedRideItem(rideList[index], context);
+                    //     });
                   }),
               // postedRideItem(),
               // postedRideItem(),
@@ -90,11 +122,12 @@ class PostedRides extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            barrierColor: Colors.grey.withOpacity(0.8),
-            context: context,
-            builder: (_) => dioloadChild(),
-          );
+          Get.to(() => PostRide());
+          // showDialog(
+          //   barrierColor: Colors.grey.withOpacity(0.8),
+          //   context: context,
+          //   builder: (_) => dioloadChild(),
+          // );
         },
         child: const Icon(Icons.add),
         backgroundColor: Colors.green,
@@ -102,86 +135,91 @@ class PostedRides extends StatelessWidget {
     );
   }
 
-  Container dioloadChild() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Material(
-            shape: CircleBorder(),
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-                Get.to(() => PostRide(rideType: 1));
-              },
-              child: Container(
-                decoration: new BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 2.5),
-                  shape: BoxShape.circle,
-                ),
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: Icon(
-                  Icons.quick_contacts_mail,
-                  color: Colors.white,
-                  size: 40,
-                ),
-              ),
-            ),
-          ),
-          CustomText(
-            text: "Quick Ride",
-            color: Colors.white,
-            weight: FontWeight.bold,
-            size: 23,
-          ),
-          SizedBox(height: 10),
-          Material(
-            shape: CircleBorder(),
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-                Get.to(() => PostRide(rideType: 2));
-              },
-              child: Container(
-                decoration: new BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 2.5),
-                  shape: BoxShape.circle,
-                ),
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: Icon(
-                  Icons.schedule,
-                  color: Colors.white,
-                  size: 40,
-                ),
-              ),
-            ),
-          ),
-          CustomText(
-            text: "Schedule Ride",
-            color: Colors.white,
-            weight: FontWeight.bold,
-            size: 23,
-          ),
-        ],
-      ),
-    );
-  }
+  // Container dioloadChild() {
+  //   return Container(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         Material(
+  //           shape: CircleBorder(),
+  //           color: Colors.transparent,
+  //           child: InkWell(
+  //             onTap: () {
+  //               Get.back();
+  //               Get.to(() => PostRide(rideType: 1));
+  //             },
+  //             child: Container(
+  //               decoration: new BoxDecoration(
+  //                 border: Border.all(color: Colors.white, width: 2.5),
+  //                 shape: BoxShape.circle,
+  //               ),
+  //               padding: EdgeInsets.all(20),
+  //               margin: EdgeInsets.symmetric(vertical: 10),
+  //               child: Icon(
+  //                 Icons.quick_contacts_mail,
+  //                 color: Colors.white,
+  //                 size: 40,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         CustomText(
+  //           text: "Quick Ride",
+  //           color: Colors.white,
+  //           weight: FontWeight.bold,
+  //           size: 23,
+  //         ),
+  //         SizedBox(height: 10),
+  //         Material(
+  //           shape: CircleBorder(),
+  //           color: Colors.transparent,
+  //           child: InkWell(
+  //             onTap: () {
+  //               Get.back();
+  //               Get.to(() => PostRide(rideType: 2));
+  //             },
+  //             child: Container(
+  //               decoration: new BoxDecoration(
+  //                 border: Border.all(color: Colors.white, width: 2.5),
+  //                 shape: BoxShape.circle,
+  //               ),
+  //               padding: EdgeInsets.all(20),
+  //               margin: EdgeInsets.symmetric(vertical: 10),
+  //               child: Icon(
+  //                 Icons.schedule,
+  //                 color: Colors.white,
+  //                 size: 40,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         CustomText(
+  //           text: "Schedule Ride",
+  //           color: Colors.white,
+  //           weight: FontWeight.bold,
+  //           size: 23,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget postedRideItem() {
-    return InkWell(
+  Widget postedRideItem(RideModel ride, BuildContext context) {
+    // if(ride.date.)
+    // print(Jiffy(ride.).fromNow());
+    return GestureDetector(
       onTap: () {
-        // Get.to(() => PostedRideInfo());
+        Get.to(() => PostedRideInfo(ride: ride));
       },
+      // splashColor: Colors.transparent,
+      // radius: 0,
       child: Container(
-        padding: EdgeInsets.all(13),
-        margin: EdgeInsets.symmetric(vertical: 15),
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
+          // border: Border.all(width: 0.5),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -195,10 +233,10 @@ class PostedRides extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: "Posted: Yesterday, 8:50 PM",
+              text: "Posted: ${Jiffy(ride.postedDate).fromNow()}",
               size: 15,
               weight: FontWeight.bold,
-              color: Colors.blue,
+              color: Colors.blueGrey,
             ),
             Container(
               color: Colors.grey,
@@ -211,15 +249,32 @@ class PostedRides extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    startEndItem(Icons.trip_origin, "Faisal Colony"),
+                    startEndItem(Icons.trip_origin, ride.startingAddress),
                     SizedBox(height: 5),
-                    startEndItem(Icons.location_on, "Comsats University"),
+                    startEndItem(Icons.location_on, ride.endAddress),
                   ],
                 ),
-                CircleAvatar(
-                  radius: 35,
-                  backgroundImage:
-                      NetworkImage("https://picsum.photos/250?image=9"),
+                CachedNetworkImage(
+                  imageUrl: ride.vehicleImg,
+                  // fit: BoxFit.cover,
+                  // repeat: ImageR,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 70.0,
+                    height: 70.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: imageProvider, fit: BoxFit.cover),
+                    ),
+                  ),
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator(
+                    value: downloadProgress.progress,
+                    strokeWidth: 2,
+                  ),
+                  // placeholder: (context, url) => CircularProgressIndicator(),
+
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 )
               ],
             ),
@@ -243,7 +298,8 @@ class PostedRides extends StatelessWidget {
                 CustomText(text: "45"),
                 Spacer(),
                 CustomText(
-                  text: "Expired: Today, 6:50 AM",
+                  text:
+                      "Start on: ${Jiffy(ride.startDate).MMMd}, ${ride.time.format(context)}",
                   size: 15,
                   weight: FontWeight.bold,
                   color: Colors.red,
@@ -264,13 +320,18 @@ class PostedRides extends StatelessWidget {
         SizedBox(width: 5),
         Container(
           alignment: Alignment.topLeft,
-          width: Get.width / 2,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: CustomText(
-              text: locationName,
-              size: 18,
-            ),
+          width: Get.width / 1.9,
+          child: Text(
+            locationName,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            textAlign: TextAlign.justify,
+            // textScaleFactor: 1.2,
+            style: TextStyle(
+                decoration: TextDecoration.none,
+                fontSize: 18,
+                // fontWeight: FontWeight.,
+                color: Colors.black),
           ),
         ),
       ],
@@ -297,11 +358,11 @@ class RequestedRides extends StatelessWidget {
 
   Container requestedRideItem() {
     return Container(
-      padding: EdgeInsets.all(13),
-      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      padding: EdgeInsets.all(8),
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),

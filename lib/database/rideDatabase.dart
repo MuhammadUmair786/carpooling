@@ -1,5 +1,6 @@
 // import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/views/drawer/savedTemplate.dart';
 import 'package:carpooling_app/views/rides/rideScreen.dart';
 import 'package:carpooling_app/widgets/showLoading.dart';
 import 'package:carpooling_app/widgets/showSnackBar.dart';
@@ -25,6 +26,7 @@ class RideDatabase {
     required String gender,
     required String vehicleId,
     required double vehicleMilage,
+    required String vehicleImg,
     required bool isAc,
     required String message,
     bool? isSavedTemplate,
@@ -50,10 +52,12 @@ class RideDatabase {
       "vehicle": {
         "id": vehicleId,
         "milage": vehicleMilage,
+        "img_url": vehicleImg,
         "isAC": isAc,
       },
       "message": message,
       "isSaved": isSavedTemplate,
+      "postedAt": DateTime.now().microsecondsSinceEpoch,
     }).then((value) {
       // print(value.id);
 
@@ -72,6 +76,58 @@ class RideDatabase {
       dismissLoadingWidget();
       showErrorSnackBar(
           title: "Failed to Post Ride", message: "Please Try again!");
+    });
+  }
+
+  static Future<void> removeFromTemplate({
+    required String documentID,
+  }) async {
+    // showLoading();
+
+    // startingPoints.
+
+    //upload cnic and img_url to user info
+    rideCollection.doc(documentID).update({"isSaved": false}).then((value) {
+      // dismissLoadingWidget();
+      Get.to(() => SavedTemplate());
+      showSnackBar("Ride Remove Sucessfuly!", "");
+    }).catchError((error) {
+      // print("Failed to Post Ride: $error");
+      // dismissLoadingWidget();
+      showErrorSnackBar();
+    });
+  }
+
+  static Future<void> sendRequestToJoin({
+    required String rideID,
+    required String passangerID,
+    required LatLng startPoint,
+    required LatLng endPoint,
+    required String message,
+    required int seats,
+  }) async {
+    // showLoading();
+    // showLoading();
+    var _tempRequestList = [
+      {
+        "passangerID": passangerID,
+        "startPoint": GeoPoint(startPoint.latitude, startPoint.longitude),
+        "endPoint": GeoPoint(endPoint.latitude, endPoint.longitude),
+        "message": message,
+        "seats": seats,
+        "isConfirmed": false,
+        "requestedAt": DateTime.now().microsecondsSinceEpoch,
+      }
+    ];
+    rideCollection.doc(rideID).update(
+        {'request': FieldValue.arrayUnion(_tempRequestList)}).then((value) {
+      // print("Nominee Details Added");
+      // dismissLoadingWidget();
+      showSnackBar("Request Sent Sucessfuly!", "");
+    }).catchError((error) {
+      print("Failed to add user initial Details: $error");
+      // dismissLoadingWidget();
+      showErrorSnackBar();
     });
   }
 }

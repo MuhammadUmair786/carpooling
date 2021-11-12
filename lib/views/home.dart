@@ -1,4 +1,5 @@
 import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/database/rideDatabase.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/views/rides/postedRideInfo.dart';
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'drawer/addCash.dart';
 
@@ -58,7 +60,15 @@ class Home extends StatelessWidget {
                 children: [
                   TextButton(
                       onPressed: () {
-                        print(_controller.userData!.postedRidesList);
+                        // _controller.userData!.loadRides();
+                        RideDatabase.sendRequestToJoin(
+                            rideID: "7FXuqlbvuftelWFTZf5D",
+                            passangerID: "HZNezUsDTbMW1CNSEoFhjHrwSYm1",
+                            startPoint: LatLng(31.5204, 74.3587),
+                            endPoint: LatLng(33.6844, 73.0479),
+                            message: "message data",
+                            seats: 2);
+                        // print(_controller.userData!.postedRidesList.length);
                       },
                       child: Text("dfsdsdgsd")),
                   // TextButton(
@@ -221,7 +231,7 @@ class Home extends StatelessWidget {
                           // Get.to(() => Statistics());
                         }, Icons.query_stats),
                         shortcutButtons("Post Ride", () {
-                          Get.to(() => PostRide(rideType: 2));
+                          Get.to(() => PostRide());
                         }, Icons.add_location_alt),
 
                         // shortcutButtons(),
@@ -317,7 +327,7 @@ class Home extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(() => PostedRideInfo());
+                  // Get.to(() => PostedRideInfo());
                 },
                 child: CustomText(
                   text: "See Details",

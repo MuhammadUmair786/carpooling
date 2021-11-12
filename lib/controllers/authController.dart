@@ -10,7 +10,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
+
   Rx<User?> _firebaseUser = Rx<User?>(null);
+
   Rx<UserModel?> _userData = Rx<UserModel?>(null);
 
   User? get userfb => _firebaseUser.value;
@@ -33,6 +35,7 @@ class AuthController extends GetxController {
       if (documentSnapshot.exists) {
         _userData.value =
             UserModel.fromDocumentSnapshot(snapshot: documentSnapshot);
+        // _userData.value = getUserDataWithStream();
         // print('Document exists on the database');
         // print(documentSnapshot.data());
       } else {
@@ -42,6 +45,15 @@ class AuthController extends GetxController {
     // _userData.value =
     //     UserModel(id: _firebaseUser.value!.uid.toString(), thisUser: true);
   }
+
+  // Future<Stream<DocumentSnapshot<Map<String, dynamic>>>>
+  //     getUserDataWithStream() async {
+  //   return await FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .get()
+  //       ;
+  // }
 
   linkEmail() async {
     // _firebaseUser.

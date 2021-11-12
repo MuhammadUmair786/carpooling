@@ -3,38 +3,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class RideModel {
-  // late String driverId;
-  // late DateTime date;
-  // late String homeAddress = "null";
-  // Map<String, dynamic> nomineeDetails = {};
-  // Map<String, dynamic> cnicDetails = {};
-  // Map<String, dynamic> workingDetails = {};
-  // List<dynamic> vehicleList = [];
-  // List<dynamic> postedRidesList = [];
+class RequestModel {
+  
   // late String id;
-  // late String id;
-  late String id;
-  late String startingAddress;
-  late LatLng startPoint;
-  late String endAddress;
-  late LatLng endPoint;
-  late String route;
-  //ads route points or poluline later on
-  late DateTime startDate;
-  late TimeOfDay time;
-  late String gender;
-  late String vehicleId;
-  late double vehicleMilage;
+  // late String startingAddress;
+  // late LatLng startPoint;
+  // late String endAddress;
+  // late LatLng endPoint;
+  // late String route;
+  // //ads route points or poluline later on
+  // late DateTime startDate;
+  // late TimeOfDay time;
+  // late String gender;
+  // late String vehicleId;
+  // late double vehicleMilage;
 
-  late String vehicleImg;
-  late bool isAc;
-  late String message;
-  late bool? isSavedTemplate;
-  late DateTime postedDate;
-  List<dynamic> requestList = [];
+  // late String vehicleImg;
+  // late bool isAc;
+  // late String message;
+  // late bool? isSavedTemplate;
+  // late DateTime postedDate;
+  // List<dynamic> requestList = [];
 
-  RideModel.fromDocumentSnapshot(
+   String rideID,
+
+  String passangerID,
+  LatLng startPoint,
+  LatLng endPoint,
+   String message,
+ int seats,
+
+  RequestModel .fromDocumentSnapshot(
       {required QueryDocumentSnapshot<Map<String, dynamic>> snapshot}) {
     id = snapshot['id'];
     startingAddress = snapshot['startAddress'];
