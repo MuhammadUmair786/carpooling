@@ -1,4 +1,5 @@
 // import 'dart:async';
+import 'package:carpooling_app/models/requestRideModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,7 +33,7 @@ class RideModel {
   late String message;
   late bool? isSavedTemplate;
   late DateTime postedDate;
-  List<dynamic> requestList = [];
+  List<RequestModel> requestList = [];
 
   RideModel.fromDocumentSnapshot(
       {required QueryDocumentSnapshot<Map<String, dynamic>> snapshot}) {
@@ -59,10 +60,12 @@ class RideModel {
     if (snapshot.data().containsKey('request')) {
       // vehicleList = snapshot['vehicles'];
       // print(vehicleList[0]);
-      requestList = snapshot['request'];
-      // for (var item in items) {
+      var tempList = snapshot['request'];
 
-      // }
+      for (var item in tempList) {
+        requestList
+            .add(RequestModel.fromDocumentSnapshot(snapshot: item, rideId: id));
+      }
     }
   }
 

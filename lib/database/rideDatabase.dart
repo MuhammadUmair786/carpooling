@@ -101,7 +101,9 @@ class RideDatabase {
   static Future<void> sendRequestToJoin({
     required String rideID,
     required String passangerID,
+    required String startAddress,
     required LatLng startPoint,
+    required String endAddress,
     required LatLng endPoint,
     required String message,
     required int seats,
@@ -112,7 +114,9 @@ class RideDatabase {
       {
         "passangerID": passangerID,
         "startPoint": GeoPoint(startPoint.latitude, startPoint.longitude),
+        "startAddress": startAddress,
         "endPoint": GeoPoint(endPoint.latitude, endPoint.longitude),
+        "endAddress": endAddress,
         "message": message,
         "seats": seats,
         "isConfirmed": false,

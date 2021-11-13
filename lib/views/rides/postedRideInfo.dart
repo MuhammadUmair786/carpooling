@@ -1,9 +1,12 @@
 import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/models/requestRideModel.dart';
 import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/views/rides/rideMap.dart';
 import 'package:carpooling_app/views/viewProfile.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/colors/gf_color.dart';
@@ -17,7 +20,8 @@ class PostedRideInfo extends StatelessWidget {
   final RideModel ride;
 
   PostedRideInfo({required this.ride});
-  var rideList = Get.find<AuthController>().userData!.vehicleList;
+
+  // var rideList = Get.find<AuthController>().userData!.vehicleList;
 
   @override
   Widget build(BuildContext context) {
@@ -260,8 +264,8 @@ class PostedRideInfo extends StatelessWidget {
                         ],
                       ),
                     ),
-                    TabsView(
-                      requests: ride.requestList,
+                    RequestSession(
+                      completeList: ride.requestList,
                     ),
                   ],
                 ),
@@ -316,14 +320,19 @@ class PostedRideInfo extends StatelessWidget {
   }
 }
 
-class TabsView extends StatelessWidget {
-  final List<dynamic> requestsList;
+class RequestSession extends StatelessWidget {
+  final List<RequestModel> completeList;
 
-  const TabsView({required this.requestsList});
-  // var requestedList =
+  RequestSession({required this.completeList});
+
   @override
   Widget build(BuildContext context) {
-    var requestedRide = requestsList.where((item));
+    // var requestedRide = requestsList.where((item));
+    var requestedList =
+        completeList.where((element) => element.isConfirmed == false);
+    var confirmedList =
+        completeList.where((element) => element.isConfirmed == true);
+
     return DefaultTabController(
       length: 2,
       child: Column(
@@ -331,12 +340,51 @@ class TabsView extends StatelessWidget {
           TabBar(
             tabs: [
               Tab(
-                icon: Icon(Icons.request_page_sharp),
-                child: Text("Requests"),
+                icon: SizedBox(
+                  width: 45,
+                  height: 30,
+                  child: Stack(children: [
+                    Icon(
+                      Icons.request_page_sharp,
+                      size: 40,
+                      color: Colors.blue,
+                    ),
+                    if (requestedList.length >= 1)
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.red,
+                          child: CustomText(
+                              text: requestedList.length.toString(),
+                              size: 15,
+                              weight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      )
+                  ]),
+                ),
+                child: CustomText(
+                  text: "Requests",
+                  weight: FontWeight.w500,
+                  size: 18,
+                ),
               ),
               Tab(
-                icon: Icon(Icons.directions_car),
-                child: Text("Confirmed"),
+                icon: SizedBox(
+                  // width: 50,
+                  height: 30,
+                  child: Icon(
+                    Icons.directions_car,
+                    size: 40,
+                    color: Colors.blue,
+                  ),
+                ),
+                child: CustomText(
+                  text: "Confirmed",
+                  weight: FontWeight.w500,
+                  size: 18,
+                ),
               ),
             ],
           ),
@@ -347,6 +395,32 @@ class TabsView extends StatelessWidget {
               ListView(
                 shrinkWrap: true,
                 children: [
+                  StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      stream: FirebaseFirestore.instance
+                          .collection("user")
+                          .doc()
+                          // .where('driverID',
+                          //     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.docs.length == 0) {
+                            return Text("No Request found");
+                          }
+                          return Flex(
+                            direction: Axis.vertical,
+                            children: snapshot.data!.docs.map((e) {
+                              return
+                                  // postedRideItem(
+                                  //     RideModel.fromDocumentSnapshot(snapshot: e),
+                                  //     context)
+                                  requestedPassangersItem();
+                            }).toList(),
+                          );
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
                   requestedPassangersItem(),
                   requestedPassangersItem(),
                 ],

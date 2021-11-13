@@ -106,13 +106,7 @@ class PostedRides extends StatelessWidget {
                     } else {
                       return Center(child: CircularProgressIndicator());
                     }
-                    // return ListView.builder(
-                    //     shrinkWrap: true,
-                    //     itemCount: rideList.length,
-                    //     physics: NeverScrollableScrollPhysics(),
-                    //     itemBuilder: (cont, index) {
-                    //       return postedRideItem(rideList[index], context);
-                    //     });
+                   
                   }),
               // postedRideItem(),
               // postedRideItem(),
@@ -209,7 +203,9 @@ class PostedRides extends StatelessWidget {
     // print(Jiffy(ride.).fromNow());
     return GestureDetector(
       onTap: () {
-        Get.to(() => PostedRideInfo(ride: ride));
+        Get.to(() => PostedRideInfo(
+              ride: ride,
+            ));
       },
       // splashColor: Colors.transparent,
       // radius: 0,

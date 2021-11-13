@@ -1,9 +1,9 @@
 double fuel = 146;
-double estimateCost(double distance, double milage, bool ac) {
+int estimateCost(double distance, double milage, bool ac) {
   if (ac) {
-    return (distance * fuel) / (milage - 2);
+    return ((distance * fuel) ~/ (milage - 2));
   } else {
-    return (distance * fuel) / milage;
+    return (distance * fuel) ~/ milage;
   }
 }
 
