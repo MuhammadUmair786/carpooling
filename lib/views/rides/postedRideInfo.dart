@@ -1,6 +1,7 @@
 import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/models/requestRideModel.dart';
 import 'package:carpooling_app/models/rideModel.dart';
+import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/views/rides/rideMap.dart';
 import 'package:carpooling_app/views/viewProfile.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
@@ -392,39 +393,72 @@ class RequestSession extends StatelessWidget {
             height:
                 200, //set this height according to the list size in postedRideInfo SCreen
             child: TabBarView(children: [
-              ListView(
-                shrinkWrap: true,
-                children: [
-                  StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                      stream: FirebaseFirestore.instance
-                          .collection("user")
-                          .doc()
-                          // .where('driverID',
-                          //     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data!.docs.length == 0) {
-                            return Text("No Request found");
-                          }
-                          return Flex(
-                            direction: Axis.vertical,
-                            children: snapshot.data!.docs.map((e) {
-                              return
-                                  // postedRideItem(
-                                  //     RideModel.fromDocumentSnapshot(snapshot: e),
-                                  //     context)
-                                  requestedPassangersItem();
-                            }).toList(),
-                          );
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      }),
-                  requestedPassangersItem(),
-                  requestedPassangersItem(),
-                ],
-              ),
+              // ListView(
+              //   shrinkWrap: true,
+              //   children: [
+              //     StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              //         stream: FirebaseFirestore.instance
+              //             .collection("user")
+              //             .doc()
+              //             // .where('driverID',
+              //             //     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              //             .snapshots(),
+              //         builder: (context, snapshot) {
+              //           if (snapshot.hasData) {
+              //             if (snapshot.data!.docs.length == 0) {
+              //               return Text("No Request found");
+              //             }
+              //             return Flex(
+              //               direction: Axis.vertical,
+              //               children: snapshot.data!.docs.map((e) {
+              //                 return
+              //                     // postedRideItem(
+              //                     //     RideModel.fromDocumentSnapshot(snapshot: e),
+              //                     //     context)
+              //                     requestedPassangersItem();
+              //               }).toList(),
+              //             );
+              //           } else {
+              //             return Center(child: CircularProgressIndicator());
+              //           }
+              //         }),
+              //     requestedPassangersItem(),
+              //     requestedPassangersItem(),
+              //   ],
+              // ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: requestedList.length,
+                  itemBuilder: (con, index) {
+                    return RequestedPassangerItem(
+                      userID: requestedList.elementAt(index).passangerID,
+                    );
+                    // return requestedPassangersItem(
+                    //     requestedList.elementAt(index).passangerID);
+                    // UserModel? temp;
+                    // FirebaseFirestore.instance
+                    //     .collection('users')
+                    //     .doc(requestedList.elementAt(index).passangerID)
+                    //     .get()
+                    //     .then((DocumentSnapshot<Map<String, dynamic>>
+                    //         documentSnapshot) {
+                    //   if (documentSnapshot.exists) {
+                    //     temp = UserModel.fromDocumentSnapshot(
+                    //         snapshot: documentSnapshot);
+                    //     // return requestedPassangersItem(sUerModel.fromDocumentSnapshot(
+                    //     // snapshot: documentSnapshot));
+                    //   } else {
+                    //     print("User document not found");
+                    //     return null;
+                    //   }
+                    // });
+                    // if (temp != null) {
+                    // return requestedPassangersItem(temp!);
+                    // } else {
+                    //   return Text("");
+                    // }
+                  }),
+
               //confirmed passangers
               ListView(
                 shrinkWrap: true,
@@ -716,279 +750,335 @@ class RequestSession extends StatelessWidget {
     );
   }
 
-  Widget requestedPassangersItem() {
-    return InkWell(
-      onTap: () {
-        // showDialog(context: context, builder: builder)
-        Get.dialog(
-          Center(
-            child: Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 40, left: 20, right: 20),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  width: double.infinity,
-                  height: Get.width - 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 40),
+  // Widget requestedPassangersItem(String userID) {
+  //   UserModel? user;
+  //   FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(userID)
+  //       .get()
+  //       .then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+  //     if (documentSnapshot.exists) {
+  //       user = UserModel.fromDocumentSnapshot(snapshot: documentSnapshot);
+  //     } else {
+  //       print("User document not found");
+  //     }
+  //   });
+  //   return RequestedPassangerItem(user: user);
+  // }
+}
 
-                      Container(
-                        width: Get.width / 1.5,
-                        alignment: Alignment.topCenter,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: CustomText(
-                            text: "Uzair Iqbal",
-                            size: 20,
-                            weight: FontWeight.bold,
+class RequestedPassangerItem extends StatefulWidget {
+  // const RequestedPassangerItem({
+  //   Key? key,
+  //   required this.user,
+  // }) : super(key: key);
+  final String userID;
+
+  RequestedPassangerItem({required this.userID});
+
+  @override
+  State<RequestedPassangerItem> createState() => _RequestedPassangerItemState();
+}
+
+class _RequestedPassangerItemState extends State<RequestedPassangerItem> {
+  UserModel? user;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userID)
+        .get()
+        .then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          user = UserModel.fromDocumentSnapshot(snapshot: documentSnapshot);
+        });
+      } else {
+        print("User document not found");
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (user == null) {
+      return Center(child: CircularProgressIndicator(strokeWidth: 1));
+    } else {
+      return InkWell(
+        onTap: () {
+          // showDialog(context: context, builder: builder)
+          Get.dialog(
+            Center(
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 40, left: 20, right: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: double.infinity,
+                    height: Get.width - 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 40),
+
+                        Container(
+                          width: Get.width / 1.5,
+                          alignment: Alignment.topCenter,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: CustomText(
+                              text: "Uzair Iqbal",
+                              size: 20,
+                              weight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
 
-                      // CustomText(text: "Uzair Iqbal",size: 22,weight: FontWeight.bold,),
-                      SizedBox(height: 5),
-                      GFRating(
-                        color: GFColors.SUCCESS,
-                        borderColor: GFColors.SUCCESS,
-                        filledIcon: Icon(Icons.star, color: GFColors.SUCCESS),
-                        defaultIcon: Icon(
-                          Icons.star,
-                          color: GFColors.LIGHT,
-                        ),
-                        size: GFSize.SMALL,
-                        value: 3.5,
-                        onChanged: (value) {},
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.my_location,
-                            color: Colors.blue,
+                        // CustomText(text: "Uzair Iqbal",size: 22,weight: FontWeight.bold,),
+                        SizedBox(height: 5),
+                        GFRating(
+                          color: GFColors.SUCCESS,
+                          borderColor: GFColors.SUCCESS,
+                          filledIcon: Icon(Icons.star, color: GFColors.SUCCESS),
+                          defaultIcon: Icon(
+                            Icons.star,
+                            color: GFColors.LIGHT,
                           ),
-                          SizedBox(width: 5),
-                          Container(
-                            width: Get.width / 1.65,
-                            alignment: Alignment.topLeft,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: CustomText(
-                                text: "Saddar GPO  d",
-                                size: 20,
+                          size: GFSize.SMALL,
+                          value: 3.5,
+                          onChanged: (value) {},
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.my_location,
+                              color: Colors.blue,
+                            ),
+                            SizedBox(width: 5),
+                            Container(
+                              width: Get.width / 1.65,
+                              alignment: Alignment.topLeft,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: CustomText(
+                                  text: "Saddar GPO  d",
+                                  size: 20,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.location_pin,
-                            color: Colors.red,
-                          ),
-                          SizedBox(width: 5),
-                          Container(
-                            width: Get.width / 1.65,
-                            alignment: Alignment.topLeft,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: CustomText(
-                                text: "Saddar GPO  d",
-                                size: 20,
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_pin,
+                              color: Colors.red,
+                            ),
+                            SizedBox(width: 5),
+                            Container(
+                              width: Get.width / 1.65,
+                              alignment: Alignment.topLeft,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: CustomText(
+                                  text: "Saddar GPO  d",
+                                  size: 20,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.airline_seat_legroom_reduced_sharp,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                          SizedBox(width: 5),
-                          CustomText(
-                            text: "Requested Seats:",
-                            size: 18,
-                          ),
-                          SizedBox(width: 5),
-                          CustomText(
-                            text: "2",
-                            size: 22,
-                            color: Colors.red,
-                          )
-                          // Icon(Icons.trip_origin_sharp),
-                          // SizedBox(width: 5),
-                          // Container(
-                          //   width: Get.width / 1.65,
-                          //   alignment: Alignment.topLeft,
-                          //   child: FittedBox(
-                          //     fit: BoxFit.scaleDown,
-                          //     child: CustomText(
-                          //       text: "Saddar GPO  d",
-                          //       size: 20,
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-
-                      Container(
-                        height: 70,
-                        // color: Colors.red,
-                        child: Text(
-                          "hi, i want to join you in this trip, please get me in, i will be very hankfull to you, we also have one fridge with us and one tv and only one washing machine, i hope their is enough space in your honda civic 2020",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                          textAlign: TextAlign.justify,
-                          // textScaleFactor: 1.2,
-                          style: TextStyle(
-                              decoration: TextDecoration.none,
-                              fontSize: 18,
-                              // fontWeight: FontWeight.,
-                              color: Colors.black),
+                          ],
                         ),
-                      ),
-                      Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.cancel,
-                                  color: Colors.red,
-                                ),
-                                SizedBox(width: 5),
-                                CustomText(
-                                  text: "Reject",
-                                  size: 18,
-                                  weight: FontWeight.bold,
-                                )
-                              ],
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.airline_seat_legroom_reduced_sharp,
+                              color: Colors.black,
+                              size: 30,
                             ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.chat_sharp,
-                                  color: Colors.pink,
-                                ),
-                                SizedBox(width: 5),
-                                CustomText(
-                                  text: "Chat",
-                                  size: 18,
-                                  weight: FontWeight.bold,
-                                )
-                              ],
+                            SizedBox(width: 5),
+                            CustomText(
+                              text: "Requested Seats:",
+                              size: 18,
                             ),
+                            SizedBox(width: 5),
+                            CustomText(
+                              text: "2",
+                              size: 22,
+                              color: Colors.red,
+                            )
+                            // Icon(Icons.trip_origin_sharp),
+                            // SizedBox(width: 5),
+                            // Container(
+                            //   width: Get.width / 1.65,
+                            //   alignment: Alignment.topLeft,
+                            //   child: FittedBox(
+                            //     fit: BoxFit.scaleDown,
+                            //     child: CustomText(
+                            //       text: "Saddar GPO  d",
+                            //       size: 20,
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+
+                        Container(
+                          height: 70,
+                          // color: Colors.red,
+                          child: Text(
+                            "hi, i want to join you in this trip, please get me in, i will be very hankfull to you, we also have one fridge with us and one tv and only one washing machine, i hope their is enough space in your honda civic 2020",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                            textAlign: TextAlign.justify,
+                            // textScaleFactor: 1.2,
+                            style: TextStyle(
+                                decoration: TextDecoration.none,
+                                fontSize: 18,
+                                // fontWeight: FontWeight.,
+                                color: Colors.black),
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.done,
-                                  color: Colors.green,
-                                  size: 26,
-                                ),
-                                SizedBox(width: 5),
-                                CustomText(
-                                  text: "Accept",
-                                  size: 18,
-                                  weight: FontWeight.bold,
-                                )
-                              ],
+                        ),
+                        Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextButton(
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.cancel,
+                                    color: Colors.red,
+                                  ),
+                                  SizedBox(width: 5),
+                                  CustomText(
+                                    text: "Reject",
+                                    size: 18,
+                                    weight: FontWeight.bold,
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                    ],
+                            TextButton(
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.chat_sharp,
+                                    color: Colors.pink,
+                                  ),
+                                  SizedBox(width: 5),
+                                  CustomText(
+                                    text: "Chat",
+                                    size: 18,
+                                    weight: FontWeight.bold,
+                                  )
+                                ],
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.done,
+                                    color: Colors.green,
+                                    size: 26,
+                                  ),
+                                  SizedBox(width: 5),
+                                  CustomText(
+                                    text: "Accept",
+                                    size: 18,
+                                    weight: FontWeight.bold,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
                   ),
-                ),
-                Positioned(
-                  // screenWidth/2 - side margin - image half length
-                  left: Get.width / 2 - 20 - 20,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(() => ViewProfile());
-                    },
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage: NetworkImage(
-                        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                  Positioned(
+                    // screenWidth/2 - side margin - image half length
+                    left: Get.width / 2 - 20 - 20,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => ViewProfile());
+                      },
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundImage: NetworkImage(
+                          "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 10),
-        decoration: const BoxDecoration(
-          // color: Colors.grey,
-          border: Border(
-            bottom: BorderSide(width: 0.25),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              radius: 35,
-              backgroundImage: NetworkImage(
-                "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                ],
               ),
             ),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: CustomText(
-                    text: "Uzair Iqbal",
-                    size: 22,
-                    weight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Icon(Icons.location_pin),
-                    Container(
-                      width: Get.width / 3,
-                      child: Text(
-                        "Saddar, GPO",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        textScaleFactor: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+          );
+        },
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: 10),
+          decoration: const BoxDecoration(
+            // color: Colors.grey,
+            border: Border(
+              bottom: BorderSide(width: 0.25),
             ),
-          ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: 35,
+                backgroundImage: NetworkImage(
+                  "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
+                ),
+              ),
+              SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: CustomText(
+                      text: user!.name,
+                      size: 22,
+                      weight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.location_pin),
+                      Container(
+                        width: Get.width / 3,
+                        child: Text(
+                          "Saddar, GPO",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          textScaleFactor: 1.2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

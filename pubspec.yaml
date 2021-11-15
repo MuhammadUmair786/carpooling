@@ -42,6 +42,8 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   #dropdown search
   dropdown_search: ^0.6.1
+  #chating
+  dash_chat: ^1.1.16
 
   #When using the BoM, don't specify versions in Firebase dependencies
   #firebase

@@ -20,6 +20,7 @@ class RequestModel {
   RequestModel.fromDocumentSnapshot(
       {required Map<String, dynamic> snapshot, required String rideId}) {
     rideID = rideId;
+    passangerID = snapshot['passangerID'];
     startAddress = snapshot['startAddress'];
     GeoPoint start = snapshot['startPoint'];
     startPoint = LatLng(start.latitude, start.longitude);
