@@ -2,7 +2,7 @@ import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 
 class EmailVerificationScreen extends StatelessWidget {
   // final _controller = Get.find<AuthController>();

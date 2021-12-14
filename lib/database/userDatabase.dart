@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserDatabase {
@@ -32,6 +33,8 @@ class UserDatabase {
       "name": name,
       "dob": dob.microsecondsSinceEpoch,
       "status": "online",
+      "profileImg_url": null,
+      'profileComplete': 10
     }).then((value) {
       print("User initial Details Added");
       // Get.put(AuthController(), permanent: true);
@@ -43,6 +46,11 @@ class UserDatabase {
     });
 
     // FirebaseFirestore.instance.collection("users").doc(userid).update(data)
+  }
+
+  static unlinkEmail() {
+    // auth.currentUser!.unlink("sardar.dev786@gmail.com");
+    print(auth.currentUser!.providerData);
   }
 
   static linkEmail() async {
@@ -59,12 +67,17 @@ class UserDatabase {
         idToken: googleAuth.idToken,
       );
 
-      auth.currentUser!.linkWithCredential(googelCredential).then((user) {
+      auth.currentUser!
+          .linkWithCredential(googelCredential)
+          .then((userCredential) {
         auth.userChanges();
 
         dismissLoadingWidget();
+        auth.userChanges();
         Get.to(() => EmailVerificationScreen());
         showSnackBar("Email Added Sucessfully", "");
+        var x = auth.currentUser!.providerData;
+        // addEmail(x[0]);
       }).catchError((error) {
         print(error.toString());
         dismissLoadingWidget();
@@ -310,6 +323,14 @@ class UserDatabase {
     });
   }
 
+  // name date of birth : 10%
+  // link email : +30%
+  // add home address : +20%
+  // add job detail : +20%
+
+  // add cnic : +50%
+  // add
+
   static void profileCompletion(double value) {
     userDoc
         .update({'profileComplete': value})
@@ -319,4 +340,53 @@ class UserDatabase {
           showErrorSnackBar();
         });
   }
+
+  static Future<void> addUserImage({required File image}) async {
+    showLoading();
+    FirebaseStorage storage = FirebaseStorage.instance;
+    // upload image and get URL
+
+    Reference reference =
+        storage.ref().child("profileImages/${DateTime.now().toString()}");
+
+    UploadTask uploadTask =
+        reference.putFile(image); //Upload the file to firebase
+
+    TaskSnapshot taskSnapshot = await uploadTask;
+
+    // Waits till the file is uploaded then stores the download url
+    String imgUrl = await taskSnapshot.ref.getDownloadURL();
+
+    //upload cnic and img_url to user info
+    userDoc.update({
+      "profileImg_url": imgUrl,
+    }).then((value) {
+      // print("Nominee Details Added");
+      dismissLoadingWidget();
+      // showSnackBar("CNIC Details Added Sucessfuly!", "Wait for verification");
+      // Get.offAll(BottomNavBar());
+    }).catchError((error) {
+      print("Failed to upload your Image: $error");
+      dismissLoadingWidget();
+      showErrorSnackBar();
+    });
+  }
+
+  static void addHomeAddress(LatLng coordinates, String address) {
+    userDoc
+        .update({
+          "homeAddress": {
+            'address': address,
+            "coordinates":
+                GeoPoint(coordinates.latitude, coordinates.longitude),
+          }
+        })
+        .then((value) {})
+        .catchError((error) {
+          print("Failed to add user profileComplete value: $error");
+          showErrorSnackBar();
+        });
+  }
+
+  // static void addEmail(String name,String email,String img_url,) {}
 }

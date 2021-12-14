@@ -1,8 +1,6 @@
 // import 'dart:async';
 
-import 'package:carpooling_app/models/rideModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
 
 class UserModel {
   late String id;
@@ -26,6 +24,7 @@ class UserModel {
       bool isLoadOthers = true}) {
     id = snapshot.data()!["id"];
     name = snapshot.data()!["name"];
+    img = snapshot.data()!["profileImg_ur"];
     // img = null;
     //if other data is not requrired
     if (isLoadOthers) {

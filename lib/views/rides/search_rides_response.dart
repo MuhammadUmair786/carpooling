@@ -14,53 +14,115 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class SearchRidesResponse extends StatelessWidget {
+class SearchRidesResponse extends StatefulWidget {
   final LatLng? startPoint;
   final String? startAddress;
   final LatLng? endPoint;
   final String? endAddress;
- final  String startCity;
- final  String endCity;
-  final  String startPostalCode;
- final  String endPostalCode;
+  final String? startCity;
+  final String? endCity;
+  final String? startPostalCode;
+  final String? endPostalCode;
 
-final  String startSubLocality;
- final  String endSubLocality;
+  final String? startSubLocality;
+  final String? endSubLocality;
   //1: search by postalCode (nearby)
   //2: search by city
   //3: exact search
   //4: all rides
-
-  Query<Map<String, dynamic>> getQuery({required int queryType}) {
-    if (queryType == 1) {
-      return FirebaseFirestore.instance
-          .collection("ride")
-          .where('startPostalCode', isEqualTo: startPostalCode)
-          .where('endPostalCode', isEqualTo: endPostalCode);
-    } else if (queryType == 2) {
-      return FirebaseFirestore.instance
-          .collection("ride")
-          .where('startCity', isEqualTo: startCity)
-          .where('endCity', isEqualTo: endCity);
-    } else if (queryType == 3) {
-      return FirebaseFirestore.instance
-          .collection("ride")
-          .where('startSubLocality', isEqualTo: startSubLocality)
-          .where('endSubLocality', isEqualTo: endSubLocality);
-    } else{
-return FirebaseFirestore.instance
-          .collection("ride");
-    }
-    // return null;
-  }
 
   const SearchRidesResponse(
       {Key? key,
       this.startPoint,
       this.startAddress,
       this.endPoint,
-      this.endAddress})
+      this.endAddress,
+      this.startCity,
+      this.endCity,
+      this.startPostalCode,
+      this.endPostalCode,
+      this.startSubLocality,
+      this.endSubLocality})
       : super(key: key);
+
+  @override
+  State<SearchRidesResponse> createState() => _SearchRidesResponseState();
+}
+
+class _SearchRidesResponseState extends State<SearchRidesResponse> {
+  Query<Map<String, dynamic>> get queryPostalCode => FirebaseFirestore.instance
+      .collection("ride")
+      .where('startPostalCode', isEqualTo: widget.startPostalCode)
+      .where('endPostalCode', isEqualTo: widget.endPostalCode);
+
+  // Query<Map<String, dynamic>> get queryCordinates => FirebaseFirestore.instance
+  // .collection("ride")
+  // .where('startPostalCode', isEqualTo: widget.startPostalCode)
+  // .where('endPostalCode', isEqualTo: widget.endPostalCode);
+
+  Query<Map<String, dynamic>> get querySubLocality => FirebaseFirestore.instance
+      .collection("ride")
+      .where('startSubLocality', isEqualTo: widget.startSubLocality)
+      .where('endSubLocality', isEqualTo: widget.endSubLocality);
+
+  Query<Map<String, dynamic>> get queryCity => FirebaseFirestore.instance
+      .collection("ride")
+      .where('startCity', isEqualTo: widget.startCity)
+      .where('endCity', isEqualTo: widget.endCity);
+
+  Query<Map<String, dynamic>> getDataQuery({required int queryType}) {
+    if (queryType == 1) {
+      return FirebaseFirestore.instance
+          .collection("ride")
+          .where('startPostalCode', isEqualTo: widget.startPostalCode)
+          .where('endPostalCode', isEqualTo: widget.endPostalCode);
+    } else if (queryType == 2) {
+      return FirebaseFirestore.instance
+          .collection("ride")
+          .where('startCity', isEqualTo: widget.startCity)
+          .where('endCity', isEqualTo: widget.endCity);
+    } else if (queryType == 3) {
+      return FirebaseFirestore.instance
+          .collection("ride")
+          .where('startSubLocality', isEqualTo: widget.startSubLocality)
+          .where('endSubLocality', isEqualTo: widget.endSubLocality);
+    } else {
+      return FirebaseFirestore.instance.collection("ride");
+    }
+  }
+
+  Query<Map<String, dynamic>> getQueryWithFilters(int queryType,
+      {required String category, required String value}) {
+    // print(xc);
+    if (queryType == 1) {
+      //
+      return FirebaseFirestore.instance
+          .collection("ride")
+          .where('startPostalCode', isEqualTo: widget.startPostalCode)
+          .where('endPostalCode', isEqualTo: widget.endPostalCode);
+    } else if (queryType == 2) {
+      return FirebaseFirestore.instance
+          .collection("ride")
+          .where('startCity', isEqualTo: widget.startCity)
+          .where('endCity', isEqualTo: widget.endCity);
+    } else if (queryType == 3) {
+      return FirebaseFirestore.instance
+          .collection("ride")
+          .where('startSubLocality', isEqualTo: widget.startSubLocality)
+          .where('endSubLocality', isEqualTo: widget.endSubLocality);
+    } else {
+      return FirebaseFirestore.instance.collection("ride");
+    }
+  }
+
+  Query<Map<String, dynamic>> x = FirebaseFirestore.instance
+      .collection("ride")
+      .where('startSubLocality', isEqualTo: "widget.startSubLocality")
+      .where('endSubLocality', isEqualTo: "widget.endSubLocality");
+
+// Query<Map<String, dynamic>>
+  List<bool> isSelected = [false, false, false];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +146,34 @@ return FirebaseFirestore.instance
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // SizedBox(height: 30),
+              const SizedBox(height: 10),
+
+              Center(
+                child: ToggleButtons(
+                  borderColor: Colors.transparent,
+                  fillColor: selectedColor.withOpacity(0.8),
+                  borderWidth: 1,
+                  selectedBorderColor: selectedColor,
+                  // direction: Axis.vertical,
+                  // borderRadius: BorderRadius.circular(10),
+                  // renderBorder: false,
+                  children: <Widget>[
+                    toggleButtonItem(" City "),
+                    toggleButtonItem("Near By"),
+                    toggleButtonItem("Exact Match"),
+                  ],
+                  onPressed: (int index) {
+                    setState(() {
+                      for (int i = 0; i < isSelected.length; i++) {
+                        isSelected[i] = i == index;
+                      }
+                    });
+                  },
+                  isSelected: isSelected,
+                ),
+              ),
+              const SizedBox(height: 10),
+
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //   children: [
@@ -93,31 +182,48 @@ return FirebaseFirestore.instance
               //     Icon(Icons.filter_list_alt)
               //   ],
               // ),
-              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: getQuery(queryType: 1).snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data!.docs.length == 0) {
-                        return Text("No ride found");
-                      }
-                      return Flex(
-                        direction: Axis.vertical,
-                        children: snapshot.data!.docs.map((e) {
-                          return RideItem(
-                            ride: RideModel.fromDocumentSnapshot(snapshot: e),
-                          );
-                          // postedRideItem(
-                          //     RideModel.fromDocumentSnapshot(snapshot: e),
-                          //     context);
-                        }).toList(),
-                      );
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  })
+              //   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              //       stream: getDataQuery(queryType: 1).snapshots(),
+              //       builder: (context, snapshot) {
+              //         if (snapshot.hasData) {
+              //           if (snapshot.data!.docs.length == 0) {
+              //             return Text("No ride found");
+              //           }
+              //           return Flex(
+              //             direction: Axis.vertical,
+              //             children: snapshot.data!.docs.map((e) {
+              //               return RideItem(
+              //                 ride: RideModel.fromDocumentSnapshot(snapshot: e),
+              //               );
+              //               // postedRideItem(
+              //               //     RideModel.fromDocumentSnapshot(snapshot: e),
+              //               //     context);
+              //             }).toList(),
+              //           );
+              //         } else {
+              //           return Center(child: CircularProgressIndicator());
+              //         }
+              //       })
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Container toggleButtonItem(String value) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        // borderRadius: BorderRadius.circular(10),
+        color: selectedColor.withOpacity(0.3),
+      ),
+      child: CustomText(
+        text: value,
+        size: 20,
+        color: Colors.black,
+        weight: FontWeight.w500,
       ),
     );
   }

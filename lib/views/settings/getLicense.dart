@@ -154,6 +154,7 @@ class _GetLicenseState extends State<GetLicense> {
               TextFormField(
                 readOnly: widget.isreadonly,
                 controller: _licenseController,
+                maxLength: 13,
                 style: _textStyle,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9]')),

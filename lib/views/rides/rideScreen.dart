@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carpooling_app/constants/secrets.dart';
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
-import 'package:carpooling_app/database/rideDatabase.dart';
-import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
