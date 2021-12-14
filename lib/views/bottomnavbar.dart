@@ -1,4 +1,7 @@
-import 'package:carpooling_app/controllers/authController.dart';
+// import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
+import 'package:carpooling_app/database/userDatabase.dart';
+import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/views/chating/chat1.dart';
 
 import 'package:carpooling_app/views/drawer/balance.dart';
@@ -13,40 +16,30 @@ import 'package:carpooling_app/views/rides/rideScreen.dart';
 import 'package:carpooling_app/views/rides/seacrh_ride.dart';
 import 'package:carpooling_app/views/drawer/aboutUs.dart';
 import 'package:carpooling_app/views/settings/setting.dart';
+import 'package:carpooling_app/views/startingdetails.dart';
 import 'package:carpooling_app/views/vehicle/vehicle.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:carpooling_app/widgets/showSnackBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
+import 'chating/chatHome.dart';
+
 class BottomNavBar extends StatelessWidget {
-  final BottomNavBarController _controller = Get.put(BottomNavBarController());
+  final BottomNavBarController _controller =
+      Get.put(BottomNavBarController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
     const _iconsize = 35.0;
     return WillPopScope(
       onWillPop: () {
-        Get.snackbar(
-          "default title",
-          "defalt message",
-          titleText: Text(
-            "Press again to exit",
-            textScaleFactor: 1.3,
-          ),
-          messageText: Text(
-            "",
-            textScaleFactor: 1.2,
-          ),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.black,
-          colorText: Colors.black,
-          backgroundGradient: LinearGradient(
-            colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-          ),
-          duration: Duration(seconds: 2),
-        );
+        showSnackBar("Press again to exit", "");
+
         if (_controller.isback.isFalse) {
           _controller.isback.value = true;
         } else {
@@ -108,24 +101,24 @@ class BottomNavBar extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Get.find<AuthController>()
-                                    .userfb!
-                                    .providerData[0]
-                                    .photoURL ==
-                                null
-                            ? CircleAvatar(
-                                radius: 45,
-                                backgroundImage:
-                                    AssetImage('assets/no_img.jpg'))
-                            : CircleAvatar(
-                                radius: 45,
-                                backgroundImage: NetworkImage(
-                                  Get.find<AuthController>()
-                                      .userfb!
-                                      .providerData[0]
-                                      .photoURL
-                                      .toString(),
-                                )),
+                        // Get.find<AuthController>()
+                        //             .userfb!
+                        //             .providerData[0]
+                        //             .photoURL ==
+                        //         null
+                        //     ? CircleAvatar(
+                        //         radius: 45,
+                        //         backgroundImage:
+                        //             AssetImage('assets/no_img.jpg'))
+                        //     : CircleAvatar(
+                        //         radius: 45,
+                        //         backgroundImage: NetworkImage(
+                        //           Get.find<AuthController>()
+                        //               .userfb!
+                        //               .providerData[0]
+                        //               .photoURL
+                        //               .toString(),
+                        //         )),
                         SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,8 +188,32 @@ class BottomNavBar extends StatelessWidget {
               // SearchRidesResponse(),
               SearchRide(),
               RideScreen(),
-              Home(),
-              Chat1(),
+              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      // .get()
+                      // .asStream(),
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.exists == false) {
+                        Get.to(() => StartingDetails());
+                      }
+                      // print(snapshot.requireData.data());
+                      _controller.userData.value =
+                          UserModel.fromDocumentSnapshot(
+                              snapshot: snapshot.requireData);
+                      // showSnackBar("USer Data Reload in BottomNavBar", "");
+
+                      return Home(dataSnapchots: snapshot.requireData);
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  }),
+              // Home(),
+              // Chat1(),
+              ChatHome(),
               // Container(
               //   child: Center(
               //     child: Text(
@@ -268,30 +285,5 @@ class BottomNavBar extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class BottomNavBarController extends GetxController {
-  var isback = false.obs; //is back the bottombar screen
-  late PageController pageController;
-  var currentIndex = 2.obs; //so that initially it comes to home
-  GlobalKey bottomNavigationKey = GlobalKey();
-  @override
-  void onInit() {
-    super.onInit();
-    pageController = PageController(initialPage: 2);
-  }
-
-  void updatePages(int index) {
-    currentIndex.value = index;
-    pageController.jumpToPage(index);
-    update();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-    currentIndex.value = 2;
-    print("\n\n\n\n\n bottom nav bar close \n\n\n\n\n");
   }
 }

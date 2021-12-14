@@ -33,6 +33,7 @@ dependencies:
   #location: ^4.3.0
   # dio: ^4.0.0 #most probably the another solution for http dependecy
   google_sign_in: ^5.1.0
+  
 
   
   #image slider
@@ -42,8 +43,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   #dropdown search
   dropdown_search: ^0.6.1
-  #chating
-  dash_chat: ^1.1.16
+ 
 
   #When using the BoM, don't specify versions in Firebase dependencies
   #firebase
@@ -51,14 +51,17 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   firebase_storage:
+  firebase_messaging: ^11.2.0
 
+
+  
   cached_network_image: ^3.1.0+1
 
   flutter_chat_ui: ^1.4.4
   percent_indicator: ^3.0.1
   jiffy: ^4.1.0
   image_picker: ^0.8.4+2
-  http: ^0.13.3
+  # http: ^0.13.3
   get: ^4.3.8
   otp_text_field: ^1.1.1
   curved_navigation_bar: ^1.0.1

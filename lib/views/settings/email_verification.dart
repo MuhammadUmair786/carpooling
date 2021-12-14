@@ -1,10 +1,13 @@
-import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class EmailVerificationScreen extends StatelessWidget {
-  final _controller = Get.find<AuthController>();
+  // final _controller = Get.find<AuthController>();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,14 +19,14 @@ class EmailVerificationScreen extends StatelessWidget {
               margin: EdgeInsets.only(right: 15),
               alignment: Alignment.center,
               child: CustomText(
-                text: _controller.userfb!.emailVerified
+                text: auth.currentUser!.emailVerified
                     ? "Verified"
                     : "Pending", //verified, failed
                 color: Colors.white,
               ))
         ],
       ),
-      body: _controller.userfb!.emailVerified ? showEmailInfo() : linkEmail(),
+      body: auth.currentUser!.emailVerified ? showEmailInfo() : linkEmail(),
     );
   }
 
@@ -38,7 +41,7 @@ class EmailVerificationScreen extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          Get.find<AuthController>().linkEmail();
+          UserDatabase.linkEmail();
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -68,12 +71,12 @@ class EmailVerificationScreen extends StatelessWidget {
           CircleAvatar(
             radius: 50,
             backgroundImage: NetworkImage(
-              _controller.userfb!.providerData[0].photoURL.toString(),
+              auth.currentUser!.providerData[0].photoURL.toString(),
             ),
           ),
           SizedBox(height: 20),
           CustomText(
-            text: _controller.userfb!.providerData[0].displayName.toString(),
+            text: auth.currentUser!.providerData[0].displayName.toString(),
             color: Colors.blue,
             size: 22,
             weight: FontWeight.bold,
@@ -84,7 +87,7 @@ class EmailVerificationScreen extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: CustomText(
-                text: _controller.userfb!.providerData[0].email.toString(),
+                text: auth.currentUser!.providerData[0].email.toString(),
                 size: 20,
                 // color: Colors.cyan,
               ),

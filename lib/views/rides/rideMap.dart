@@ -28,12 +28,26 @@ class _RideMapState extends State<RideMap> {
 
   setPolylines() async {
     PolylineResult polyResult = await polylinePoints.getRouteBetweenCoordinates(
-        Secrets.API_KEY,
-        PointLatLng(widget.origin.latitude, widget.origin.longitude),
-        PointLatLng(widget.destination.latitude, widget.destination.longitude)
-        // SOURCE_LOCATION,
-        // DEST_LOCATION,
-        );
+      Secrets.API_KEY,
+      PointLatLng(widget.origin.latitude, widget.origin.longitude),
+      PointLatLng(widget.destination.latitude, widget.destination.longitude),
+
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      // polyline middle away edition
+      //
+      //
+      //
+
+      // wayPoints: [PolylineWayPoint(location: "33.6844,73.0479")]
+      // SOURCE_LOCATION,
+      // DEST_LOCATION,
+    );
     if (polyResult.points.isNotEmpty) {
       // loop through all PointLatLng points and convert them
       // to a list of LatLng, required by the Polyline

@@ -1,4 +1,4 @@
-import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +14,8 @@ class GetNominee extends StatefulWidget {
 }
 
 class _GetNomineeState extends State<GetNominee> {
-  var nomineeDetails = Get.find<AuthController>().userData!.nomineeDetails;
+  var nomineeDetails =
+      Get.find<BottomNavBarController>().getUser!.nomineeDetails;
 
   late bool _readOnly;
   late bool showWidgets;

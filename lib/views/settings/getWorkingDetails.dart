@@ -355,7 +355,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
               UserDatabase.addWorkingDetails(data: {
                 "type": "std",
                 "institute": _instController.text,
-                "adress": _stdAddressController.text,
+                "address": _stdAddressController.text,
                 "degree": _degreeController.text,
               });
               _clearControlers();
@@ -363,7 +363,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
               UserDatabase.addWorkingDetails(data: {
                 "type": "emp",
                 "company_name": _companyController.text,
-                "adress": _empAddressController.text,
+                "address": _empAddressController.text,
                 "designation": _designationController.text,
               });
               _clearControlers();
@@ -371,7 +371,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
               UserDatabase.addWorkingDetails(data: {
                 "type": "business",
                 "name": _businessNameController.text,
-                "adress": _addressController.text,
+                "address": _addressController.text,
               });
               _clearControlers();
             }

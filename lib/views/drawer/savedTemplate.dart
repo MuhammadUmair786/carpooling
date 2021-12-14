@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carpooling_app/controllers/authController.dart';
+// import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/rideDatabase.dart';
 import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
@@ -9,8 +10,9 @@ import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 
 class SavedTemplate extends StatelessWidget {
-  final rideList =
-      Get.find<AuthController>().userData!.postedRidesList as List<RideModel>;
+  final rideList = [];
+  // Get.find<BottomNavBarController>().getUser!.
+  // .postedRidesList as List<RideModel>;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,8 @@ class SavedTemplate extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // templateItem(),
+                Text(
+                    ".where(\"driverID\", isEqualTo: Get.find<AuthController>().userfb!.uid)\n\nuse this query and streams"), // templateItem(),
                 // templateItem(),
                 ListView.builder(
                     shrinkWrap: true,

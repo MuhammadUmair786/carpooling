@@ -1,18 +1,14 @@
-import 'dart:math';
-
-import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/rideDatabase.dart';
 import 'package:carpooling_app/heplerMethods/findDistance.dart';
 import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/views/drawer/savedTemplate.dart';
-import 'package:carpooling_app/views/map.dart';
 import 'package:carpooling_app/widgets/costEstimation.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
-import 'package:carpooling_app/widgets/showSnackBar.dart';
+import 'package:carpooling_app/widgets/searchLocation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jiffy/jiffy.dart';
@@ -33,13 +29,20 @@ class _PostRideState extends State<PostRide> {
     if (widget.templateRide != null) {
       _startPointController.text = widget.templateRide!.startingAddress;
       startPoint = widget.templateRide!.startPoint;
+      startCity = widget.templateRide!.startCity;
+      startPostalCode = widget.templateRide!.startPostalCode;
+      startSubLocality = widget.templateRide!.startSubThoroughfare;
       _endPointController.text = widget.templateRide!.endAddress;
       endPoint = widget.templateRide!.endPoint;
+      endCity = widget.templateRide!.endCity;
+      endPostalCode = widget.templateRide!.endPostalCode;
+      endSubLocality = widget.templateRide!.endSubThoroughfare;
       _routeController.text = widget.templateRide!.route;
-      date = widget.templateRide!.startDate;
-      _dateController.text = Jiffy(date).yMMMMd;
-      time = widget.templateRide!.time;
-      _timeController.text = "${time.hour}:${time.minute} ${time.hourOfPeriod}";
+      startDate = widget.templateRide!.startDate;
+      _dateController.text = Jiffy(startDate).yMMMMd;
+      startTime = widget.templateRide!.time;
+      _timeController.text =
+          "${startTime!.hour}:${startTime!.minute} ${startTime!.hourOfPeriod}";
       _genderController.text = widget.templateRide!.gender;
       for (int i = 0; i < vehicleList.length; i++) {
         if (vehicleList[i]['id'] == widget.templateRide!.vehicleId) {
@@ -62,24 +65,22 @@ class _PostRideState extends State<PostRide> {
     }
   }
 
-  final TextEditingController _startPointController = TextEditingController();
-
-  final TextEditingController _endPointController = TextEditingController();
-
   final TextEditingController _routeController = TextEditingController();
 
   final TextEditingController _dateController = TextEditingController();
 
-  late DateTime date;
+  late DateTime? startDate;
 
   final TextEditingController _timeController = TextEditingController();
-  late TimeOfDay time;
+  late TimeOfDay? startTime;
 
   final TextEditingController _genderController = TextEditingController();
 
   final TextEditingController _vehicleController = TextEditingController();
 
   late String vehicleId;
+
+  late String vehicleType;
   late String vehicleImgUrl;
   late double vehicleMilage;
   bool isAC = false;
@@ -87,16 +88,23 @@ class _PostRideState extends State<PostRide> {
   final TextEditingController _messageController = TextEditingController();
 
   final style = TextStyle(fontSize: 22, color: Colors.white);
-
+  final TextEditingController _startPointController = TextEditingController();
   late LatLng? startPoint;
+  late String startPostalCode;
+  late String startCity;
+  late String startSubLocality;
 
+  final TextEditingController _endPointController = TextEditingController();
   late LatLng? endPoint;
+  late String endPostalCode;
+  late String endCity;
+  late String endSubLocality;
 
   late double distance;
 
   final _formKey = GlobalKey<FormState>();
 
-  var vehicleList = Get.find<AuthController>().userData!.vehicleList;
+  var vehicleList = Get.find<BottomNavBarController>().getUser!.vehicleList;
 
   InputDecoration decoration({
     String? hint,
@@ -132,33 +140,33 @@ class _PostRideState extends State<PostRide> {
     );
   }
 
-  final makeListTile = ListTile(
-    contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-    leading: Container(
-      padding: EdgeInsets.only(right: 12.0),
-      // alignment: Alignment.topLeft,
-      decoration: new BoxDecoration(
-          border: new Border(
-              right: new BorderSide(width: 1.0, color: Colors.white24))),
-      child: Icon(Icons.autorenew, color: Colors.white),
-    ),
-    title: Text(
-      "Introduction to Driving",
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-    ),
-    // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+  // final makeListTile = ListTile(
+  //   contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+  //   leading: Container(
+  //     padding: EdgeInsets.only(right: 12.0),
+  //     // alignment: Alignment.topLeft,
+  //     decoration: new BoxDecoration(
+  //         border: new Border(
+  //             right: new BorderSide(width: 1.0, color: Colors.white24))),
+  //     child: Icon(Icons.autorenew, color: Colors.white),
+  //   ),
+  //   title: Text(
+  //     "Introduction to Driving",
+  //     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+  //   ),
+  //   // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
-    subtitle: TextField(
-      maxLines: null,
-    ),
-    // Row(
-    //   children: <Widget>[
-    //     Icon(Icons.linear_scale, color: Colors.yellowAccent),
-    //     Text(" Intermediate", style: TextStyle(color: Colors.white))
-    //   ],
-    // ),
-    trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
-  );
+  //   subtitle: TextField(
+  //     maxLines: null,
+  //   ),
+  //   // Row(
+  //   //   children: <Widget>[
+  //   //     Icon(Icons.linear_scale, color: Colors.yellowAccent),
+  //   //     Text(" Intermediate", style: TextStyle(color: Colors.white))
+  //   //   ],
+  //   // ),
+  //   trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+  // );
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +218,7 @@ class _PostRideState extends State<PostRide> {
                   //     maxLines: null,
                   //   ),
                   // ),
-                  rideItem(),
+                  // rideItem(),
                   SizedBox(
                     height: 23,
                   ),
@@ -218,23 +226,26 @@ class _PostRideState extends State<PostRide> {
                   InkWell(
                     onTap: () async {
                       startPoint = await Get.to(
-                        () => GMap(
-                          labelNote: "Origin Of Your Ride",
-                        ),
+                        () => SearchLocation(),
                       );
 
                       // _startPointController.text = await getAddress(startPoint);
                       if (startPoint != null) {
-                        List<Placemark> placemarks =
-                            await placemarkFromCoordinates(
-                                startPoint!.latitude, startPoint!.longitude);
+                        await placemarkFromCoordinates(
+                                startPoint!.latitude, startPoint!.longitude)
+                            .then((placemarks) {
+                          _startPointController.text =
+                              placemarks[0].name.toString() +
+                                  ", " +
+                                  placemarks[0].subLocality.toString() +
+                                  ", " +
+                                  placemarks[0].locality.toString();
 
-                        _startPointController.text =
-                            placemarks[0].name.toString() +
-                                ", " +
-                                placemarks[0].locality.toString() +
-                                ", " +
-                                placemarks[0].country.toString();
+                          startSubLocality =
+                              placemarks[0].subLocality.toString();
+                          startCity = placemarks[0].locality.toString();
+                          startPostalCode = placemarks[0].postalCode.toString();
+                        });
                       }
                     },
                     child: AbsorbPointer(
@@ -262,19 +273,24 @@ class _PostRideState extends State<PostRide> {
                   InkWell(
                     onTap: () async {
                       endPoint = await Get.to(
-                          GMap(labelNote: "Destination Of Your Ride"));
+                        () => SearchLocation(),
+                      );
 
                       if (endPoint != null) {
-                        List<Placemark> placemarks =
-                            await placemarkFromCoordinates(
-                                endPoint!.latitude, endPoint!.longitude);
+                        await placemarkFromCoordinates(
+                                endPoint!.latitude, endPoint!.longitude)
+                            .then((placemarks) {
+                          _endPointController.text =
+                              placemarks[0].name.toString() +
+                                  ", " +
+                                  placemarks[0].subLocality.toString() +
+                                  ", " +
+                                  placemarks[0].locality.toString();
 
-                        _endPointController.text =
-                            placemarks[0].name.toString() +
-                                ", " +
-                                placemarks[0].locality.toString() +
-                                ", " +
-                                placemarks[0].country.toString();
+                          endSubLocality = placemarks[0].subLocality.toString();
+                          endCity = placemarks[0].locality.toString();
+                          endPostalCode = placemarks[0].postalCode.toString();
+                        });
                       }
                     },
                     child: AbsorbPointer(
@@ -328,23 +344,18 @@ class _PostRideState extends State<PostRide> {
                   // if (widget.rideType != 1)
                   InkWell(
                     onTap: () async {
-                      try {
-                        date = (await showDatePicker(
-                          // currentDate: DateTime.now(),
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(Duration(days: 15)),
-                        ).then((value) {
-                          _dateController.text = Jiffy([value]).yMMMMd;
-                        }))!;
-
-                        // if (date != null)
-                        //   _dateController.text =
-                        //       Jiffy([date]).yMMMMd;
-                      } catch (ex) {
-                        print(ex);
+                      startDate = (await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(Duration(days: 15)),
+                      ))!;
+                      if (startDate != null) {
+                        _dateController.text = Jiffy(startDate).yMMMMd;
                       }
+                      // .then((value) {
+                      //   _dateController.text = Jiffy(value).yMMMMd;
+                      // });
                     },
                     child: AbsorbPointer(
                       child: TextFormField(
@@ -372,12 +383,12 @@ class _PostRideState extends State<PostRide> {
                   InkWell(
                     onTap: () async {
                       try {
-                        time = (await showTimePicker(
+                        startTime = (await showTimePicker(
                           context: context,
                           initialTime: TimeOfDay.now(),
                         ))!;
-                        if (time != null) {
-                          _timeController.text = time.format(context);
+                        if (startTime != null) {
+                          _timeController.text = startTime!.format(context);
                         }
                       } catch (ex) {
                         print(ex);
@@ -509,7 +520,9 @@ class _PostRideState extends State<PostRide> {
                                                 vehicleList[index]["noAlp"] +
                                                     " " +
                                                     vehicleList[index]["noNum"],
-                                                vehicleList[index]["milage"]);
+                                                vehicleList[index]["milage"],
+                                                vehicleList[index]
+                                                    ["vehicleType"]);
                                           }),
 
                                       // bottomSheetVehicleItem(
@@ -559,22 +572,26 @@ class _PostRideState extends State<PostRide> {
                   //       borderRadius: BorderRadius.circular(10)),
                   //   alignment: Alignment.centerLeft,
                   //   child:
-                  CheckboxListTile(
-                    title: CustomText(
-                      text: "AC/Heater",
-                      size: 20,
-                      weight: FontWeight.bold,
-                      // color: Colors.wh,
-                    ),
-                    value: isAC,
-                    onChanged: (newValue) {
-                      setState(() {
-                        isAC = newValue!;
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity
-                        .leading, //  <-- leading Checkbox
-                  ),
+
+                  StatefulBuilder(builder: (context2, state2) {
+                    return CheckboxListTile(
+                      title: CustomText(
+                        text: "AC/Heater",
+                        size: 20,
+                        weight: FontWeight.bold,
+                        // color: Colors.wh,
+                      ),
+                      value: isAC,
+                      onChanged: (newValue) {
+                        state2(() {
+                          isAC = newValue!;
+                        });
+                      },
+                      controlAffinity: ListTileControlAffinity
+                          .leading, //  <-- leading Checkbox
+                    );
+                  }),
+
                   // ),
                   SizedBox(height: gapHeight),
                   TextFormField(
@@ -587,7 +604,7 @@ class _PostRideState extends State<PostRide> {
                       iconColor: Colors.tealAccent,
                     ),
                     textCapitalization: TextCapitalization.sentences,
-                    // keyboardType: TextInputType.multiline,
+                    keyboardType: TextInputType.multiline,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Choose Your Vehicle!';
@@ -608,15 +625,20 @@ class _PostRideState extends State<PostRide> {
                         ),
                       ),
                       onPressed: () {
-                        distance =
+                        if (_formKey.currentState!.validate() &&
+                            startPoint != null &&
+                            endPoint != null &&
+                            startDate != null &&
+                            startTime != null) {
+                          distance =
 
-                            // Geolocator.distanceBetween
-                            getCoordinateDistance(
-                                startPoint!.latitude,
-                                startPoint!.longitude,
-                                endPoint!.latitude,
-                                endPoint!.longitude);
-                        if (_formKey.currentState!.validate()) {
+                              // Geolocator.distanceBetween
+                              getCoordinateDistance(
+                                  startPoint!.latitude,
+                                  startPoint!.longitude,
+                                  endPoint!.latitude,
+                                  endPoint!.longitude);
+
                           Get.bottomSheet(
                             SafeArea(
                               child: Container(
@@ -759,16 +781,24 @@ class _PostRideState extends State<PostRide> {
     RideDatabase.postNewRide(
       startingAddress: _startPointController.text,
       startingPoints: startPoint!,
+      startCity: this.startCity,
+      startPostalCode: this.startPostalCode,
+      startSubLocality: this.startSubLocality,
       endAddress: _endPointController.text,
       endPoints: endPoint!,
+      endCity: this.endCity,
+      endPostalCode: this.endPostalCode,
+      endSubLocality: this.endSubLocality,
       route: _routeController.text,
-      date: date,
-      time: time,
+      date: startDate!,
+      time: startTime!,
       gender: _genderController.text,
       vehicleId: vehicleId,
       vehicleMilage: vehicleMilage,
       vehicleImg: vehicleImgUrl,
       isAc: isAC,
+      totalSeats: vehicleType == "Bike" ? 1 : 3,
+      vehicleType: vehicleType,
       message: _messageController.text,
       isSavedTemplate: isSave,
     );
@@ -815,13 +845,14 @@ class _PostRideState extends State<PostRide> {
   }
 
   InkWell bottomSheetVehicleItem(String id, String? imgUrl, String company,
-      String model, String number, double milage) {
+      String model, String number, double milage, String type) {
     return InkWell(
       onTap: () {
         _vehicleController.text = company + " (" + number + ")";
         vehicleId = id;
         vehicleMilage = milage;
         vehicleImgUrl = imgUrl!;
+        vehicleType = type;
         Get.back();
       },
       child: Container(

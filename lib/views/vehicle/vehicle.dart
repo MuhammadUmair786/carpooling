@@ -1,4 +1,4 @@
-import 'package:carpooling_app/controllers/authController.dart';
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 
 class Vehicle extends StatelessWidget {
-  final vehicleList = Get.find<AuthController>().userData!.vehicleList;
+  final vehicleList = Get.find<BottomNavBarController>().getUser!.vehicleList;
 
   @override
   Widget build(BuildContext context) {

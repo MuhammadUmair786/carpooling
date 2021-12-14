@@ -1,4 +1,3 @@
-import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/views/bottomnavbar.dart';
 import 'package:carpooling_app/views/startingdetails.dart';
 import 'package:carpooling_app/widgets/showLoading.dart';
@@ -183,35 +182,11 @@ class LoginController extends GetxController {
         .then((value) {
       if (value.exists) {
         // print(value.toString());
-        Get.put(AuthController(), permanent: true);
 
         Get.offAll(() => BottomNavBar());
       } else {
         Get.offAll(() => StartingDetails());
       }
     });
-  }
-
-  Future<void> createUserDocument(String name, DateTime dob) async {
-    showLoading();
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(auth.currentUser!.uid)
-        .set({
-      "id": auth.currentUser!.uid.toString(),
-      "name": name,
-      "dob": dob.microsecondsSinceEpoch,
-    }).then((value) {
-      print("User initial Details Added");
-      Get.put(AuthController(), permanent: true);
-      Get.offAll(BottomNavBar());
-    }).catchError((error) {
-      print("Failed to add user initial Details: $error");
-      dismissLoadingWidget();
-      showErrorSnackBar();
-    });
-
-    // FirebaseFirestore.instance.collection("users").doc(userid).update(data)
   }
 }

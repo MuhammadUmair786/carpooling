@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RequestModel {
   late String rideID; //get from that screen
+  late String requestID;
 
   late String passangerID;
   late String startAddress;
@@ -17,9 +18,9 @@ class RequestModel {
   late bool isConfirmed;
   late int rideCost;
 
-  RequestModel.fromDocumentSnapshot(
-      {required Map<String, dynamic> snapshot, required String rideId}) {
-    rideID = rideId;
+  RequestModel.fromDocumentSnapshot({required Map<String, dynamic> snapshot}) {
+    rideID = snapshot['rideID'];
+    requestID = snapshot['requestId'];
     passangerID = snapshot['passangerID'];
     startAddress = snapshot['startAddress'];
     GeoPoint start = snapshot['startPoint'];

@@ -1,3 +1,4 @@
+import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,9 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 class ViewProfile extends StatelessWidget {
+  final UserModel user;
+
+  const ViewProfile({Key? key, required this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

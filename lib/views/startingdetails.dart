@@ -1,4 +1,5 @@
 import 'package:carpooling_app/controllers/loginController.dart';
+import 'package:carpooling_app/database/userDatabase.dart';
 // import 'package:carpooling_app/views/bottomnavbar.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class StartingDetails extends StatelessWidget {
   final TextEditingController _dateController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  final LoginController _controller = LoginController();
+  // final LoginController _controller = LoginController();
   late final DateTime pickedDOB;
   @override
   Widget build(BuildContext context) {
@@ -90,9 +91,10 @@ class StartingDetails extends StatelessWidget {
                           ))!;
 
                           _dateController.text = Jiffy([
-                            pickedDOB.year,
-                            pickedDOB.month,
-                            pickedDOB.day
+                            pickedDOB
+                            // .year,
+                            // pickedDOB.month,
+                            // pickedDOB.day
                           ]).yMMMMd;
                         } catch (ex) {
                           print(ex);
@@ -131,7 +133,7 @@ class StartingDetails extends StatelessWidget {
                         // authClass.signInwithPhoneNumber(
                         //     verificationIdFinal, smsCode, context);
                         if (_formKey.currentState!.validate()) {
-                          _controller.createUserDocument(
+                          UserDatabase.createUserDocument(
                               _nameController.text, pickedDOB);
                         }
                       },

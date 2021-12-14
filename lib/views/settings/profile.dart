@@ -1,5 +1,4 @@
-import 'package:carpooling_app/controllers/authController.dart';
-import 'package:carpooling_app/controllers/profileSettingController.dart';
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/views/settings/displayName.dart';
 import 'package:carpooling_app/views/settings/email_verification.dart';
 import 'package:carpooling_app/views/settings/displayCNIC.dart';
@@ -18,6 +17,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 class ProfileSetting extends StatelessWidget {
   // final TextEditingController _dateController = TextEditingController();
   // final controller = Get.put(ProfileController());
+  var _controller = Get.find<BottomNavBarController>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,6 @@ class ProfileSetting extends StatelessWidget {
 }
 
 class BasicSetting extends StatelessWidget {
-  final _controller = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -177,10 +176,10 @@ class BasicSetting extends StatelessWidget {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: CustomText(
-                              text: Get.find<AuthController>()
-                                  .userfb!
-                                  .phoneNumber
-                                  .toString(),
+                              text: "Get.find<BottomNavBarController>().",
+
+                              // .phoneNumber
+                              // .toString(),
                               size: 25,
                               weight: FontWeight.bold,
                               color: Colors.blue[300]),
@@ -231,9 +230,10 @@ class BasicSetting extends StatelessWidget {
                 ProfileItem(
                     title: "Email",
                     icon: Icons.email,
-                    value: _controller.userfb!.email != null
-                        ? _controller.userfb!.email.toString()
-                        : "Not Added Yet",
+                    value: "null value",
+                    // _controller.userfb!.email != null
+                    //     ? _controller.userfb!.email.toString()
+                    //     : "Not Added Yet",
                     func: () {
                       Get.to(() => EmailVerificationScreen());
                     }),
@@ -252,9 +252,13 @@ class BasicSetting extends StatelessWidget {
                 ProfileItem(
                     title: "Nominee",
                     icon: Icons.accessibility_new,
-                    value: _controller.userData!.nomineeDetails
+                    value: Get.find<BottomNavBarController>()
+                            .getUser!
+                            .nomineeDetails
                             .containsKey('relation')
-                        ? _controller.userData!.nomineeDetails['relation']
+                        ? Get.find<BottomNavBarController>()
+                            .getUser!
+                            .nomineeDetails['relation']
                         : "Not Added Yet",
                     func: () {
                       Get.to(() => GetNominee());
