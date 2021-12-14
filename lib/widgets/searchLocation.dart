@@ -34,6 +34,7 @@ class _SearchLocationState extends State<SearchLocation> {
       _currentLocation = LatLng(position.latitude, position.longitude);
       if (isAddMarker) {
         _addMarker(_currentLocation!, "Your current Locatioon");
+        _selectedCoordinates = _currentLocation;
       }
 
       setState(() {
@@ -41,7 +42,7 @@ class _SearchLocationState extends State<SearchLocation> {
           CameraUpdate.newCameraPosition(
             CameraPosition(
               target: _currentLocation!,
-              zoom: 10.0,
+              zoom: 15.0,
             ),
           ),
         );
@@ -84,10 +85,11 @@ class _SearchLocationState extends State<SearchLocation> {
               markers: Set<Marker>.from(markers),
               initialCameraPosition: _initialLocation,
               myLocationEnabled: true,
-              myLocationButtonEnabled: false,
+              myLocationButtonEnabled: true,
               mapType: MapType.normal,
               zoomGesturesEnabled: true,
               zoomControlsEnabled: true,
+              padding: EdgeInsets.only(top: 50.0),
               onMapCreated: (GoogleMapController controller) {
                 mapController = controller;
               },
@@ -160,7 +162,9 @@ class _SearchLocationState extends State<SearchLocation> {
             // _addMarker(_currentLocation!, "Your current Locatioon");
           } else {
             _addMarker(_currentLocation!, "Your current Locatioon");
+            _selectedCoordinates = _currentLocation;
           }
+          Get.back();
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -170,10 +174,10 @@ class _SearchLocationState extends State<SearchLocation> {
                 Icons.location_searching,
                 color: Colors.purple,
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               CustomText(
                 text: "Select Current Location",
-                weight: FontWeight.bold,
+                weight: FontWeight.w500,
                 color: Colors.purple,
                 size: 20,
               ),
@@ -209,7 +213,7 @@ class _SearchLocationState extends State<SearchLocation> {
           CameraUpdate.newCameraPosition(
             CameraPosition(
               target: _selectedCoordinates!,
-              zoom: 12.0,
+              zoom: 15.0,
             ),
           ),
         );

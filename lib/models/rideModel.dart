@@ -23,14 +23,14 @@ class RideModel {
 
   late String startPostalCode;
   late String startCity;
-  late String startSubThoroughfare;
+  late String startSubLocality;
 
   late String endAddress;
   late LatLng endPoint;
 
   late String endPostalCode;
   late String endCity;
-  late String endSubThoroughfare;
+  late String endSubLocality;
 
   late String route;
   //ads route points or poluline later on
@@ -60,13 +60,13 @@ class RideModel {
     startPoint = LatLng(start.latitude, start.longitude);
     startCity = snapshot['startCity'];
     startPostalCode = snapshot['startPostalCode'];
-    startSubThoroughfare = snapshot['startSubThoroughfare'];
+    startSubLocality = snapshot['startSubLocality'];
     endAddress = snapshot['endAddress'];
     GeoPoint end = snapshot['endPoint'];
     endPoint = LatLng(end.latitude, end.longitude);
     endCity = snapshot['endCity'];
     endPostalCode = snapshot['endPostalCode'];
-    endSubThoroughfare = snapshot['endSubThoroughfare'];
+    endSubLocality = snapshot['endSubLocality'];
     route = snapshot['route'];
     startDate = DateTime.fromMicrosecondsSinceEpoch(snapshot['date']);
     time = TimeOfDay(

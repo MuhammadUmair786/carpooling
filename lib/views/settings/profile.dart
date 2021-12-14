@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carpooling_app/constants/secrets.dart';
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
+import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/views/settings/displayName.dart';
 import 'package:carpooling_app/views/settings/email_verification.dart';
 import 'package:carpooling_app/views/settings/displayCNIC.dart';
@@ -6,18 +9,27 @@ import 'package:carpooling_app/views/settings/getLicense.dart';
 import 'package:carpooling_app/views/settings/getWorkingDetails.dart';
 import 'package:carpooling_app/views/settings/getNominee.dart';
 import 'package:carpooling_app/views/settings/setDataTemplate.dart';
+import 'package:carpooling_app/views/settings/uploadUserImage.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:carpooling_app/widgets/profileItem.dart';
+import 'package:carpooling_app/widgets/searchLocation.dart';
+import 'package:carpooling_app/widgets/showSnackBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class ProfileSetting extends StatelessWidget {
   // final TextEditingController _dateController = TextEditingController();
   // final controller = Get.put(ProfileController());
-  var _controller = Get.find<BottomNavBarController>();
+  final _controller = Get.find<BottomNavBarController>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,40 +39,70 @@ class ProfileSetting extends StatelessWidget {
         title: Text("Profile Setting"),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: BasicSetting(),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            child: LinearPercentIndicator(
-              // width: MediaQuery.of(context).size.width - 50,
-              animation: true,
-              lineHeight: 30.0,
-              animationDuration: 2500,
-              percent: 0.8,
-              center: CustomText(
-                text: "Profile Complete: 80%",
-                weight: FontWeight.bold,
-                size: 17,
-                color: Colors.white,
-              ),
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance
+              .collection("users")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: BasicSetting(snapshotData: snapshot.data!.data()),
+                  ),
+                  PercentageIndicatorWidget(
+                    percentage: snapshot.data!["percentage"],
+                  ),
+                ],
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
+    );
+  }
+}
 
-              // Text(),
-              linearStrokeCap: LinearStrokeCap.roundAll,
-              progressColor: Colors.green,
-            ),
-          ),
-        ],
+class PercentageIndicatorWidget extends StatelessWidget {
+  final int percentage;
+  const PercentageIndicatorWidget({
+    Key? key,
+    required this.percentage,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+      child: LinearPercentIndicator(
+        // width: MediaQuery.of(context).size.width - 50,
+        animation: true,
+        lineHeight: 30.0,
+        animationDuration: 2500,
+        percent: percentage / 100,
+        center: CustomText(
+          text: "Profile Complete: $percentage %",
+          weight: FontWeight.bold,
+          size: 17,
+          color: Colors.white,
+        ),
+
+        // Text(),
+        linearStrokeCap: LinearStrokeCap.roundAll,
+        progressColor: Colors.green,
       ),
     );
   }
 }
 
 class BasicSetting extends StatelessWidget {
+  final Map<String, dynamic>? snapshotData;
+
+  const BasicSetting({Key? key, required this.snapshotData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // print(snapshotData!['homeAddress']['address']);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
@@ -77,65 +119,79 @@ class BasicSetting extends StatelessWidget {
             child: Row(
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () {
-                    print("Open Imag");
-                  },
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 90,
-                        height: 90,
+                Stack(
+                  children: [
+                    // Container(
+                    //   width: 90,
+                    //   height: 90,
+                    //   decoration: BoxDecoration(
+                    //     border: Border.all(
+                    //         width: 2,
+                    //         color: Theme.of(context).scaffoldBackgroundColor),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //           spreadRadius: 2,
+                    //           blurRadius: 10,
+                    //           color: Colors.black.withOpacity(0.1),
+                    //           offset: Offset(0, 10))
+                    //     ],
+                    //     shape: BoxShape.circle,
+                    //     image: DecorationImage(
+                    //       fit: BoxFit.cover,
+                    //       image: NetworkImage(
+                    //         "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    CachedNetworkImage(
+                      imageUrl:
+                          snapshotData!["profileImg_url"] ?? Secrets.NO_IMG,
+                      // fit: BoxFit.cover,
+                      // repeat: ImageR,
+                      imageBuilder: (context, imageProvider) => Container(
+                        width: 90.0,
+                        height: 90.0,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 2,
-                              color: Theme.of(context).scaffoldBackgroundColor),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.black.withOpacity(0.1),
-                                offset: Offset(0, 10))
-                          ],
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                              "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
-                            ),
+                              image: imageProvider, fit: BoxFit.cover),
+                        ),
+                      ),
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                        strokeWidth: 2,
+                      ),
+                      // placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: InkWell(
+                        onTap: () {
+                          print("upload img");
+                          Get.to(() => UploadUserImage());
+                        },
+                        child: Container(
+                          // height: 30,
+                          // width: 30,
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.black,
+                            size: 25,
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: InkWell(
-                          onTap: () {
-                            print("upload img");
-                          },
-                          child: Container(
-                            // height: 30,
-                            // width: 30,
-                            padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              // border: Border.all(
-                              //   width: 2,
-                              //   color:
-                              //       Theme.of(context).scaffoldBackgroundColor,
-                              // ),
-                              color: Colors.white,
-                            ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: Colors.black,
-                              size: 25,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 SizedBox(width: 10),
                 Expanded(
@@ -154,7 +210,7 @@ class BasicSetting extends StatelessWidget {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: CustomText(
-                                      text: "Muhammad Umair",
+                                      text: snapshotData!['name'],
                                       size: 25,
                                       weight: FontWeight.bold,
                                       color: Colors.blue[300]),
@@ -163,7 +219,8 @@ class BasicSetting extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                Get.to(() => DisplayName());
+                                Get.to(() =>
+                                    DisplayName(name: snapshotData!['name']));
                               },
                               child: Icon(
                                 Icons.edit,
@@ -176,7 +233,7 @@ class BasicSetting extends StatelessWidget {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: CustomText(
-                              text: "Get.find<BottomNavBarController>().",
+                              text: auth.currentUser!.phoneNumber!,
 
                               // .phoneNumber
                               // .toString(),
@@ -200,37 +257,19 @@ class BasicSetting extends StatelessWidget {
             ),
             child: Column(
               children: [
-                // ProfileItem(
-                //     title: "Name",
-                //     icon: Icons.perm_identity,
-                //     value: "Muhammad Uzair",
-                //     // show option for using email provided name
-                //     func: () {
-                //       Get.to(() => SetDataTemplate(
-                //             message:
-                //                 "This is how your name appear on this App",
-                //             title: "Name",
-                //             keyboard: TextInputType.name,
-                //             fun: () {},
-                //           ));
-                //     }),
-                // ProfileItem(
-                //     title: "Birthday",
-                //     value: "10/12/1999",
-                //     icon: Icons.calendar_today,
-                //     func: () {}),
-                // ProfileItem(
-                //     title: "Phone No.",
-                //     icon: Icons.phone,
-                //     value: Get.find<AuthController>()
-                //         .user!
-                //         .phoneNumber
-                //         .toString(),
-                //     func: () {}),
                 ProfileItem(
                     title: "Email",
                     icon: Icons.email,
-                    value: "null value",
+                    isAdded: auth.currentUser!.emailVerified,
+                    // snapshotData!.containsKey("email"),
+                    percentage: "50",
+                    value: auth.currentUser!.emailVerified
+                        ? auth.currentUser!.providerData[0].email.toString()
+                        : "Not Added Yet",
+
+                    // snapshotData!.containsKey("email")
+                    //     ? snapshotData!["email"]
+                    //     : "Not Added Yet",
                     // _controller.userfb!.email != null
                     //     ? _controller.userfb!.email.toString()
                     //     : "Not Added Yet",
@@ -238,27 +277,43 @@ class BasicSetting extends StatelessWidget {
                       Get.to(() => EmailVerificationScreen());
                     }),
                 ProfileItem(
-                    title: "Home",
-                    icon: Icons.home,
-                    value: "Faisal Colony, Street 4",
-                    func: () {
-                      Get.to(() => SetDataTemplate(
-                            message: "Enter your email",
-                            title: "Email",
-                            keyboard: TextInputType.emailAddress,
-                            fun: () {},
-                          ));
-                    }),
+                  title: "Home",
+                  icon: Icons.home,
+                  isAdded: snapshotData!.containsKey("homeAddress"),
+                  percentage: "10",
+                  value: snapshotData!.containsKey("homeAddress")
+                      ? snapshotData!['homeAddress']['address']
+                      : "Not Added Yet",
+                  func: () async {
+                    LatLng? homeLocation = await Get.to(
+                      () => SearchLocation(),
+                    );
+                    String? address;
+                    if (homeLocation != null) {
+                      await placemarkFromCoordinates(
+                              homeLocation.latitude, homeLocation.longitude)
+                          .then((placemarks) {
+                        address = placemarks[0].name.toString() +
+                            ", " +
+                            placemarks[0].subLocality.toString() +
+                            ", " +
+                            placemarks[0].locality.toString();
+                      }).then((value) {
+                        UserDatabase.addHomeAddress(
+                            LatLng(
+                                homeLocation.latitude, homeLocation.longitude),
+                            address!);
+                      });
+                    }
+                  },
+                ),
                 ProfileItem(
                     title: "Nominee",
                     icon: Icons.accessibility_new,
-                    value: Get.find<BottomNavBarController>()
-                            .getUser!
-                            .nomineeDetails
-                            .containsKey('relation')
-                        ? Get.find<BottomNavBarController>()
-                            .getUser!
-                            .nomineeDetails['relation']
+                    isAdded: snapshotData!.containsKey("nominee"),
+                    percentage: "10",
+                    value: snapshotData!.containsKey("nominee")
+                        ? snapshotData!['nominee']['relation']
                         : "Not Added Yet",
                     func: () {
                       Get.to(() => GetNominee());
@@ -266,89 +321,48 @@ class BasicSetting extends StatelessWidget {
                 ProfileItem(
                     title: "CNIC",
                     icon: Icons.perm_identity,
-                    value: "verified",
+                    isAdded: snapshotData!.containsKey("cnic"),
+                    percentage: "10",
+                    value: snapshotData!.containsKey("cnic")
+                        ? snapshotData!['cnic']['cnic']
+                        : "Not Added Yet",
                     func: () {
-                      Get.to(() => GetCNIC(isreadonly: false));
+                      snapshotData!.containsKey("cnic")
+                          ? showSnackBar("CNIC", "Already Added")
+                          : Get.to(() => GetCNIC(isreadonly: false));
                     }),
                 ProfileItem(
                     title: "License",
                     icon: Icons.card_travel,
-                    value: "unverified",
+                    isAdded: snapshotData!.containsKey("license"),
+                    percentage: "10",
+                    value: snapshotData!.containsKey("license")
+                        ? snapshotData!['license']['license']
+                        : "Not Added Yet",
                     func: () {
-                      Get.to(() => GetLicense(isreadonly: false));
+                      snapshotData!.containsKey("license")
+                          ? showSnackBar("License", "Already Added")
+                          : Get.to(() => GetCNIC(isreadonly: false));
                     }),
                 ProfileItem(
+                    //workingDetails
                     title: "Working Details",
                     icon: Icons.card_travel,
-                    value: "Added",
+                    isAdded: snapshotData!.containsKey("workingDetails"),
+                    percentage: "10",
+                    value: snapshotData!.containsKey("workingDetails")
+                        ? snapshotData!['workingDetails']['type']
+                        : "Not Added Yet",
                     func: () {
                       Get.to(() => GetWorkingDetails(isreadonly: true));
                     }),
-                SizedBox(
-                  height: 10,
+                const SizedBox(
+                  height: 15,
                 ),
               ],
             ),
           ),
-
-          // basicProfileItem(, , ),
-          // basicProfileItem("Phone No.", , () {}),
-          // basicProfileItem("", , ),
-          // CustomTextField(
-          //     previousValue: "UZAIR",
-          //     label: "First Name",
-          //     placeholder: "First name"),
-          // CustomTextField(
-          //     previousValue: "Asghar",
-          //     label: "Last Name",
-          //     placeholder: "last name"),
-          // CustomTextField(
-          //     previousValue: "12-Aug-1998",
-          //     label: "DOB",
-          //     placeholder: "Date of Birth"),
-          // CustomTextField(
-          //     previousValue: "uk90750@gmail.com",
-          //     label: "Email",
-          //     placeholder: "email"),
-          // CustomTextField(
-          //     previousValue: "I like book reading",
-          //     label: "Bio",
-          //     placeholder: "Tell us something about you"),
-          // SizedBox(
-          //   height: 35,
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     OutlineButton(
-          //       padding: EdgeInsets.symmetric(horizontal: 50),
-          //       shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(20)),
-          //       onPressed: () {},
-          //       child: Text("CANCEL",
-          //           style: TextStyle(
-          //               fontSize: 14,
-          //               letterSpacing: 2.2,
-          //               color: Colors.black)),
-          //     ),
-          //     RaisedButton(
-          //       onPressed: () {},
-          //       color: Colors.green,
-          //       padding: EdgeInsets.symmetric(horizontal: 50),
-          //       elevation: 2,
-          //       shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(20)),
-          //       child: Text(
-          //         "SAVE",
-          //         style: TextStyle(
-          //             fontSize: 14,
-          //             letterSpacing: 2.2,
-          //             color: Colors.white),
-          //       ),
-          //     )
         ],
-        // )
-        // ],
       ),
     );
   }

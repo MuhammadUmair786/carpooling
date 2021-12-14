@@ -31,12 +31,12 @@ class _PostRideState extends State<PostRide> {
       startPoint = widget.templateRide!.startPoint;
       startCity = widget.templateRide!.startCity;
       startPostalCode = widget.templateRide!.startPostalCode;
-      startSubLocality = widget.templateRide!.startSubThoroughfare;
+      startSubLocality = widget.templateRide!.startSubLocality;
       _endPointController.text = widget.templateRide!.endAddress;
       endPoint = widget.templateRide!.endPoint;
       endCity = widget.templateRide!.endCity;
       endPostalCode = widget.templateRide!.endPostalCode;
-      endSubLocality = widget.templateRide!.endSubThoroughfare;
+      endSubLocality = widget.templateRide!.endSubLocality;
       _routeController.text = widget.templateRide!.route;
       startDate = widget.templateRide!.startDate;
       _dateController.text = Jiffy(startDate).yMMMMd;

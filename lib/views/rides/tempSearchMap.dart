@@ -41,8 +41,8 @@ class _GMapState extends State<GMap> {
               trafficEnabled: true,
               onTap: (cordinate) {
                 _currentCoordinates = cordinate;
-                // print(cordinate);
-                setState(() async {
+                print(cordinate);
+                setState(() {
                   _markers = [];
                   _markers.add(
                     Marker(
@@ -52,30 +52,40 @@ class _GMapState extends State<GMap> {
                       // onDragEnd: (dragEndPosition) {
                       //   // print(dragEndPosition.toString() + " end point");
                       // },
+                      //LatLng(33.58038287153888, 73.04083999246359)
+                      //LatLng(33.57987590040805, 73.04075449705124)
+                      //LatLng(33.58069487377923, 73.03975939750671)
+                      //LatLng(33.579807466060316, 73.04068811237812)
+                      //LatLng(33.57894965785773, 73.04126143455505)
+                      //LatLng(33.57914881760447, 73.04153434932232)
+                      //LatLng(33.58044236712923, 73.04209224879742)
+                      // LatLng(33.59374907545699, 73.04308567196131)
+                      //LatLng(33.59463522269, 73.04457228630781)
+                      //LatLng(33.59587324421964, 73.04269574582577)
                     ),
                   );
-                  await placemarkFromCoordinates(
-                          cordinate.latitude, cordinate.longitude)
-                      .then((placemarks) {
-                    // _startPointController.text =
-                    //     placemarks[0].name.toString() +
-                    //         ", " +
-                    //         placemarks[0].locality.toString();
-                    print("1");
-                    print(placemarks[0].postalCode);
-                    print(placemarks[0].name);
-                    print(placemarks[0].locality);
-                    print("2");
+                  //   await placemarkFromCoordinates(
+                  //           cordinate.latitude, cordinate.longitude)
+                  //       .then((placemarks) {
+                  //     // _startPointController.text =
+                  //     //     placemarks[0].name.toString() +
+                  //     //         ", " +
+                  //     //         placemarks[0].locality.toString();
+                  //     print("1");
+                  //     print(placemarks[0].postalCode);
+                  //     print(placemarks[0].name);
+                  //     print(placemarks[0].locality);
+                  //     print("2");
 
-                    print(placemarks[0].subLocality);
-                    print(placemarks[0].isoCountryCode);
-                    print(placemarks[0].subThoroughfare);
-                    print("3");
+                  //     print(placemarks[0].subLocality);
+                  //     print(placemarks[0].isoCountryCode);
+                  //     print(placemarks[0].subThoroughfare);
+                  //     print("3");
 
-                    print(placemarks[0].thoroughfare);
-                    print(placemarks[0].subAdministrativeArea);
-                    print(placemarks[0].administrativeArea);
-                  });
+                  //     print(placemarks[0].thoroughfare);
+                  //     print(placemarks[0].subAdministrativeArea);
+                  //     print(placemarks[0].administrativeArea);
+                  //   });
                 });
               },
             ),

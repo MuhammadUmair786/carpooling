@@ -1,15 +1,20 @@
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class DisplayName extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
+  late TextEditingController _nameController;
   final _formKey = GlobalKey<FormState>();
+  final String name;
+
+  DisplayName({Key? key, required this.name}) : super(key: key);
   // bool _checkBoxValue = false;
 
   @override
   Widget build(BuildContext context) {
+    _nameController = TextEditingController(text: name);
     bool _checkBoxValue = false;
     const _textStyle = TextStyle(
       fontSize: 20,
@@ -82,19 +87,27 @@ class DisplayName extends StatelessWidget {
                 ),
                 SizedBox(height: 25),
                 // Checkbox(value: true, onChanged: onChanged)
-                CheckboxListTile(
-                  title: CustomText(
-                    text: "Use Email Provided Name",
-                    size: 20,
-                    color: Colors.blue,
-                  ),
-                  value: _checkBoxValue,
-                  onChanged: (newValue) {
-                    _checkBoxValue = !newValue!;
-                  },
-                  controlAffinity:
-                      ListTileControlAffinity.leading, //  <-- leading Checkbox
-                ),
+                if (FirebaseAuth.instance.currentUser!.emailVerified)
+                  StatefulBuilder(builder: (context, innerState) {
+                    return CheckboxListTile(
+                      title: CustomText(
+                        text: "Use Email Provided Name",
+                        size: 20,
+                        color: Colors.blue,
+                      ),
+                      value: _checkBoxValue,
+                      onChanged: (newValue) {
+                        innerState(() {
+                          _checkBoxValue = !newValue!;
+                          _nameController.text = FirebaseAuth
+                              .instance.currentUser!.providerData[0].displayName
+                              .toString();
+                        });
+                      },
+                      controlAffinity: ListTileControlAffinity
+                          .leading, //  <-- leading Checkbox
+                    );
+                  }),
                 Spacer(),
                 Container(
                   alignment: Alignment.center,

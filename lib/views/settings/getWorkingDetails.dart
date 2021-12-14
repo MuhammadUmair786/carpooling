@@ -353,7 +353,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
           onPressed: () {
             if (isStudent && _stdformKey.currentState!.validate()) {
               UserDatabase.addWorkingDetails(data: {
-                "type": "std",
+                "type": "Student",
                 "institute": _instController.text,
                 "address": _stdAddressController.text,
                 "degree": _degreeController.text,
@@ -361,7 +361,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
               _clearControlers();
             } else if (isEmployee && _empformKey.currentState!.validate()) {
               UserDatabase.addWorkingDetails(data: {
-                "type": "emp",
+                "type": "Employee",
                 "company_name": _companyController.text,
                 "address": _empAddressController.text,
                 "designation": _designationController.text,
@@ -369,7 +369,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
               _clearControlers();
             } else if (isBusiness && _busiformKey.currentState!.validate()) {
               UserDatabase.addWorkingDetails(data: {
-                "type": "business",
+                "type": "Self Business",
                 "name": _businessNameController.text,
                 "address": _addressController.text,
               });

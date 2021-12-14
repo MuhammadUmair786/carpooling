@@ -1,6 +1,7 @@
 // import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/rideDatabase.dart';
+import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/views/rides/postedRideInfo.dart';
@@ -8,6 +9,7 @@ import 'package:carpooling_app/views/vehicle/addvehicle.dart';
 
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/cupertino.dart';
 
@@ -74,9 +76,10 @@ class _HomeState extends State<Home> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              Get.to(() => GMap(
-                                    labelNote: 'uyg ugy ug',
-                                  ));
+                              // UserDatabase.unlinkEmail();
+                              print(FirebaseAuth
+                                  .instance.currentUser!.providerData[0].email
+                                  .toString());
                             },
                             child: Text("dfsdsdgsd")),
                         // TextButton(
