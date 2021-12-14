@@ -6,12 +6,14 @@ class SetDataTemplate extends StatelessWidget {
   final String message;
   final String title;
   final TextInputType? keyboard;
-  TextEditingController _textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
+  final Function() fun;
 
   SetDataTemplate({
     required this.message,
     required this.title,
     this.keyboard,
+    required this.fun,
   });
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,7 @@
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -6,15 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 
 class Vehicle extends StatelessWidget {
-  var vehicleList = [
-    {
-      "type": "car",
-      "name": "Corola",
-      "color": "red",
-      "number": "RIW-2981",
-      "image": "img-link"
-    },
-  ];
+  final vehicleList = Get.find<BottomNavBarController>().getUser!.vehicleList;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,10 +24,29 @@ class Vehicle extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // SizedBox(height: 30),
-              vehicleItem(),
-              vehicleItem(),
-              vehicleItem(),
+              if (vehicleList.isEmpty)
+                Center(
+                  child: CustomText(
+                    text: "No Vehicles Found",
+                    size: 22,
+                    weight: FontWeight.bold,
+                  ),
+                ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: vehicleList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return vehicleItem(
+                      vehicleList[index]['model'] +
+                          " " +
+                          vehicleList[index]['year'],
+                      vehicleList[index]['noAlp'] +
+                          "-" +
+                          vehicleList[index]['noNum'],
+                      double.parse(vehicleList[index]['milage'].toString()),
+                      vehicleList[index]['img_url'],
+                    );
+                  })
             ],
           ),
         ),
@@ -39,16 +54,18 @@ class Vehicle extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.to(() => AddVehicle());
+          // print(vehicleList);
         },
         child: Icon(Icons.add),
       ),
     );
   }
 
-  Container vehicleItem() {
+  Container vehicleItem(
+      String name, String number, double milage, String imgUrl) {
     return Container(
       // margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(width: 0.4),
@@ -61,28 +78,29 @@ class Vehicle extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 45,
-                backgroundImage: NetworkImage(
-                  "https://images.unsplash.com/photo-1612997951749-ae9c3fffaef3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
-                ),
+                backgroundImage: NetworkImage(imgUrl
+                    // "https://images.unsplash.com/photo-1612997951749-ae9c3fffaef3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+                    ),
               ),
               SizedBox(width: 15),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Corolla 2016",
+                    text: name,
                     size: 20,
                     weight: FontWeight.bold,
                   ),
                   CustomText(
-                    text: "RIW-2981",
+                    text: number,
                     size: 20,
                   ),
                   SizedBox(height: 5),
                   CustomText(
-                    text: "21 KM/L",
+                    text: "$milage KM/L",
                     color: Colors.orange,
                     size: 20,
+                    weight: FontWeight.bold,
                   )
                 ],
               ),
@@ -90,7 +108,7 @@ class Vehicle extends StatelessWidget {
           ),
           Icon(
             Icons.delete,
-            size: 30,
+            size: 25,
           )
         ],
       ),

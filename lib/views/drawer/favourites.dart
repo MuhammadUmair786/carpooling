@@ -53,7 +53,7 @@ class Favourites extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Get.to(() => ViewProfile());
+                  // Get.to(() => ViewProfile());
                 },
                 child: CircleAvatar(
                   radius: 35,

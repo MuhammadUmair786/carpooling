@@ -1,8 +1,8 @@
-import 'package:carpooling_app/views/viewProfile.dart';
+
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
+
 
 class History extends StatelessWidget {
   @override

@@ -1,0 +1,294 @@
+SafeArea(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white70,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20.0),
+                        ),
+                      ),
+                      // width: width * 0.9,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            // Text(
+                            //   'Places',
+                            //   style: TextStyle(fontSize: 20.0),
+                            // ),
+                            // SizedBox(height: 10),
+                            _textField(
+                              //make textInputAction: TextInputAction.go, like scene
+                              label: 'Start',
+                              hint: 'Choose starting point',
+                              prefixIcon: Icon(
+                                Icons.trip_origin,
+                                color: Colors.green,
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.my_location),
+                                onPressed: () {
+                                  startAddressController.text = _currentAddress;
+                                  // startAddressController.text = _currentAddress;
+                                },
+                              ),
+                              controller: startAddressController,
+                              // focusNode: startAddressFocusNode,
+                              // width: width,
+                            ),
+                            SizedBox(height: 5),
+                            _textField(
+                              label: 'Destination',
+                              hint: 'Choose destination',
+                              prefixIcon:
+                                  Icon(Icons.location_on, color: Colors.red),
+                              controller: destinationAddressController,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Get.to(() => SearchRidesResponse());
+                              },
+                              child: Text("Temp Search Rides"),
+                            ),
+                            SizedBox(height: 10),
+                            Visibility(
+                              visible: _placeDistance == null ? false : true,
+                              child: Text(
+                                'DISTANCE: $_placeDistance km',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            ElevatedButton(
+                              onPressed:
+                                  (startAddressController.text.isNotEmpty &&
+                                          destinationAddressController
+                                              .text.isNotEmpty)
+                                      ? () {
+                                          Get.to(() => SearchRidesResponse());
+                                        }
+                                      : null,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Show Matching Rides'.toUpperCase(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              Widget _textField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required Icon prefixIcon,
+    Widget? suffixIcon,
+  }) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      width: Get.width * 0.8,
+      child: TextField(
+        textInputAction: TextInputAction.search,
+        onSubmitted: (value) {
+          if (startAddressController.text.isNotEmpty &&
+              destinationAddressController.text.isNotEmpty) {
+            markers.clear();
+            _calculateDistance();
+          }
+        },
+
+        controller: controller,
+        // focusNode: focusNode,
+        decoration: new InputDecoration(
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          labelText: label,
+          filled: true,
+          fillColor: Colors.white,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+            borderSide: BorderSide(
+              color: Colors.grey.shade400,
+              width: 2,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+            borderSide: BorderSide(
+              color: Colors.blue.shade300,
+              width: 2,
+            ),
+          ),
+          contentPadding: EdgeInsets.symmetric(vertical: 10),
+          hintText: hint,
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
