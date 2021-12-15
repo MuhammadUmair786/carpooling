@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
 // import 'constants/firebase.dart';
@@ -22,8 +23,28 @@ import 'package:get/get.dart';
 //   await Firebase.initializeApp(options: DefaultFirebaseConfig.platformOptions);
 //   print('Handling a background message ${message.messageId}');
 // }
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  var initializationSettingsAndroid = AndroidInitializationSettings('app_logo');
+  var initializationSettingsIOS = IOSInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification:
+          (int id, String? title, String? body, String? payload) async {});
+  var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String? payload) {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+  });
+
   await Firebase.initializeApp();
 
   // FirebaseMessaging.onBackgroundMessage(backgroundHandler);

@@ -1,8 +1,6 @@
 // import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
-import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/models/userModel.dart';
-import 'package:carpooling_app/views/chating/chat1.dart';
 
 import 'package:carpooling_app/views/drawer/balance.dart';
 import 'package:carpooling_app/views/drawer/favourites.dart';
@@ -182,8 +180,13 @@ class BottomNavBar extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.exists == false) {
-                        Get.to(() => StartingDetails());
+                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyPage()));
+                          Get.to(() => StartingDetails());
+                        });
+                        // Get.to(() => StartingDetails());
                       }
+                      // else {
                       // print(snapshot.requireData.data());
                       _controller.userData.value =
                           UserModel.fromDocumentSnapshot(
@@ -191,6 +194,7 @@ class BottomNavBar extends StatelessWidget {
                       // showSnackBar("USer Data Reload in BottomNavBar", "");
 
                       return Home(dataSnapchots: snapshot.requireData);
+                      // }
                     } else {
                       return Center(child: CircularProgressIndicator());
                     }

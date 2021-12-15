@@ -27,9 +27,32 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 FirebaseAuth auth = FirebaseAuth.instance;
 
 class ProfileSetting extends StatelessWidget {
-  // final TextEditingController _dateController = TextEditingController();
-  // final controller = Get.put(ProfileController());
-  final _controller = Get.find<BottomNavBarController>();
+  // final _controller = Get.find<BottomNavBarController>();
+  int calculatePercentage(Map<String, dynamic>? data) {
+    int percentage = 10;
+    if (data!.containsKey("cnic")) {
+      percentage += 60;
+    }
+    if (auth.currentUser!.emailVerified) {
+      percentage += 20;
+    }
+    if (data.containsKey("homeAddress")) {
+      percentage += 15;
+    }
+    if (data.containsKey("workingDetails")) {
+      percentage += 15;
+    }
+    if (data.containsKey("nominee")) {
+      percentage += 15;
+    }
+    if (percentage > 100) {
+      percentage = 100;
+    }
+    if (percentage != data['profileComplete']) {
+      UserDatabase.updateProfileCompletion(percentage);
+    }
+    return percentage;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +75,8 @@ class ProfileSetting extends StatelessWidget {
                     child: BasicSetting(snapshotData: snapshot.data!.data()),
                   ),
                   PercentageIndicatorWidget(
-                    percentage: snapshot.data!["percentage"],
+                    percentage: calculatePercentage(snapshot.data!.data()),
+                    // snapshot.data!["profileComplete"],
                   ),
                 ],
               );
@@ -75,23 +99,102 @@ class PercentageIndicatorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      child: LinearPercentIndicator(
-        // width: MediaQuery.of(context).size.width - 50,
-        animation: true,
-        lineHeight: 30.0,
-        animationDuration: 2500,
-        percent: percentage / 100,
-        center: CustomText(
-          text: "Profile Complete: $percentage %",
-          weight: FontWeight.bold,
-          size: 17,
-          color: Colors.white,
-        ),
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+            barrierColor: Colors.grey.withOpacity(0.8),
+            context: context,
+            builder: (_) => Center(
+              child: Container(
+                height: 300,
+                width: Get.width * 0.9,
+                // alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  // mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      text: "Profile Completion Criteria",
+                      size: 22,
+                      weight: FontWeight.bold,
+                      color: Colors.green[700],
+                      align: TextAlign.left,
+                    ),
+                    const SizedBox(height: 10),
+                    diologItems("CNIC", "60"),
+                    diologItems("EmailVerification", "20"),
+                    diologItems("Home Address", "15"),
+                    diologItems("Working Details", "15"),
+                    diologItems("Nominee Details", "15"),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        child: LinearPercentIndicator(
+          // width: MediaQuery.of(context).size.width - 50,
+          animation: true,
+          lineHeight: 30.0,
+          animationDuration: 2500,
+          percent: percentage / 100,
+          center: CustomText(
+            text: "Profile Complete: $percentage %",
+            weight: FontWeight.bold,
+            size: 17,
+            color: Colors.white,
+          ),
 
-        // Text(),
-        linearStrokeCap: LinearStrokeCap.roundAll,
-        progressColor: Colors.green,
+          // Text(),
+          linearStrokeCap: LinearStrokeCap.roundAll,
+          progressColor: Colors.green,
+        ),
       ),
+    );
+  }
+
+  Widget diologItems(String title, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CustomText(
+          text: title + ": ",
+          size: 20,
+          weight: FontWeight.w500,
+        ),
+        CustomText(
+          text: value + "%",
+          size: 20,
+          weight: FontWeight.w500,
+          color: Colors.green,
+        ),
+        // Text.rich(
+        //   TextSpan(
+        //     style: TextStyle(
+        //       fontSize: 20,
+        //       color: Colors.black,
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //     children: [
+        //       TextSpan(text: title + ": "),
+        //       TextSpan(
+        //         text: value + "%",
+        //         style: TextStyle(
+        //           fontWeight: FontWeight.bold,
+        //           fontSize: 22,
+        //           color: Colors.blue,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+      ],
     );
   }
 }
@@ -121,29 +224,6 @@ class BasicSetting extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    // Container(
-                    //   width: 90,
-                    //   height: 90,
-                    //   decoration: BoxDecoration(
-                    //     border: Border.all(
-                    //         width: 2,
-                    //         color: Theme.of(context).scaffoldBackgroundColor),
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //           spreadRadius: 2,
-                    //           blurRadius: 10,
-                    //           color: Colors.black.withOpacity(0.1),
-                    //           offset: Offset(0, 10))
-                    //     ],
-                    //     shape: BoxShape.circle,
-                    //     image: DecorationImage(
-                    //       fit: BoxFit.cover,
-                    //       image: NetworkImage(
-                    //         "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     CachedNetworkImage(
                       imageUrl:
                           snapshotData!["profileImg_url"] ?? Secrets.NO_IMG,
@@ -210,10 +290,11 @@ class BasicSetting extends StatelessWidget {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: CustomText(
-                                      text: snapshotData!['name'],
-                                      size: 25,
-                                      weight: FontWeight.bold,
-                                      color: Colors.blue[300]),
+                                    text: snapshotData!['name'],
+                                    size: 25,
+                                    weight: FontWeight.bold,
+                                    // color: Colors.blue[300]
+                                  ),
                                 ),
                               ),
                             ),
@@ -225,7 +306,7 @@ class BasicSetting extends StatelessWidget {
                               child: Icon(
                                 Icons.edit,
                                 size: 18,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             )
                           ],
@@ -233,13 +314,14 @@ class BasicSetting extends StatelessWidget {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: CustomText(
-                              text: auth.currentUser!.phoneNumber!,
+                            text: auth.currentUser!.phoneNumber!,
 
-                              // .phoneNumber
-                              // .toString(),
-                              size: 25,
-                              weight: FontWeight.bold,
-                              color: Colors.blue[300]),
+                            // .phoneNumber
+                            // .toString(),
+                            size: 25,
+                            weight: FontWeight.bold,
+                            // color: Colors.blue[300]
+                          ),
                         )
                       ],
                     ),
@@ -334,8 +416,8 @@ class BasicSetting extends StatelessWidget {
                 ProfileItem(
                     title: "License",
                     icon: Icons.card_travel,
-                    isAdded: snapshotData!.containsKey("license"),
-                    percentage: "10",
+                    // isAdded: snapshotData!.containsKey("license"),
+                    // percentage: "10",
                     value: snapshotData!.containsKey("license")
                         ? snapshotData!['license']['license']
                         : "Not Added Yet",

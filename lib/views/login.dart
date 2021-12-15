@@ -16,12 +16,15 @@ class Login extends StatelessWidget {
     const textFontSize = 20.0;
     return Scaffold(
       body: Container(
-      //  alignment: Alignment.topCenter,
+        //  alignment: Alignment.topCenter,
         margin: EdgeInsets.symmetric(vertical: Get.height / 10, horizontal: 10),
         child: ListView(
           children: [
-            Image.asset('assets/logo.jpg',height: 120,),
-             SizedBox(height: 13),
+            Image.asset(
+              'assets/logo.jpg',
+              height: 120,
+            ),
+            SizedBox(height: 13),
             Container(
               alignment: Alignment.topLeft,
               child: FittedBox(
@@ -42,8 +45,8 @@ class Login extends StatelessWidget {
                 child: CustomText(
                   text: "Sign in with One Time Password (OTP)",
                   weight: FontWeight.w500,
-                  size:13,
-                   color: Color(0xFFF4793E),
+                  size: 13,
+                  color: Color(0xFFF4793E),
                 ),
               ),
             ),
@@ -65,7 +68,7 @@ class Login extends StatelessWidget {
                     }
                   },
                   style: const TextStyle(
-                    color:Color(0xFFF4793E),
+                    color: Color(0xFFF4793E),
                     fontSize: textFontSize,
                   ),
                   keyboardType: TextInputType.number,
@@ -101,9 +104,7 @@ class Login extends StatelessWidget {
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.black45
-                        )
-                        ),
+                        borderSide: BorderSide(color: Colors.black45)),
                     hintText: "Enter your Phone no.",
                     hintStyle:
                         const TextStyle(color: Colors.white54, fontSize: 16),
@@ -141,7 +142,8 @@ class Login extends StatelessWidget {
                           ),
                           Text(
                             "Enter 6 digit code",
-                            style: TextStyle(fontSize: 16, color: Color(0xFFF4793E)),
+                            style: TextStyle(
+                                fontSize: 16, color: Color(0xFFF4793E)),
                           ),
                           Expanded(
                             child: Container(
@@ -193,7 +195,12 @@ class Login extends StatelessWidget {
                                   style: ButtonStyle(
                                     enableFeedback: true,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    WidgetsBinding.instance!
+                                        .addPostFrameCallback((_) {
+                                      Get.offAll(() => Login());
+                                    });
+                                  },
                                   child: CustomText(
                                     text: 'Resent OTP',
                                     size: 20,

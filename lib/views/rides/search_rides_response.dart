@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carpooling_app/constants/secrets.dart';
 import 'package:carpooling_app/models/rideModel.dart';
@@ -50,6 +52,8 @@ class SearchRidesResponse extends StatefulWidget {
 }
 
 class _SearchRidesResponseState extends State<SearchRidesResponse> {
+  String genderFilter = "Both";
+  String vehicleFilter = "Both";
   Query<Map<String, dynamic>> get queryPostalCode => FirebaseFirestore.instance
       .collection("ride")
       .where('startPostalCode', isEqualTo: widget.startPostalCode)
@@ -94,6 +98,7 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
   Query<Map<String, dynamic>> getQueryWithFilters(int queryType,
       {required String category, required String value}) {
     // print(xc);
+    // queryCity.where(field)
     if (queryType == 1) {
       //
       return FirebaseFirestore.instance
@@ -147,7 +152,6 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
           child: Column(
             children: [
               const SizedBox(height: 10),
-
               Center(
                 child: ToggleButtons(
                   borderColor: Colors.transparent,
@@ -155,7 +159,7 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
                   borderWidth: 1,
                   selectedBorderColor: selectedColor,
                   // direction: Axis.vertical,
-                  // borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10),
                   // renderBorder: false,
                   children: <Widget>[
                     toggleButtonItem(" City "),
@@ -173,7 +177,6 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
                 ),
               ),
               const SizedBox(height: 10),
-
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //   children: [
@@ -182,28 +185,33 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
               //     Icon(Icons.filter_list_alt)
               //   ],
               // ),
-              //   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              //       stream: getDataQuery(queryType: 1).snapshots(),
-              //       builder: (context, snapshot) {
-              //         if (snapshot.hasData) {
-              //           if (snapshot.data!.docs.length == 0) {
-              //             return Text("No ride found");
-              //           }
-              //           return Flex(
-              //             direction: Axis.vertical,
-              //             children: snapshot.data!.docs.map((e) {
-              //               return RideItem(
-              //                 ride: RideModel.fromDocumentSnapshot(snapshot: e),
-              //               );
-              //               // postedRideItem(
-              //               //     RideModel.fromDocumentSnapshot(snapshot: e),
-              //               //     context);
-              //             }).toList(),
-              //           );
-              //         } else {
-              //           return Center(child: CircularProgressIndicator());
-              //         }
-              //       })
+              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection("ride")
+                      // .where('startPostalCode',
+                      //     isEqualTo: widget.startPostalCode)
+                      // .where('endPostalCode', isEqualTo: widget.endPostalCode)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.docs.length == 0) {
+                        return Text("No ride found");
+                      }
+                      return Flex(
+                        direction: Axis.vertical,
+                        children: snapshot.data!.docs.map((e) {
+                          return RideItem(
+                            ride: RideModel.fromDocumentSnapshot(snapshot: e),
+                          );
+                          // postedRideItem(
+                          //     RideModel.fromDocumentSnapshot(snapshot: e),
+                          //     context);
+                        }).toList(),
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  })
             ],
           ),
         ),
@@ -240,9 +248,9 @@ class RideItem extends StatefulWidget {
 class _RideItemState extends State<RideItem> {
   UserModel? driver;
   IconData getIcon(String x) {
-    if (x == "std") {
+    if (x == "Student") {
       return Icons.school_sharp;
-    } else if (x == "emp") {
+    } else if (x == "Employee") {
       return Icons.laptop_mac_rounded;
     } else {
       return Icons.business_center_rounded;
@@ -261,6 +269,7 @@ class _RideItemState extends State<RideItem> {
       if (documentSnapshot.exists) {
         setState(() {
           driver = UserModel.fromDocumentSnapshot(snapshot: documentSnapshot);
+          // print(driver!.workingDetails['vsdv']);
         });
       } else {
         print("User document not found");
@@ -289,6 +298,9 @@ class _RideItemState extends State<RideItem> {
                     InkWell(
                       onTap: () {
                         Get.to(ViewProfile(user: driver!));
+                        // print("maaap");
+                        // print(driver!.workingDetails);
+                        // print(driver!.workingDetails['type']);
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -333,27 +345,28 @@ class _RideItemState extends State<RideItem> {
                                   ),
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.ac_unit_rounded,
-                                    // getIcon(driver!.workingDetails['type']
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Container(
-                                    width: Get.width / 2.2,
-                                    alignment: Alignment.topLeft,
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: CustomText(
-                                        text:
-                                            "driver!.workingDetails['address']",
-                                        // size: 18,
+                              if (driver!.workingDetails.isNotEmpty)
+                                Row(
+                                  children: [
+                                    Icon(
+                                        // Icons.ac_unit_rounded,
+                                        getIcon(
+                                            driver!.workingDetails['type'])),
+                                    const SizedBox(width: 5),
+                                    Container(
+                                      width: Get.width / 2.2,
+                                      alignment: Alignment.topLeft,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: CustomText(
+                                          text: driver!.workingDetails['type']
+                                              .toString(),
+                                          // size: 18,
+                                        ),
                                       ),
-                                    ),
-                                  ), //Company detail or anything
-                                ],
-                              ),
+                                    ), //Company detail or anything
+                                  ],
+                                ),
                             ],
                           ),
                         ],
@@ -373,7 +386,7 @@ class _RideItemState extends State<RideItem> {
                             percent: 0.8,
                             center: Text(
                               // percent.toString() + "%",
-                              "80%",
+                              "${Random().nextInt(50) + 50}%",
                               style: TextStyle(
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w600,
@@ -767,12 +780,12 @@ class _RideItemState extends State<RideItem> {
                                         ),
                                         Row(
                                           children: [
-                                            Text("56*"
+                                            Text("${Random().nextInt(15)}"
                                                 // driver!.postedRidesList.length
                                                 //   .toString()
 
                                                 ),
-                                            Icon(Icons.redo)
+                                            Icon(Icons.visibility)
                                             // Text("Request send"),
                                           ],
                                         ),

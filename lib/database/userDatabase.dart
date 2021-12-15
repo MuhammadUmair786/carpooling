@@ -323,15 +323,7 @@ class UserDatabase {
     });
   }
 
-  // name date of birth : 10%
-  // link email : +30%
-  // add home address : +20%
-  // add job detail : +20%
-
-  // add cnic : +50%
-  // add
-
-  static void profileCompletion(double value) {
+  static void updateProfileCompletion(int value) {
     userDoc
         .update({'profileComplete': value})
         .then((value) {})
@@ -386,6 +378,31 @@ class UserDatabase {
           print("Failed to add user profileComplete value: $error");
           showErrorSnackBar();
         });
+  }
+
+  static void addReviews(double ratingValue, String text, String rideId) {
+    showLoading();
+    var _tempReviewList = [
+      {
+        "rating": ratingValue,
+        "review": text,
+        "rideID": rideId,
+        "date": DateTime.now().microsecondsSinceEpoch,
+      }
+    ];
+    // print(_tempvehicileList.toString());
+
+    userDoc.update({
+      'reviews': FieldValue.arrayUnion(_tempReviewList),
+    }).then((value) {
+      dismissLoadingWidget();
+      Get.to(() => Vehicle());
+      // showSnackBar("Vehicle Added Sucessfuly!", "Wait for verification");
+    }).catchError((error) {
+      print("Failed to add Reviews: $error");
+      dismissLoadingWidget();
+      showErrorSnackBar();
+    });
   }
 
   // static void addEmail(String name,String email,String img_url,) {}

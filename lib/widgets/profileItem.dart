@@ -6,16 +6,16 @@ class ProfileItem extends StatelessWidget {
   final String value;
   final IconData icon;
   final Function() func;
-  final bool isAdded;
-  final String percentage;
+  final bool? isAdded;
+  final String? percentage;
 
   const ProfileItem(
       {required this.title,
       required this.value,
       required this.icon,
       required this.func,
-      required this.isAdded,
-      required this.percentage});
+      this.isAdded,
+      this.percentage});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -62,12 +62,13 @@ class ProfileItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              CustomText(
-                text: "$percentage %",
-                color: isAdded ? Colors.green : Colors.red,
-                weight: FontWeight.w500,
-                size: 18,
-              )
+              if (isAdded != null)
+                CustomText(
+                  text: "$percentage %",
+                  color: isAdded! ? Colors.green : Colors.red,
+                  weight: FontWeight.w500,
+                  size: 18,
+                )
             ],
           )
 

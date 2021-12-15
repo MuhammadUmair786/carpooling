@@ -23,6 +23,7 @@ class LoginController extends GetxController {
 
   sendCodeToAutoVerifyPhone(String phone) async {
     showLoading();
+    // 3338665569
     phoneNo = "+92" + phone;
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(

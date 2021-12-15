@@ -107,14 +107,14 @@ class _PostRideState extends State<PostRide> {
   var vehicleList = Get.find<BottomNavBarController>().getUser!.vehicleList;
 
   InputDecoration decoration({
-    String? hint,
+    // String? hint,
     String? label,
     required IconData icon,
     Color? iconColor,
   }) {
     return InputDecoration(
-      hintText: hint,
-      hintStyle: TextStyle(fontSize: 16, color: Colors.white),
+      hintText: label,
+      hintStyle: TextStyle(fontSize: 18, color: Colors.white),
       fillColor: Colors.grey[500],
       filled: true,
       errorStyle: TextStyle(fontSize: 18),
@@ -127,8 +127,8 @@ class _PostRideState extends State<PostRide> {
       // border: UnderlineInputBorder(),
       // hintText: hint,
       // hintStyle: style, //final feild in Parent
-      labelText: label,
-      labelStyle: TextStyle(fontSize: 22, color: Colors.black),
+      // labelText: label,
+      // labelStyle: TextStyle(fontSize: 22, color: Colors.black),
       prefixIcon: Icon(
         icon,
         color: iconColor,
@@ -441,12 +441,12 @@ class _PostRideState extends State<PostRide> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          genderBottomSheetItem(Icons.male,
-                                              Colors.blue, " Male "),
+                                          genderBottomSheetItem(
+                                              Icons.male, Colors.blue, "Male"),
                                           genderBottomSheetItem(Icons.female,
                                               Colors.green, "Female"),
-                                          genderBottomSheetItem(Icons.block,
-                                              Colors.red, " None "),
+                                          genderBottomSheetItem(
+                                              Icons.block, Colors.red, "Both"),
                                         ],
                                       ),
                                     ],

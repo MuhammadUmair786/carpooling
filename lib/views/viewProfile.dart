@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carpooling_app/constants/secrets.dart';
 import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -27,26 +31,42 @@ class ViewProfile extends StatelessWidget {
                     },
                     icon: Icon(Icons.arrow_back)),
               ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(bottom: 15),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80 "),
-                  radius: 50.0,
+
+              CachedNetworkImage(
+                imageUrl: user.img ?? Secrets.NO_IMG,
+                // fit: BoxFit.cover,
+                // repeat: ImageR,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 100.0,
+                  height: 100.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
+                  ),
                 ),
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                  strokeWidth: 2,
+                ),
+                // placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomText(
-                    text: "Muhammad Uzair",
+                    text: user.name,
                     size: 25,
                     color: Colors.blueGrey,
                     weight: FontWeight.w400,
                   ),
                   SizedBox(width: 5),
-                  Icon(Icons.verified)
+                  if (user.profileComplete > 60)
+                    Icon(
+                      Icons.verified,
+                    )
                 ],
               ),
               SizedBox(height: 5),
@@ -81,16 +101,18 @@ class ViewProfile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        profileDetailItem("Member Since", "2018", 1),
-                        profileDetailItem("Last Ride", "3 Days ago", 2),
+                        profileDetailItem("Member Since", "2021", 1),
+                        profileDetailItem(
+                            "Last Ride", "${Random().nextInt(4)} Days ago", 2),
                       ],
                     ),
                     SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        profileDetailItem("Profile Complete", "85%", 1),
-                        profileDetailItem("Rating", "4.5", 2),
+                        profileDetailItem(
+                            "Profile Complete", "${user.profileComplete}%", 1),
+                        profileDetailItem("Rating", "${user.rating}", 2),
                       ],
                     ),
                     SizedBox(height: 15),
@@ -98,7 +120,7 @@ class ViewProfile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         profileDetailItem("Reviews", "5", 1),
-                        profileDetailItem("Rides", "16", 2),
+                        profileDetailItem("Rides", "${Random().nextInt(3)}", 2),
                       ],
                     ),
                   ],
