@@ -20,6 +20,7 @@ class SavedTemplate extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: Color(0xFFF4793E),
         title: Text("Saved Templates"),
         centerTitle: true,
       ),

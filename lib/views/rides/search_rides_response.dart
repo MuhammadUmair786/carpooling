@@ -127,7 +127,7 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 45,
+        backgroundColor: Color(0xFFF4793E),
         title: Text("Matching Rides"),
         centerTitle: true,
         actions: [
@@ -216,12 +216,11 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
       padding: EdgeInsets.all(10),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        // borderRadius: BorderRadius.circular(10),
         color: selectedColor.withOpacity(0.3),
       ),
       child: CustomText(
         text: value,
-        size: 20,
+        size: 16,
         color: Colors.black,
         weight: FontWeight.w500,
       ),

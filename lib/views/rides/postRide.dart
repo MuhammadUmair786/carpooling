@@ -174,6 +174,7 @@ class _PostRideState extends State<PostRide> {
     const double gapHeight = 10;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         title: Text("Set & Go"),
         actions: [
           IconButton(
@@ -204,11 +205,11 @@ class _PostRideState extends State<PostRide> {
                   //     },
                   //     child: Icon(Icons.arrow_back_ios_new_rounded)),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
+                    margin: EdgeInsets.symmetric(vertical: 10),
                     child: CustomText(
                       text: "Set Up Your Ride",
                       weight: FontWeight.bold,
-                      size: 35,
+                      size: 20,
                     ),
                   ),
                   // ListTile(
@@ -219,9 +220,9 @@ class _PostRideState extends State<PostRide> {
                   //   ),
                   // ),
                   // rideItem(),
-                  SizedBox(
-                    height: 23,
-                  ),
+                  // SizedBox(
+                  //   height: 23,
+                  // ),
                   // if (widget.rideType != 1)
                   InkWell(
                     onTap: () async {
@@ -619,7 +620,7 @@ class _PostRideState extends State<PostRide> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(Get.width / 2.5, 40),
-                        primary: Colors.blue,
+                        primary: Color(0xFFF4793E),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),

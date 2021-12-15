@@ -9,9 +9,9 @@ class Favourites extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         elevation: 0,
         title: Text("Favourite"),
-        centerTitle: true,
       ),
       body: SafeArea(
         child: Container(
@@ -33,10 +33,10 @@ class Favourites extends StatelessWidget {
   Container favouriteItem() {
     return Container(
       padding: EdgeInsets.all(13),
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -56,7 +56,7 @@ class Favourites extends StatelessWidget {
                   // Get.to(() => ViewProfile());
                 },
                 child: CircleAvatar(
-                  radius: 35,
+                  radius: 30,
                   backgroundImage: NetworkImage(
                     "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
                   ),
@@ -73,14 +73,14 @@ class Favourites extends StatelessWidget {
                       fit: BoxFit.scaleDown,
                       child: CustomText(
                         text: "Uzair Iqbal",
-                        size: 25,
+                        size: 18,
                       ),
                     ),
                   ),
                   GFRating(
                     color: GFColors.SUCCESS,
                     borderColor: GFColors.SUCCESS,
-                    filledIcon: Icon(Icons.star, color: GFColors.SUCCESS),
+                    filledIcon: Icon(Icons.star, color: Color(0xFFF4793E)),
                     defaultIcon: Icon(
                       Icons.star,
                       color: GFColors.LIGHT,
@@ -95,9 +95,9 @@ class Favourites extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Icon(Icons.notifications_active),
+                  Icon(Icons.notifications_active,size:18),
                   SizedBox(height: 5),
-                  Icon(Icons.favorite)
+                  Icon(Icons.favorite,size:18)
                 ],
               )
             ],
@@ -111,7 +111,7 @@ class Favourites extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(ic),
+        Icon(ic,color:Color(0xFFF4793E)),
         SizedBox(width: 5),
         Container(
           alignment: Alignment.topLeft,

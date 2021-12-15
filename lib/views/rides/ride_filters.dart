@@ -2,7 +2,7 @@ import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Color selectedColor = Colors.blue;
+Color selectedColor = Color(0xFFF4793E);
 
 class RideFilter extends StatelessWidget {
   final TextEditingController _genderController =
@@ -16,18 +16,17 @@ class RideFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // elevation: 0.5,
+       backgroundColor: Color(0xFFF4793E),
         leading: Icon(
           Icons.filter_list_alt,
           color: Colors.white,
         ),
         automaticallyImplyLeading: false,
-        toolbarHeight: 45,
         title: Text("Filters"),
         actions: [
           IconButton(
             splashRadius: 25,
-            icon: Icon(Icons.close, color: Colors.red),
+            icon: Icon(Icons.close, color: Colors.white),
             onPressed: () => Get.back(),
           ),
         ],
@@ -69,8 +68,9 @@ class RideFilter extends StatelessWidget {
                       width: Get.width * 0.4,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+
                           // minimumSize: Size(double.infinity, 35),
-                          primary: Colors.green,
+                          primary: Color(0xFFF4793E),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -79,6 +79,7 @@ class RideFilter extends StatelessWidget {
                         child: CustomText(
                           text: "Clear",
                           size: 17,
+                          color: Colors.white,
                           weight: FontWeight.bold,
                         ),
                       ),
@@ -89,7 +90,7 @@ class RideFilter extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           // minimumSize: Size(double.infinity, 35),
-                          primary: Colors.green,
+                          primary: Color(0xFFF4793E),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -102,6 +103,7 @@ class RideFilter extends StatelessWidget {
                         child: CustomText(
                           text: "Apply",
                           size: 17,
+                          color:Colors.white,
                           weight: FontWeight.bold,
                         ),
                       ),
@@ -132,7 +134,7 @@ class RideFilter extends StatelessWidget {
           CustomText(
             text: title,
             weight: FontWeight.bold,
-            size: 25,
+            size: 18,
           ),
           SizedBox(height: 10),
           childWidget,

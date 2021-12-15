@@ -54,11 +54,14 @@ class AboutUs extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CustomText(
-                  text: "Our Mission",
-                  weight: FontWeight.w500,
-                  size: 35,
-                  color: Colors.amber,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomText(
+                    text: "Our Mission",
+                    weight: FontWeight.w500,
+                    size: 30,
+                    color: Color(0xFFF4793E),
+                  ),
                 ),
               ],
             ),
@@ -72,7 +75,7 @@ class AboutUs extends StatelessWidget {
                       CustomText(
                         text: "Eco-Friendly",
                         weight: FontWeight.w500,
-                        size: 20,
+                        size: 18,
                       ),
                     ],
                   ),
@@ -82,7 +85,7 @@ class AboutUs extends StatelessWidget {
                       CustomText(
                         text: "Reduce Traffic",
                         weight: FontWeight.w500,
-                        size: 20,
+                        size: 18,
                       ),
                     ],
                   ),
@@ -92,7 +95,7 @@ class AboutUs extends StatelessWidget {
                       CustomText(
                         text: "Reduce Travel Expense",
                         weight: FontWeight.w500,
-                        size: 20,
+                        size: 18,
                       ),
                     ],
                   ),
@@ -105,11 +108,14 @@ class AboutUs extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CustomText(
-                  text: "Surpervised by",
-                  weight: FontWeight.w500,
-                  size: 35,
-                  color: Colors.amber,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomText(
+                    text: "Surpervised by",
+                    weight: FontWeight.w500,
+                    size: 30,
+                    color: Color(0xFFF4793E),
+                  ),
                 ),
               ],
             ),
@@ -131,11 +137,14 @@ class AboutUs extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CustomText(
-                  text: "Developers",
-                  weight: FontWeight.w500,
-                  size: 35,
-                  color: Colors.amber,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomText(
+                    text: "Developers",
+                    weight: FontWeight.w500,
+                    size: 30,
+                    color:Color(0xFFF4793E),
+                  ),
                 ),
               ],
             ),
@@ -149,12 +158,13 @@ class AboutUs extends StatelessWidget {
                   // weight: FontWeight.bold,
                 ),
                 CustomText(
-                  text: 'Comsats Islamabad',
+                  text: 'COMSATS University Islamabad',
                   weight: FontWeight.bold,
-                  size: 20,
+                  size: 18,
                 ),
               ],
             ),
+            SizedBox(height: 10,)
           ],
         ),
       ),
@@ -164,12 +174,12 @@ class AboutUs extends StatelessWidget {
   Container aboutItems(String nam, String detail) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.
         children: [
           CircleAvatar(
-            radius: 45,
+            radius: 30,
             backgroundImage: NetworkImage(
               "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80",
             ),
@@ -185,12 +195,12 @@ class AboutUs extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: CustomText(
                     text: nam,
-                    size: 25,
+                    size: 18,
                     weight: FontWeight.w600,
                   ),
                 ),
               ),
-              CustomText(text: detail)
+              CustomText(text: detail,size:14)
             ],
           )
         ],

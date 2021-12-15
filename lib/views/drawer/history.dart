@@ -9,9 +9,9 @@ class History extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         elevation: 0,
         title: Text("History"),
-        centerTitle: true,
       ),
       body: SafeArea(
         child: Container(
@@ -34,10 +34,10 @@ class History extends StatelessWidget {
   Container historyItem() {
     return Container(
       padding: EdgeInsets.all(13),
-      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -55,13 +55,13 @@ class History extends StatelessWidget {
             children: [
               CustomText(
                 text: "Id # 3523346245745",
-                size: 15,
+                size: 14,
                 weight: FontWeight.bold,
                 color: Colors.deepPurple,
               ),
               CustomText(
                 text: "24 Aug, 2021",
-                size: 15,
+                size: 14,
                 weight: FontWeight.bold,
                 color: Colors.purple,
               ),
@@ -98,10 +98,10 @@ class History extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(text: "Pending"),
+              CustomText(text: "Pending",size:12),
               CustomText(
                 text: "Rs. 230",
-                size: 20,
+                size: 15,
                 weight: FontWeight.bold,
                 color: Colors.red,
               ),
@@ -116,7 +116,7 @@ class History extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(ic),
+        Icon(ic,color:Color(0xFFF4793E)),
         SizedBox(width: 5),
         Container(
           alignment: Alignment.topLeft,
@@ -125,7 +125,7 @@ class History extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: CustomText(
               text: locationName,
-              size: 18,
+              size: 14,
             ),
           ),
         ),

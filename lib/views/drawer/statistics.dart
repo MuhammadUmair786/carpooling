@@ -9,9 +9,10 @@ class Statistics extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         title: Text(
           "Statistics",
-          textScaleFactor: 1.2,
+          
         ),
         elevation: 1,
       ),
@@ -21,7 +22,8 @@ class Statistics extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
+                border: Border.all(color: Color(0xFFF4793E),width: 2),
+                borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.all(10),
               margin: EdgeInsets.symmetric(vertical: 10),
@@ -30,10 +32,10 @@ class Statistics extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.ac_unit_sharp),
+                      Icon(Icons.ac_unit_sharp,color: Color(0xFFF4793E),),
                       CustomText(
                         text: "Monthly Overview",
-                        size: 22,
+                        size: 18,
                         weight: FontWeight.w500,
                       ),
                     ],
@@ -60,7 +62,7 @@ class Statistics extends StatelessWidget {
                   ),
                   CustomText(
                       text: "Pending Clearence",
-                      size: 17,
+                      size: 14,
                       weight: FontWeight.w500),
                   CustomText(
                       text: "Rs. 400", size: 25, weight: FontWeight.bold),
@@ -105,7 +107,7 @@ class Statistics extends StatelessWidget {
           ),
           // backgroundColor: Colors.grey[300]!,
           circularStrokeCap: CircularStrokeCap.round,
-          progressColor: Colors.green,
+          progressColor: Color(0xFFF4793E),
         ),
         CustomText(
           text: txt1,
@@ -127,6 +129,7 @@ class Statistics extends StatelessWidget {
         children: [
           CustomText(
             text: heading,
+            size: 14,
           ),
           CustomText(
             text: value,

@@ -10,37 +10,44 @@ class HelpAndSupport extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         title: Text("Help & Support"),
-        centerTitle: true,
         elevation: 0,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(NewComplain());
+        },
+        child: Icon(Icons.add,color: Colors.white,),
+        backgroundColor: Color(0xFFF4793E),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              InkWell(
-                onTap: () {
-                  Get.to(() => NewComplain());
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.new_label,
-                        size: 35,
-                      ),
-                      SizedBox(width: 10),
-                      CustomText(
-                        text: "Submit a new request",
-                        size: 22,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // InkWell(
+              //   onTap: () {
+              //     Get.to(() => NewComplain());
+              //   },
+              //   child: Container(
+              //     margin: EdgeInsets.symmetric(vertical: 10),
+              //     child: Row(
+              //       crossAxisAlignment: CrossAxisAlignment.end,
+              //       children: [
+              //         Icon(
+              //           Icons.new_label,
+              //           size: 35,
+              //         ),
+              //         SizedBox(width: 10),
+              //         CustomText(
+              //           text: "Submit a new request",
+              //           size: 22,
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               requestItem(),
               requestItem(),
               requestItem(),
@@ -54,10 +61,10 @@ class HelpAndSupport extends StatelessWidget {
   Container requestItem() {
     return Container(
       padding: EdgeInsets.all(13),
-      margin: EdgeInsets.symmetric(vertical: 15),
+      margin: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -72,7 +79,7 @@ class HelpAndSupport extends StatelessWidget {
         children: [
           CustomText(
             text: "Created: 5 Days ago",
-            size: 15,
+            size: 12,
             weight: FontWeight.bold,
             color: Colors.blue,
           ),
@@ -83,9 +90,9 @@ class HelpAndSupport extends StatelessWidget {
           ),
           CustomText(
             text: "Id # 2334455667",
-            size: 18,
+            size: 14,
             weight: FontWeight.bold,
-            color: Colors.blue[900],
+            color: Color(0xFFF4793E),
           ),
           SizedBox(height: 5),
           Container(
@@ -93,7 +100,9 @@ class HelpAndSupport extends StatelessWidget {
               "Driver did not complete ride, instead he kick me out from the car ",
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
-              textScaleFactor: 1.5,
+              style: TextStyle(
+                fontSize: 14,
+              ),
             ),
           ),
           Container(
@@ -105,14 +114,14 @@ class HelpAndSupport extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Icon(Icons
-                  .pending_actions), //add different iccon for solved and pending
+                  .pending_actions,size:18), //add different iccon for solved and pending
               SizedBox(width: 5),
-              CustomText(text: "Pending"),
+              CustomText(text: "Pending",size: 14,weight: FontWeight.bold,color: Colors.red),
               Spacer(),
               CustomText(
                 text: "Last Activity: Today",
-                size: 15,
-                weight: FontWeight.bold,
+                size: 12,
+                weight: FontWeight.w600,
                 color: Colors.blueGrey,
               ),
             ],
