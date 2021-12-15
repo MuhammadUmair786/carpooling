@@ -1,5 +1,7 @@
+import 'package:carpooling_app/views/Payment/paymentHomeScreen.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AddCash extends StatelessWidget {
   @override
@@ -18,7 +20,7 @@ class AddCash extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 addCashItem(Icons.account_balance, "Through Bank", () {
-                  // Get.to(() => ProfileSetting());
+                  // Get.to(() =>
                 }),
                 addCashItem(Icons.e_mobiledata, "Through EasyPaisa", () {
                   // Get.to(() => NotificationSetting());

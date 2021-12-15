@@ -19,13 +19,12 @@ class SearchRidesResponse extends StatelessWidget {
   final String? startAddress;
   final LatLng? endPoint;
   final String? endAddress;
- final  String startCity;
- final  String endCity;
-  final  String startPostalCode;
- final  String endPostalCode;
-
-final  String startSubLocality;
- final  String endSubLocality;
+  final String? startCity;
+  final String? endCity;
+  final String? startPostalCode;
+  final String? endPostalCode;
+  final String? startSubLocality;
+  final String? endSubLocality;
   //1: search by postalCode (nearby)
   //2: search by city
   //3: exact search
@@ -47,9 +46,8 @@ final  String startSubLocality;
           .collection("ride")
           .where('startSubLocality', isEqualTo: startSubLocality)
           .where('endSubLocality', isEqualTo: endSubLocality);
-    } else{
-return FirebaseFirestore.instance
-          .collection("ride");
+    } else {
+      return FirebaseFirestore.instance.collection("ride");
     }
     // return null;
   }
@@ -59,7 +57,13 @@ return FirebaseFirestore.instance
       this.startPoint,
       this.startAddress,
       this.endPoint,
-      this.endAddress})
+      this.endAddress,
+      this.startCity,
+      this.endCity,
+      this.startPostalCode,
+      this.endPostalCode,
+      this.startSubLocality,
+      this.endSubLocality})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

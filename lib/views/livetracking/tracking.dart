@@ -67,13 +67,13 @@ class _trackingState extends State<tracking> {
       _locationSubscription =
           _locationTracker.onLocationChanged.listen((newLocalData) {
         if (_controller != null) {
-          _controller!
-              .animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
+          _controller!.animateCamera(CameraUpdate.newCameraPosition(
+              new CameraPosition(
                   bearing: 192.8334901395799,
                   // latitude and longitude should be given here
                   target:
                       LatLng(newLocalData.latitude!, newLocalData.longitude!),
-                      // LatLng(27.2046, 77.4977),
+                  // LatLng(27.2046, 77.4977),
                   tilt: 0,
                   zoom: 18.00)));
           updateMarkerAndCircle(newLocalData, imageData);

@@ -2,6 +2,8 @@
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/rideDatabase.dart';
 import 'package:carpooling_app/models/userModel.dart';
+import 'package:carpooling_app/views/Payment/paymentHomeScreen.dart';
+import 'package:carpooling_app/views/livetracking/tracking.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/views/rides/postedRideInfo.dart';
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
@@ -74,9 +76,7 @@ class _HomeState extends State<Home> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              Get.to(() => GMap(
-                                    labelNote: 'uyg ugy ug',
-                                  ));
+                              Get.to(() => tracking());
                             },
                             child: Text("dfsdsdgsd")),
                         // TextButton(
@@ -199,7 +199,8 @@ class _HomeState extends State<Home> {
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  Get.to(() => AddCash());
+                                                  Get.to(() =>
+                                                      paymentHomeScreen());
                                                 },
                                                 child: Text(
                                                   "Add Cash",
