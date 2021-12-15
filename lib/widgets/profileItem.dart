@@ -32,8 +32,8 @@ class ProfileItem extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 30,
-                color: Colors.blue,
+                size: 25,
+                color: Color(0xFFF4793E),
               ),
               const SizedBox(width: 15),
               Expanded(
@@ -43,7 +43,7 @@ class ProfileItem extends StatelessWidget {
                     CustomText(
                       text: title,
                       weight: FontWeight.bold,
-                      size: 20,
+                      size: 18,
                     ),
                     SizedBox(height: 3),
                     if (value.isNotEmpty)
@@ -54,7 +54,7 @@ class ProfileItem extends StatelessWidget {
                           fit: BoxFit.scaleDown,
                           child: CustomText(
                             text: value,
-                            size: 20,
+                            size: 14,
                           ),
                         ),
                       ),
@@ -67,7 +67,7 @@ class ProfileItem extends StatelessWidget {
                   text: "$percentage %",
                   color: isAdded! ? Colors.green : Colors.red,
                   weight: FontWeight.w500,
-                  size: 18,
+                  size: 15,
                 )
             ],
           )

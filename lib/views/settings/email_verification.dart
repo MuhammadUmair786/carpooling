@@ -12,6 +12,7 @@ class EmailVerificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         title: Text("Email"),
         elevation: 0.5,
         actions: [
@@ -77,7 +78,7 @@ class EmailVerificationScreen extends StatelessWidget {
           SizedBox(height: 20),
           CustomText(
             text: auth.currentUser!.providerData[0].displayName.toString(),
-            color: Colors.blue,
+            color: Color(0xFFF4793E),
             size: 22,
             weight: FontWeight.bold,
           ),
@@ -88,17 +89,17 @@ class EmailVerificationScreen extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: CustomText(
                 text: auth.currentUser!.providerData[0].email.toString(),
-                size: 20,
-                // color: Colors.cyan,
+                size: 18,
+                color: Color(0xFFF4793E),
               ),
             ),
           ),
           SizedBox(height: 10),
           CustomText(
             text: "DOB: 10 Dec, 1999",
-            // color: Colors.blue,
-            size: 22,
-            weight: FontWeight.bold,
+            color: Color(0xFFF4793E),
+            size: 15,
+           // weight: FontWeight.bold,
           ),
 
           // title: "Birthday",

@@ -84,11 +84,8 @@ class LoginController extends GetxController {
               textScaleFactor: 1.3,
             ),
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.black,
-            colorText: Colors.black,
-            backgroundGradient: LinearGradient(
-              colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-            ),
+            backgroundColor: Color(0xFFF4793E),
+            colorText: Colors.white,
           );
         },
         codeAutoRetrievalTimeout: (String verificationId) {
@@ -111,11 +108,8 @@ class LoginController extends GetxController {
           textScaleFactor: 1.3,
         ),
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black,
-        colorText: Colors.black,
-        backgroundGradient: LinearGradient(
-          colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-        ),
+        backgroundColor: Color(0xFFF4793E),
+        colorText: Colors.white,
       );
     }
   }
@@ -147,11 +141,8 @@ class LoginController extends GetxController {
             textScaleFactor: 1.3,
           ),
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.black,
-          colorText: Colors.black,
-          backgroundGradient: LinearGradient(
-            colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-          ),
+          backgroundColor: Color(0xFFF4793E),
+          colorText: Colors.white,
         );
       });
     } catch (e) {

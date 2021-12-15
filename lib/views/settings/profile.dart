@@ -60,7 +60,7 @@ class ProfileSetting extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: Text("Profile Setting"),
-        centerTitle: true,
+        backgroundColor: Color(0xFFF4793E),
       ),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           stream: FirebaseFirestore.instance
@@ -216,8 +216,8 @@ class BasicSetting extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 10),
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             decoration: BoxDecoration(
+              color: Color(0xFFF4793E),
               borderRadius: BorderRadius.circular(20),
-              color: Colors.grey[300],
             ),
             child: Row(
               // crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,8 +291,9 @@ class BasicSetting extends StatelessWidget {
                                   fit: BoxFit.scaleDown,
                                   child: CustomText(
                                     text: snapshotData!['name'],
-                                    size: 25,
+                                    size: 20,
                                     weight: FontWeight.bold,
+                                    color: Colors.white,
                                     // color: Colors.blue[300]
                                   ),
                                 ),
@@ -306,7 +307,7 @@ class BasicSetting extends StatelessWidget {
                               child: Icon(
                                 Icons.edit,
                                 size: 18,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             )
                           ],
@@ -318,8 +319,9 @@ class BasicSetting extends StatelessWidget {
 
                             // .phoneNumber
                             // .toString(),
-                            size: 25,
-                            weight: FontWeight.bold,
+                            size: 16,
+                            weight: FontWeight.w600,
+                            color: Colors.white,
                             // color: Colors.blue[300]
                           ),
                         )
@@ -335,7 +337,7 @@ class BasicSetting extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Colors.grey[300],
+              color: Color(0xFFF4793E),
             ),
             child: Column(
               children: [

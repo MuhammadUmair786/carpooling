@@ -23,6 +23,7 @@ class DisplayName extends StatelessWidget {
     );
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         elevation: 0,
         // backgroundColor: Colors.,
         // title: Text("Name"),
@@ -33,7 +34,7 @@ class DisplayName extends StatelessWidget {
             alignment: Alignment.center,
             child: CustomText(
               text: "Pending", //verified, failed
-              color: Colors.red,
+              color: Colors.white,
             ),
           )
         ],
@@ -53,8 +54,8 @@ class DisplayName extends StatelessWidget {
                   child: CustomText(
                     text: "Name",
                     // weight: FontWeight.bold,
-                    size: 22,
-                    color: Colors.blue,
+                    size: 18,
+                    color: Color(0xFFF4793E),
                   ),
                 ),
                 TextFormField(
@@ -92,8 +93,8 @@ class DisplayName extends StatelessWidget {
                     return CheckboxListTile(
                       title: CustomText(
                         text: "Use Email Provided Name",
-                        size: 20,
-                        color: Colors.blue,
+                        size: 18,
+                        color: Color(0xFFF4793E),
                       ),
                       value: _checkBoxValue,
                       onChanged: (newValue) {
@@ -114,7 +115,7 @@ class DisplayName extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(Get.width / 1.5, 40),
-                      primary: Colors.blue,
+                      primary: Color(0xFFF4793E),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(35),
                       ),
@@ -123,6 +124,7 @@ class DisplayName extends StatelessWidget {
                     child: CustomText(
                       text: "Save Name",
                       size: 20,
+                      color: Colors.white,
                       weight: FontWeight.bold,
                     ),
                   ),
