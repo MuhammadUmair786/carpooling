@@ -113,6 +113,7 @@ class ChatRoom extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         automaticallyImplyLeading: false,
         actions: [
           Container(
@@ -173,7 +174,7 @@ class ChatRoom extends StatelessWidget {
                           ),
                           CustomText(
                             text: snapshot.data!['status'],
-                            size: 14,
+                            size: 12,
                             weight: FontWeight.w300,
                             color: Colors.white,
                           ),
@@ -330,7 +331,7 @@ class ChatRoom extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                      icon: Icon(Icons.send),
+                      icon: Icon(Icons.send,color: Color(0xFFF4793E),),
                       splashRadius: 25,
                       onPressed: onSendMessage),
                 ],

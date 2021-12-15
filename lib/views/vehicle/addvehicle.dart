@@ -194,9 +194,9 @@ class _AddVehicleState extends State<AddVehicle> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: Color(0xFFF4793E),
         title: Text(
           "Register Your Vehicle",
-          textScaleFactor: 1.1,
         ),
       ),
       body: Form(
@@ -454,7 +454,7 @@ class _AddVehicleState extends State<AddVehicle> {
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color:
-                                      showImgError ? Colors.red : Colors.grey),
+                                      showImgError ? Colors.red : Color(0xFFF4793E)),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Row(
@@ -479,7 +479,7 @@ class _AddVehicleState extends State<AddVehicle> {
                                   child: Icon(
                                     Icons.cloud_upload_rounded,
                                     size: 35,
-                                    color: Colors.pink,
+                                    color: Color(0xFFF4793E),
                                   ),
                                 ),
                               ],
@@ -512,7 +512,7 @@ class _AddVehicleState extends State<AddVehicle> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(Get.width / 1.5, 40),
-            primary: Colors.blue,
+            primary: Color(0xFFF4793E),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(35),
             ),
@@ -546,6 +546,7 @@ class _AddVehicleState extends State<AddVehicle> {
           child: CustomText(
             text: "Submit Details",
             size: 20,
+            color: Colors.white,
             weight: FontWeight.bold,
           ),
         ),

@@ -10,7 +10,7 @@ class Balance extends StatelessWidget {
       appBar: AppBar(
         title: Text("Balance"),
         elevation: 0,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFFF4793E),
       ),
       body: Container(
         alignment: Alignment.topCenter,
@@ -24,17 +24,18 @@ class Balance extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.red,
+                  color: Color(0xFFF4793E),
                 ),
                 child: Column(
                   children: [
-                    CustomText(text: "Account Balance"),
+                    CustomText(text: "Account Balance",weight: FontWeight.bold,color: Colors.white,),
                     Container(
                       width: Get.width / 2,
                       child: FittedBox(
                         fit: BoxFit.cover,
                         child: CustomText(
                           text: "Rs. 2344",
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -43,6 +44,7 @@ class Balance extends StatelessWidget {
                       height: 25,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
                             padding: EdgeInsets.symmetric(
                               horizontal: 20,
                             ),
@@ -55,6 +57,9 @@ class Balance extends StatelessWidget {
                           },
                           child: Text(
                             "Add Cash",
+                            style: TextStyle(
+                              color: Color(0xFFF4793E)
+                            ),
                           )),
                     )
                   ],
@@ -102,13 +107,13 @@ class Balance extends StatelessWidget {
             children: [
               CustomText(
                 text: "Ride Id # 352334645",
-                size: 15,
+                size: 14,
                 weight: FontWeight.bold,
                 color: Colors.deepPurple,
               ),
               CustomText(
                 text: "24 Aug, 2021",
-                size: 15,
+                size: 14,
                 weight: FontWeight.bold,
                 color: Colors.purple,
               ),
@@ -135,7 +140,7 @@ class Balance extends StatelessWidget {
               ),
               CustomText(
                 text: "cleared on 26 Aug",
-                size: 18,
+                size: 14,
                 // weight: FontWeight.bold,
                 color: Colors.teal,
               ),

@@ -63,7 +63,7 @@ class _SearchRideState extends State<SearchRide> {
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: Colors.pink[200],
+                    color: Color(0xFFF4793E),
                     borderRadius: BorderRadius.all(
                       Radius.circular(20.0),
                     ),
