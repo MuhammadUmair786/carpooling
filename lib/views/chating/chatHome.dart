@@ -174,7 +174,7 @@ class _ChatHomeState extends State<ChatHome>
                   fit: BoxFit.scaleDown,
                   child: CustomText(
                     text: user.name,
-                    size: 22,
+                    size: 18,
                     weight: FontWeight.bold,
                   ),
                 ),
@@ -186,6 +186,9 @@ class _ChatHomeState extends State<ChatHome>
                       child: Text(
                         "Hi, i am using carpooling",
                         overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 11
+                        ),
                         maxLines: 1,
                         textScaleFactor: 1.2,
                       ),

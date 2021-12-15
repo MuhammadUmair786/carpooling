@@ -54,7 +54,7 @@ class BottomNavBar extends StatelessWidget {
             "carpooling",
             style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
           ),
-          backgroundColor: Colors.blue.withOpacity(0.8),
+          backgroundColor: Color(0xFFF4793E),
 
           // foregroundColor: Colors.black,
           iconTheme: IconThemeData(color: Colors.white, size: 30),
@@ -82,22 +82,6 @@ class BottomNavBar extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 35),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        // 10% of the width, so there are ten blinds.
-                        colors: <Color>[
-                          Colors.lightGreen,
-
-                          Colors.lightBlue,
-                          // Colors.lightBlueAccent,
-                          Colors.blue
-                        ], // red to yellow
-                        tileMode: TileMode
-                            .decal, // repeats the gradient over the canvas
-                      ),
-                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -134,7 +118,7 @@ class BottomNavBar extends StatelessWidget {
                               color: GFColors.SUCCESS,
                               borderColor: GFColors.SUCCESS,
                               filledIcon:
-                                  Icon(Icons.star, color: GFColors.SUCCESS),
+                                  Icon(Icons.star, color: Color(0xFFF4793E)),
                               defaultIcon: Icon(
                                 Icons.star,
                                 color: GFColors.LIGHT,
@@ -233,18 +217,16 @@ class BottomNavBar extends StatelessWidget {
           index: _controller.currentIndex.value,
           height: 50.0,
           items: <Widget>[
-            const Icon(Icons.search_off, size: _iconsize),
-            const Icon(Icons.time_to_leave_rounded, size: _iconsize),
-            const Icon(Icons.home, size: _iconsize),
-            const Icon(Icons.chat, size: _iconsize),
-            const Icon(Icons.settings, size: _iconsize),
+            const Icon(Icons.search_off, size: _iconsize,color: Colors.white,),
+            const Icon(Icons.time_to_leave_rounded, size: _iconsize,color: Colors.white,),
+            const Icon(Icons.home, size: _iconsize,color: Colors.white,),
+            const Icon(Icons.chat, size: _iconsize,color: Colors.white,),
+            const Icon(Icons.settings, size: _iconsize,color: Colors.white,),
           ],
-          color: Colors.blue.withOpacity(0.8),
-          buttonBackgroundColor: Colors
-              // .transparent,
-              .purple
-              .withOpacity(0.1),
+          color: Color(0xFFF4793E),
+          buttonBackgroundColor: Color(0xFFF4793E),
           backgroundColor: Colors.transparent,
+
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),
           onTap: (index) {
@@ -260,28 +242,29 @@ class BottomNavBar extends StatelessWidget {
   Widget drawerItem(IconData icon, String title, Function() fun) {
     return InkWell(
       onTap: fun,
-      child: Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(width: 0.25),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(
-              icon,
-              size: 30,
-              color: Colors.blue,
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Material(
+          color:Color(0xFFF4793E),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(
+                  icon,
+                  size: 25,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 10),
+                CustomText(
+                  text: title,
+                  color:Colors.white,
+                  size: 16,
+                )
+              ],
             ),
-            SizedBox(width: 10),
-            CustomText(
-              text: title,
-              // color: Colors.black54,
-              size: 20,
-            )
-          ],
+          ),
         ),
       ),
     );

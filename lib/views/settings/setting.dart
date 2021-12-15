@@ -17,7 +17,7 @@ class Setting extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
+           // padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -43,23 +43,30 @@ class Setting extends StatelessWidget {
                     });
                     dismissLoadingWidget();
                   },
-                  child: Container(
-                    // padding: EdgeInsets.symmetric(horizontal: 15),
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    height: 35,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.logout,
-                          size: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top:8.0),
+                    child: Material(
+                      // padding: EdgeInsets.symmetric(horizontal: 15),
+                      color: Color(0xFFF4793E),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.logout,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 15),
+                            CustomText(
+                              text: "Logout",
+                              weight: FontWeight.w400,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 15),
-                        CustomText(
-                          text: "Logout",
-                          weight: FontWeight.w400,
-                          size: 22,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 )
@@ -74,28 +81,36 @@ class Setting extends StatelessWidget {
   InkWell settingItem(IconData icon, String title, Function() fun) {
     return InkWell(
       onTap: fun,
-      child: Container(
-        // padding: EdgeInsets.symmetric(horizontal: 15),
-        margin: EdgeInsets.symmetric(vertical: 10),
-        height: 35,
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              size: 30,
+      child: Padding(
+        padding: const EdgeInsets.only(top:8.0),
+        child: Material(
+          // padding: EdgeInsets.symmetric(horizontal: 15),
+          color: Color(0xFFF4793E),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  size: 30,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 15),
+                CustomText(
+                  text: title,
+                  weight: FontWeight.w400,
+                  size: 18,
+                  color: Colors.white,
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 15,
+                  color: Colors.white,
+                )
+              ],
             ),
-            SizedBox(width: 15),
-            CustomText(
-              text: title,
-              weight: FontWeight.w400,
-              size: 22,
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 15,
-            )
-          ],
+          ),
         ),
       ),
     );

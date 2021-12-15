@@ -8,12 +8,12 @@ class AddCash extends StatelessWidget {
       appBar: AppBar(
         title: Text("Add Cash"),
         elevation: 0,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFFF4793E)
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
+           // padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,25 +37,32 @@ class AddCash extends StatelessWidget {
   InkWell addCashItem(IconData icon, String title, Function() fun) {
     return InkWell(
       onTap: fun,
-      child: Container(
-        // padding: EdgeInsets.symmetric(horizontal: 15),
-        margin: EdgeInsets.symmetric(vertical: 10),
-        height: 35,
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              size: 30,
+      child: Padding(
+        padding: const EdgeInsets.only(top:8.0),
+        child: Material(
+          // padding: EdgeInsets.symmetric(horizontal: 15),
+          color: Color(0xFFF4793E),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  size: 30,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 15),
+                CustomText(
+                  text: title,
+                  weight: FontWeight.w400,
+                  size: 16,
+                  color: Colors.white,
+                ),
+                Spacer(),
+                Icon(Icons.arrow_forward_ios_rounded,color:Colors.white)
+              ],
             ),
-            SizedBox(width: 15),
-            CustomText(
-              text: title,
-              weight: FontWeight.w400,
-              size: 22,
-            ),
-            Spacer(),
-            Icon(Icons.arrow_forward_ios_rounded)
-          ],
+          ),
         ),
       ),
     );

@@ -37,6 +37,7 @@ class PostedRideInfo extends StatelessWidget {
     // var x = rideList.firstWhere((item) == );
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         title: Text("Ride Detail"),
         actions: [
           if (ride.driverId == Get.find<BottomNavBarController>().getUser!.id)
@@ -64,6 +65,7 @@ class PostedRideInfo extends StatelessWidget {
                     Container(
                       // height: 155,
                       child: Column(
+                        
                         children: [
                           Row(
                             children: [
@@ -71,7 +73,7 @@ class PostedRideInfo extends StatelessWidget {
                                 flex: 1,
                                 child: Column(
                                   children: [
-                                    Icon(Icons.trip_origin),
+                                    Icon(Icons.trip_origin,color: Color(0xFFF4793E)),
                                     DottedLine(
                                       direction: Axis.vertical,
                                       lineLength: 55,
@@ -85,7 +87,7 @@ class PostedRideInfo extends StatelessWidget {
                                       // dashGapGradient: [Colors.red, Colors.blue],
                                       // dashGapRadius: 0.0,
                                     ),
-                                    Icon(Icons.location_on),
+                                    Icon(Icons.location_on,color:Color(0xFFF4793E)),
                                   ],
                                 ),
                               ),
@@ -107,7 +109,7 @@ class PostedRideInfo extends StatelessWidget {
                                           // textScaleFactor: 1.2,
                                           style: TextStyle(
                                               decoration: TextDecoration.none,
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black),
                                         ),
@@ -127,7 +129,7 @@ class PostedRideInfo extends StatelessWidget {
                                               style: TextStyle(
                                                   decoration:
                                                       TextDecoration.none,
-                                                  fontSize: 22,
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
@@ -141,7 +143,7 @@ class PostedRideInfo extends StatelessWidget {
                                           // textScaleFactor: 1.2,
                                           style: TextStyle(
                                               decoration: TextDecoration.none,
-                                              fontSize: 20,
+                                              fontSize:15,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black),
                                         ),
@@ -171,6 +173,7 @@ class PostedRideInfo extends StatelessWidget {
                                 text: "View on Map",
                                 weight: FontWeight.w500,
                                 color: Colors.blue,
+                                size: 15,
                               ),
                             ),
                           )
@@ -180,7 +183,7 @@ class PostedRideInfo extends StatelessWidget {
                     Container(
                       // height: 205,
                       decoration: BoxDecoration(
-                        border: Border.all(),
+                        border: Border.all(color: Color(0xFFF4793E)),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       padding: const EdgeInsets.all(10),
@@ -190,10 +193,10 @@ class PostedRideInfo extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              CustomText(text: 'Id # '),
+                              CustomText(text: 'Id # ',size: 14,weight: FontWeight.bold,color: Colors.black),
                               CustomText(
                                 text: '353253463464',
-                                size: 20,
+                                size: 14,
                                 weight: FontWeight.bold,
                                 color: Colors.blue,
                               ),
@@ -289,11 +292,10 @@ class PostedRideInfo extends StatelessWidget {
       crossAxisAlignment:
           alignmnent == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
-        CustomText(text: title, size: 14),
+        CustomText(text: title, size: 14,weight: FontWeight.bold,color: Colors.black),
         CustomText(
           text: value,
-          weight: FontWeight.w500,
-          size: 18,
+          size: 14,
         )
       ],
     );
@@ -382,53 +384,47 @@ class RequestSession extends StatelessWidget {
       child: Column(
         children: [
           TabBar(
+            labelColor: Color(0xFFF4793E),
+            unselectedLabelColor: Colors.grey,
+            indicatorColor: Color(0xFFF4793E),
             tabs: [
               Tab(
-                icon: SizedBox(
-                  width: 45,
-                  height: 30,
-                  child: Stack(children: [
-                    Icon(
-                      Icons.request_page_sharp,
-                      size: 40,
-                      color: Colors.blue,
-                    ),
-                    // if (requestedListRM.length >= 1)
-                    // Align(
-                    //   alignment: Alignment.topRight,
-                    //   child: CircleAvatar(
-                    //     radius: 10,
-                    //     backgroundColor: Colors.red,
-                    //     child: CustomText(
-                    //         text: "4",
-                    //         // requestedListRM.length.toString(),
-                    //         size: 15,
-                    //         weight: FontWeight.bold,
-                    //         color: Colors.white),
-                    //   ),
-                    // )
-                  ]),
-                ),
+                icon: Stack(children: [
+                  Icon(
+                    Icons.request_page_sharp,
+                    size: 30,
+                    
+                  ),
+                  // if (requestedListRM.length >= 1)
+                  // Align(
+                  //   alignment: Alignment.topRight,
+                  //   child: CircleAvatar(
+                  //     radius: 10,
+                  //     backgroundColor: Colors.red,
+                  //     child: CustomText(
+                  //         text: "4",
+                  //         // requestedListRM.length.toString(),
+                  //         size: 15,
+                  //         weight: FontWeight.bold,
+                  //         color: Colors.white),
+                  //   ),
+                  // )
+                ]),
                 child: CustomText(
                   text: "Requests",
                   weight: FontWeight.w500,
-                  size: 18,
+                  size: 14,
                 ),
               ),
               Tab(
-                icon: SizedBox(
-                  // width: 50,
-                  height: 30,
-                  child: Icon(
-                    Icons.directions_car,
-                    size: 40,
-                    color: Colors.blue,
-                  ),
+                icon: Icon(
+                  Icons.directions_car,
+                  size: 30,
                 ),
                 child: CustomText(
                   text: "Confirmed",
                   weight: FontWeight.w500,
-                  size: 18,
+                  size: 14,
                 ),
               ),
             ],
@@ -1055,19 +1051,22 @@ class _RequestedPassangerItemState extends State<RequestedPassangerItem> {
                         fit: BoxFit.scaleDown,
                         child: CustomText(
                           text: this.user!.name,
-                          size: 22,
+                          size: 18,
                           weight: FontWeight.bold,
                         ),
                       ),
                       Row(
                         children: [
-                          Icon(Icons.location_pin),
+                          Icon(Icons.location_pin,color: Color(0xFFF4793E),),
                           Container(
                             width: Get.width / 3,
                             child: Text(
                               widget.rideRequestMap['startAddress'],
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 11,
+                              ),
                               textScaleFactor: 1.2,
                             ),
                           ),

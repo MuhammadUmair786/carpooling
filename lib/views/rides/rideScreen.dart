@@ -24,14 +24,17 @@ class RideScreen extends StatelessWidget {
           child: Column(
             children: [
               TabBar(
+                labelColor: Color(0xFFF4793E),
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: Color(0xFFF4793E),
                 // controller: _tabController,
                 tabs: [
                   Tab(
-                    icon: Icon(Icons.directions_car),
+                    icon: Icon(Icons.directions_car,),
                     child: Text("Posted"),
                   ),
                   Tab(
-                    icon: Icon(Icons.request_page_sharp),
+                    icon: Icon(Icons.request_page_sharp, ),
                     child: Text("Requested"),
                   ),
                 ],
@@ -62,33 +65,33 @@ class PostedRides extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              InkWell(
-                onTap: () {
-                  Get.to(() => PostRide());
-                  // showDialog(
-                  //   barrierColor: Colors.grey.withOpacity(0.8),
-                  //   context: context,
-                  //   builder: (_) => dioloadChild(),
-                  // );
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.add_box,
-                        size: 30,
-                      ),
-                      SizedBox(width: 10),
-                      CustomText(
-                        text: "Add new Ride",
-                        size: 22,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // InkWell(
+              //   onTap: () {
+              //     Get.to(() => PostRide());
+              //     // showDialog(
+              //     //   barrierColor: Colors.grey.withOpacity(0.8),
+              //     //   context: context,
+              //     //   builder: (_) => dioloadChild(),
+              //     // );
+              //   },
+              //   child: Container(
+              //     margin: EdgeInsets.symmetric(vertical: 10),
+              //     child: Row(
+              //       crossAxisAlignment: CrossAxisAlignment.end,
+              //       children: [
+              //         Icon(
+              //           Icons.add_box,
+              //           size: 30,
+              //         ),
+              //         SizedBox(width: 10),
+              //         CustomText(
+              //           text: "Add new Ride",
+              //           size: 22,
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                   stream: FirebaseFirestore.instance
                       .collection("ride")
@@ -125,8 +128,8 @@ class PostedRides extends StatelessWidget {
           //   builder: (_) => dioloadChild(),
           // );
         },
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.green,
+        child: const Icon(Icons.add,color:Colors.white),
+        backgroundColor: Color(0xFFF4793E),
       ),
     );
   }
@@ -228,8 +231,8 @@ class PostedRides extends StatelessWidget {
           children: [
             CustomText(
               text: "Posted: ${Jiffy(ride.postedDate).fromNow()}",
-              size: 15,
-              weight: FontWeight.bold,
+              size: 13,
+              weight: FontWeight.w600,
               color: Colors.blueGrey,
             ),
             Container(
@@ -279,7 +282,10 @@ class PostedRides extends StatelessWidget {
             Row(
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Icon(Icons.visibility_sharp),
+                Padding(
+                  padding: const EdgeInsets.only(right:3.0),
+                  child: Icon(Icons.visibility_sharp,color:Color(0xFFF4793E)),
+                ),
                 CustomText(text: "23"),
                 Container(
                   color: Colors.grey,
@@ -287,13 +293,16 @@ class PostedRides extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 8),
                   height: 20,
                 ),
-                Icon(Icons.outbond_sharp),
+                Padding(
+                  padding: const EdgeInsets.only(right:3.0),
+                  child: Icon(Icons.outbond_sharp,color:Color(0xFFF4793E)),
+                ),
                 CustomText(text: "45"),
                 Spacer(),
                 CustomText(
                   text:
                       "Start on: ${Jiffy(ride.startDate).MMMd}, ${ride.time.format(context)}",
-                  size: 15,
+                  size: 14,
                   weight: FontWeight.bold,
                   color: Colors.red,
                 ),
@@ -309,7 +318,7 @@ class PostedRides extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(ic),
+        Icon(ic,color:Color(0xFFF4793E)),
         SizedBox(width: 5),
         Container(
           alignment: Alignment.topLeft,
@@ -322,7 +331,7 @@ class PostedRides extends StatelessWidget {
             // textScaleFactor: 1.2,
             style: TextStyle(
                 decoration: TextDecoration.none,
-                fontSize: 18,
+                fontSize: 14,
                 // fontWeight: FontWeight.,
                 color: Colors.black),
           ),
@@ -454,9 +463,9 @@ class _RequestedRideItemState extends State<RequestedRideItem> {
                 CustomText(
                   text:
                       "Requested: ${Jiffy(DateTime.fromMicrosecondsSinceEpoch(widget.requestMap["requestedAt"])).fromNow()}",
-                  size: 15,
-                  weight: FontWeight.bold,
-                  color: Colors.deepPurple,
+                  size: 13,
+                  weight: FontWeight.w600,
+                  color: Colors.blueGrey,
                 ),
                 Container(
                   color: Colors.grey,
@@ -526,7 +535,8 @@ class _RequestedRideItemState extends State<RequestedRideItem> {
                               fit: BoxFit.scaleDown,
                               child: CustomText(
                                 text: driver!.name,
-                                size: 20,
+                                size: 18,
+                                weight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -571,10 +581,12 @@ class _RequestedRideItemState extends State<RequestedRideItem> {
                             Get.to(() => PostedRideInfo(ride: ride!));
                           }
                         },
-                        child: CustomText(text: "Details", color: Colors.blue)),
+                        child: CustomText(text: "Details", size: 14, color: Color(0xFFF4793E))),
                     CustomText(
                       text: "Status: $requestStatus",
                       color: Colors.red,
+                      weight: FontWeight.w600,
+                      size: 14,
                     ),
                   ],
                 )
@@ -599,7 +611,7 @@ class _RequestedRideItemState extends State<RequestedRideItem> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(ic),
+        Icon(ic,color:Color(0xFFF4793E)),
         SizedBox(width: 5),
         Container(
           alignment: Alignment.topLeft,
@@ -608,7 +620,7 @@ class _RequestedRideItemState extends State<RequestedRideItem> {
             fit: BoxFit.scaleDown,
             child: CustomText(
               text: locationName,
-              size: 18,
+              size: 14,
             ),
           ),
         ),

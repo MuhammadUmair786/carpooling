@@ -15,6 +15,7 @@ class Vehicle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         elevation: 0,
         title: Text("Vehicles"),
         centerTitle: true,
@@ -52,11 +53,12 @@ class Vehicle extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFFF4793E),
         onPressed: () {
           Get.to(() => AddVehicle());
           // print(vehicleList);
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color:Colors.white),
       ),
     );
   }
@@ -77,7 +79,7 @@ class Vehicle extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                radius: 45,
+                radius: 30,
                 backgroundImage: NetworkImage(imgUrl
                     // "https://images.unsplash.com/photo-1612997951749-ae9c3fffaef3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
                     ),
@@ -88,18 +90,18 @@ class Vehicle extends StatelessWidget {
                 children: [
                   CustomText(
                     text: name,
-                    size: 20,
+                    size: 16,
                     weight: FontWeight.bold,
                   ),
                   CustomText(
                     text: number,
-                    size: 20,
+                    size: 12,
                   ),
                   SizedBox(height: 5),
                   CustomText(
                     text: "$milage KM/L",
                     color: Colors.orange,
-                    size: 20,
+                    size: 12,
                     weight: FontWeight.bold,
                   )
                 ],

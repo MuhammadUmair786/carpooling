@@ -113,14 +113,14 @@ class _HomeState extends State<Home> {
                           padding: EdgeInsets.only(bottom: 10),
                           // color: Color.fromRGBO(187, 134, 252, 1),
                           // color: begroundColor,
-                          color: Colors.blue.withOpacity(0.5),
+                          color: Color(0xFFF4793E).withOpacity(0.2),
                           // Color.fromRGBO(187, 134, 252, 0.5),
 
                           child: Stack(
                             children: [
                               Container(
                                 height: 70,
-                                color: Colors.blue.withOpacity(0.8),
+                                color: Color(0xFFF4793E),
                                 // width: 200,
                               ),
                               Container(
@@ -192,6 +192,7 @@ class _HomeState extends State<Home> {
                                             height: 25,
                                             child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFF4793E),
                                                   padding: EdgeInsets.symmetric(
                                                     horizontal: 20,
                                                   ),
@@ -257,15 +258,18 @@ class _HomeState extends State<Home> {
 
                         Container(
                           // color: Colors.blue[100],
-                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomText(
-                                text: "Upcomming Rides",
-                                size: 20,
-                                weight: FontWeight.bold,
-                                // color: Colors.yellow,
+                              Padding(
+                                padding: const EdgeInsets.only(bottom:8.0),
+                                child: CustomText(
+                                  text: "Upcomming Rides",
+                                  size: 20,
+                                  weight: FontWeight.bold,
+                                  // color: Colors.yellow,
+                                ),
                               ),
                               // SizedBox(height: 20),
                               upcommingRideItem(),
@@ -288,12 +292,12 @@ class _HomeState extends State<Home> {
       margin: EdgeInsets.only(top: 10),
       // color: Colors.blue,v c
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFFF4793E),
         // border: Border.all(width: 1, color: Colors.grey),
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey,
+            color: Colors.grey.withOpacity(0.3),
             spreadRadius: 1.5,
             blurRadius: 2,
             // offset: Offset(0, 3), // changes position of shadow
@@ -303,7 +307,10 @@ class _HomeState extends State<Home> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(Icons.time_to_leave, size: 50),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.time_to_leave, size: 30,color:Colors.white),
+          ),
           SizedBox(height: 25),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,12 +323,15 @@ class _HomeState extends State<Home> {
                   child: CustomText(
                     text: "Comsats Isl",
                     size: 18,
+                    color: Colors.white,
                     weight: FontWeight.bold,
                   ),
                 ),
               ),
               CustomText(
-                text: "Tomarrow, 08:00 PM",
+                text: "Tommorrow, 08:00 PM",
+                color: Colors.white ,
+                size: 13,
                 //             size: 14,
                 // weight: FontWeight.bold,
               )
@@ -332,6 +342,7 @@ class _HomeState extends State<Home> {
             height: 20,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
                   padding: EdgeInsets.symmetric(
                     horizontal: 10,
                   ),
@@ -346,7 +357,7 @@ class _HomeState extends State<Home> {
                 child: CustomText(
                   text: "See Details",
                   size: 10,
-                  color: Colors.white,
+                  color: Color(0xFFF4793E),
                 )),
           )
         ],
@@ -364,12 +375,12 @@ class _HomeState extends State<Home> {
         width: 90,
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(width: 1, color: Colors.grey),
+          //border: Border.all(width: 1, color: Colors.grey),
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey,
-              spreadRadius: 1.5,
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2.5,
               blurRadius: 2,
               // offset: Offset(0, 3), // changes position of shadow
             ),
@@ -380,7 +391,7 @@ class _HomeState extends State<Home> {
             Icon(
               icon,
               size: 40,
-              color: Colors.purple,
+              color: Color(0xFFF4793E)
             ),
             SizedBox(height: 5),
             Container(
@@ -422,7 +433,7 @@ class _DisplayDiscountDetailsState extends State<DisplayDiscountDetails> {
       },
       child: AnimatedContainer(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        color: Colors.blue.withOpacity(0.5),
+        color: Color(0xFFF4793E).withOpacity(0.2),
         duration: Duration(seconds: 2),
         child: Column(
           children: [
@@ -466,7 +477,7 @@ class _DisplayDiscountDetailsState extends State<DisplayDiscountDetails> {
           border: Border(bottom: BorderSide(color: Colors.white, width: 2))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: Column(
@@ -476,13 +487,13 @@ class _DisplayDiscountDetailsState extends State<DisplayDiscountDetails> {
                   text: title,
                   // color: Colors.yellow,
                   weight: FontWeight.bold,
-                  size: 22,
+                  size: 17,
                 ),
                 SizedBox(height: 5),
                 Container(
                   child: CustomText(
                     text: description,
-                    size: 18,
+                    size: 13,
                     //color: Colors.yellow,
                     // weight: FontWeight.bold,
                   ),
@@ -494,7 +505,7 @@ class _DisplayDiscountDetailsState extends State<DisplayDiscountDetails> {
           CustomText(
             text: value,
             weight: FontWeight.bold,
-            size: 20,
+            size: 15,
             color: Colors.green[700],
           )
         ],

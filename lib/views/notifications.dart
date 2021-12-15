@@ -7,6 +7,7 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFF4793E),
         elevation: 0,
         title: Text("Notifications"),
         // leading: Icon(Icons.add_business),
@@ -15,7 +16,7 @@ class NotificationsScreen extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: TextButton(
               onPressed: () {},
-              child: Text("Mark As Read"),
+              child: Text("Mark As Read",style: TextStyle(color: Colors.white),),
             ),
           ),
         ],
@@ -23,7 +24,7 @@ class NotificationsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
+            // SizedBox(height: 20),
             notificationItem(),
             notificationItem(),
             notificationItem(),
@@ -51,7 +52,7 @@ class NotificationsScreen extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              radius: 35,
+              radius: 30,
               backgroundImage: NetworkImage(
                   "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=731&q=80"),
             ),
@@ -66,11 +67,15 @@ class NotificationsScreen extends StatelessWidget {
                     "Ride Accepted by Muhammad Uzair",
                     textScaleFactor: 1.3,
                     maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
                   ),
                 ),
                 // SizedBox(height: 5),
                 CustomText(
                   text: "1 day ago",
+                  size: 11,
                   color: Colors.grey,
                 )
               ],

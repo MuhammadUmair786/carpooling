@@ -9,6 +9,7 @@ class Privacy extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        backgroundColor:Color(0xFFF4793E),
         title: Text("Privacy Settings"),
         centerTitle: true,
       ),
@@ -59,31 +60,39 @@ class _PrivacyItemState extends State<PrivacyItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
-      child: Row(children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                text: widget.title,
-                weight: FontWeight.w500,
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
+          child: Row(children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: widget.title,
+                    weight: FontWeight.bold,
+                    size: 14,
+                  ),
+                  Container(child: CustomText(text: widget.detail,size:12)),
+                ],
               ),
-              Container(child: CustomText(text: widget.detail)),
-            ],
-          ),
+            ),
+            SizedBox(width: 10),
+            CupertinoSwitch(
+              value: _switchValue,
+              onChanged: (value) {
+                setState(() {
+                  _switchValue = value;
+                });
+              },
+            )
+          ]),
         ),
-        SizedBox(width: 10),
-        CupertinoSwitch(
-          value: _switchValue,
-          onChanged: (value) {
-            setState(() {
-              _switchValue = value;
-            });
-          },
+        Divider(
+          thickness: 1,
         )
-      ]),
+      ],
     );
   }
 }

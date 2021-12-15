@@ -17,11 +17,11 @@ showErrorSnackBar({
       textScaleFactor: 1.2,
     ),
     snackPosition: SnackPosition.BOTTOM,
-    backgroundColor: Colors.red,
+    backgroundColor: Color(0xFFF4793E),
     colorText: Colors.white,
-    backgroundGradient: LinearGradient(
-      colors: [Colors.red, Colors.pink.withOpacity(0.8)],
-    ),
+    // backgroundGradient: LinearGradient(
+    //   colors: [Colors.red, Colors.pink.withOpacity(0.8)],
+    // ),
   );
 }
 
@@ -38,10 +38,10 @@ showSnackBar(String title, String msg) {
       textScaleFactor: 1.2,
     ),
     snackPosition: SnackPosition.BOTTOM,
-    backgroundColor: Colors.blue,
+    backgroundColor: Color(0xFFF4793E),
     colorText: Colors.white,
-    backgroundGradient: LinearGradient(
-      colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
-    ),
+    // backgroundGradient: LinearGradient(
+    //   colors: [Colors.blue, Colors.purple.withOpacity(0.8)],
+    // ),
   );
 }
