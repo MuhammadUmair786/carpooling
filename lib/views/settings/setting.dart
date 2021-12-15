@@ -38,7 +38,9 @@ class Setting extends StatelessWidget {
                     showLoading();
 
                     await FirebaseAuth.instance.signOut().whenComplete(() {
-                      Get.offAll(() => Login());
+                      WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        Get.offAll(() => Login());
+                      });
                       Get.reset();
                     });
                     dismissLoadingWidget();

@@ -8,8 +8,8 @@ class UserModel {
   String? img;
   late DateTime dob;
   late String homeAddress = "null";
-  double rating = 0.0; //get from database
-  double profileComplete = 30; //get from database
+  double rating = 4.5; //get from database
+  int profileComplete = 0; //get from database
   Map<String, dynamic> nomineeDetails = {};
   Map<String, dynamic> cnicDetails = {};
   Map<String, dynamic> workingDetails = {};
@@ -17,30 +17,37 @@ class UserModel {
   // List<RideModel> postedRidesList = [];
   List<dynamic> chatList = [];
   // late String id;
-  // late String id;
 
-  UserModel.fromDocumentSnapshot(
-      {required DocumentSnapshot<Map<String, dynamic>> snapshot,
-      bool isLoadOthers = true}) {
+  UserModel.fromDocumentSnapshot({
+    required DocumentSnapshot<Map<String, dynamic>> snapshot,
+    // bool isLoadOthers = true
+  }) {
     id = snapshot.data()!["id"];
     name = snapshot.data()!["name"];
     img = snapshot.data()!["profileImg_ur"];
+    profileComplete = snapshot.data()!["profileComplete"];
     // img = null;
     //if other data is not requrired
-    if (isLoadOthers) {
-      if (snapshot.data()!.containsKey('nominee')) {
-        nomineeDetails = snapshot.data()!['nominee'];
-      }
-      if (snapshot.data()!.containsKey('vehicles')) {
-        vehicleList = snapshot.data()!['vehicles'];
-        // print(vehicleList[0]);
-      }
-      if (snapshot.data()!.containsKey('chatList')) {
-        chatList = snapshot.data()!['chatList'];
-        // print(vehicleList[0]);
-      }
-      // loadRides();
+    // if (isLoadOthers) {
+    if (snapshot.data()!.containsKey('nominee')) {
+      nomineeDetails = snapshot.data()!['nominee'];
     }
+    if (snapshot.data()!.containsKey('workingDetails')) {
+      workingDetails = snapshot.data()!['workingDetails'];
+    }
+    if (snapshot.data()!.containsKey('cnic')) {
+      cnicDetails = snapshot.data()!['cnic'];
+    }
+    if (snapshot.data()!.containsKey('vehicles')) {
+      vehicleList = snapshot.data()!['vehicles'];
+      // print(vehicleList[0]);
+    }
+    if (snapshot.data()!.containsKey('chatList')) {
+      chatList = snapshot.data()!['chatList'];
+      // print(vehicleList[0]);
+    }
+    // loadRides();
+    // }
     // email = documentSnapshot["email"];
   }
 

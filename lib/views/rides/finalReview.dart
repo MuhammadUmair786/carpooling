@@ -1,3 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carpooling_app/constants/secrets.dart';
+import 'package:carpooling_app/database/userDatabase.dart';
+import 'package:carpooling_app/models/UserModel.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 
 import 'package:flutter/material.dart';
@@ -5,8 +9,19 @@ import 'package:getwidget/components/rating/gf_rating.dart';
 import 'package:getwidget/getwidget.dart';
 
 class FinalReview extends StatelessWidget {
+  // final UserModel user;
+  final String rideId;
+
+  FinalReview(
+      {Key? key,
+      //  required this.user,
+      required this.rideId})
+      : super(key: key);
+  var _commentCont = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    double ratingValue = 0;
+
     return Scaffold(
         body: SafeArea(
       child: Center(
@@ -16,16 +31,32 @@ class FinalReview extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80 "),
-                  radius: 60.0,
-                ),
+                // CachedNetworkImage(
+                //   imageUrl: user.img ?? Secrets.NO_IMG,
+                //   // fit: BoxFit.cover,
+                //   // repeat: ImageR,
+                //   imageBuilder: (context, imageProvider) => Container(
+                //     width: 100.0,
+                //     height: 100.0,
+                //     decoration: BoxDecoration(
+                //       shape: BoxShape.circle,
+                //       image: DecorationImage(
+                //           image: imageProvider, fit: BoxFit.cover),
+                //     ),
+                //   ),
+                //   progressIndicatorBuilder: (context, url, downloadProgress) =>
+                //       CircularProgressIndicator(
+                //     value: downloadProgress.progress,
+                //     strokeWidth: 2,
+                //   ),
+                //   // placeholder: (context, url) => CircularProgressIndicator(),
+                //   errorWidget: (context, url, error) => Icon(Icons.error),
+                // ),
                 SizedBox(height: 10),
                 FittedBox(
                     fit: BoxFit.fitWidth,
                     child: CustomText(
-                      text: "Uzair Iqbal",
+                      text: "user.name",
                       size: 30,
                     )),
                 SizedBox(height: 20),
@@ -36,22 +67,29 @@ class FinalReview extends StatelessWidget {
                 SizedBox(
                   height: 5,
                 ),
-                GFRating(
-                  color: GFColors.SUCCESS,
-                  borderColor: GFColors.SUCCESS,
-                  filledIcon: Icon(Icons.star, color: GFColors.SUCCESS),
-                  defaultIcon: Icon(
-                    Icons.star,
-                    color: GFColors.LIGHT,
-                  ),
-                  size: GFSize.LARGE,
-                  value: 3.5,
-                  onChanged: (value) {},
-                ),
+                StatefulBuilder(builder: (context, innerState) {
+                  return GFRating(
+                    color: GFColors.SUCCESS,
+                    borderColor: GFColors.SUCCESS,
+                    filledIcon: Icon(Icons.star, color: GFColors.SUCCESS),
+                    defaultIcon: Icon(
+                      Icons.star,
+                      color: GFColors.LIGHT,
+                    ),
+                    size: GFSize.LARGE,
+                    value: ratingValue,
+                    onChanged: (value) {
+                      innerState(() {
+                        ratingValue = value;
+                      });
+                    },
+                  );
+                }),
                 SizedBox(height: 10),
-                TextField(
+                TextFormField(
                   maxLines: null,
                   maxLength: 50,
+                  controller: _commentCont,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Write your comments here'),
@@ -59,18 +97,21 @@ class FinalReview extends StatelessWidget {
                 SizedBox(height: 10),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: Size(80, 40),
                     primary: Colors.green,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    UserDatabase.addReviews(
+                        ratingValue, _commentCont.text, rideId);
+                  },
                   child: CustomText(
-                    text: "Send Reviews",
-                    size: 20,
-                    weight: FontWeight.bold,
-                  ),
+                      text: "Send Reviews", size: 20, color: Colors.white
+                      // weight: FontWeight.bold,
+
+                      ),
                 )
               ],
             ),

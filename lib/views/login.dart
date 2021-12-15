@@ -187,7 +187,12 @@ class Login extends StatelessWidget {
                                     style: ButtonStyle(
                                       enableFeedback: true,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      WidgetsBinding.instance!
+                                          .addPostFrameCallback((_) {
+                                        Get.offAll(() => Login());
+                                      });
+                                    },
                                     child: CustomText(
                                       text: 'Resent OTP',
                                       size: 20,

@@ -40,7 +40,7 @@ class RideFilter extends StatelessWidget {
           child: Column(
             children: [
               filterItems(
-                "Gender",
+                "Gender Preference",
                 GenderItem(
                   controller: _genderController,
                 ),
@@ -51,12 +51,12 @@ class RideFilter extends StatelessWidget {
                   controller: _vehicleController,
                 ),
               ),
-              filterItems(
-                "Available Seats",
-                AvailableSeats(
-                  controller: _seatsController,
-                ),
-              ),
+              // filterItems(
+              //   "Available Seats",
+              //   AvailableSeats(
+              //     controller: _seatsController,
+              //   ),
+              // ),
               Spacer(),
               Container(
                 //same as top containers
@@ -201,7 +201,7 @@ class GenderItem extends StatefulWidget {
 }
 
 class _GenderItemState extends State<GenderItem> {
-  List<bool> isSelected = [false, false, false];
+  List<bool> isSelected = [false, false, true];
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +215,7 @@ class _GenderItemState extends State<GenderItem> {
       children: <Widget>[
         genderItem(Icons.male, Colors.orange, "Male"),
         genderItem(Icons.female, Colors.green, "Female"),
-        genderItem(Icons.block, Colors.red, " None "),
+        genderItem(Icons.all_inclusive, Colors.red, " Both "),
       ],
       onPressed: (int index) {
         setState(() {
@@ -267,7 +267,7 @@ class VehicleItem extends StatefulWidget {
 }
 
 class _VehicleItemState extends State<VehicleItem> {
-  List<bool> isSelected = [false, false, false];
+  List<bool> isSelected = [false, false, true];
 
   @override
   Widget build(BuildContext context) {

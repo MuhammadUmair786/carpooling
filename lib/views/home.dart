@@ -2,12 +2,14 @@
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/rideDatabase.dart';
 import 'package:carpooling_app/database/userDatabase.dart';
+import 'package:carpooling_app/heplerMethods/setNotification.dart';
 import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/views/rides/postedRideInfo.dart';
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
 
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:carpooling_app/widgets/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,6 +23,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'drawer/addCash.dart';
+import 'livetracking/tracking.dart';
+import 'rides/finalReview.dart';
 import 'rides/tempSearchMap.dart';
 
 // Color begroundColor = Colors.purple.withOpacity(0.2);
@@ -77,9 +81,19 @@ class _HomeState extends State<Home> {
                         TextButton(
                             onPressed: () {
                               // UserDatabase.unlinkEmail();
-                              print(FirebaseAuth
-                                  .instance.currentUser!.providerData[0].email
-                                  .toString());
+                              // print(FirebaseAuth
+                              //     .instance.currentUser!.providerData[0].email
+                              //     .toString());
+                              // Get.to(() => Tracking());
+                              Get.to(() => FinalReview(
+                                    // user: _controller.userData.value,
+                                    rideId: 'IqOrJoz7eC0uJjxpPkb9',
+                                  ));
+                              // displayNotification();
+                              // displayNotification("fddfv",
+                              //     DateTime.now().add(Duration(seconds: 5)));
+                              // scheduleAlarm(
+                              //     DateTime.now().add(Duration(seconds: 3)));
                             },
                             child: Text("dfsdsdgsd")),
                         // TextButton(

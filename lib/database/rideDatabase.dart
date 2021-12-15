@@ -45,12 +45,12 @@ class RideDatabase {
     //ads route points or poluline later on
     required DateTime date,
     required TimeOfDay time,
-    required String gender,
+    required String gender, //
     required String vehicleId,
     required double vehicleMilage,
     required String vehicleImg,
     required bool isAc,
-    required String vehicleType,
+    required String vehicleType, //
     required String message,
     required int totalSeats,
     required bool isSavedTemplate,

@@ -429,6 +429,16 @@ class _RequestedRideItemState extends State<RequestedRideItem> {
         widget.requestMap["isConfirmed"] == true ? "Confirmed" : "Pending";
   }
 
+  IconData getIcon(String x) {
+    if (x == "Student") {
+      return Icons.school_sharp;
+    } else if (x == "Employee") {
+      return Icons.laptop_mac_rounded;
+    } else {
+      return Icons.business_center_rounded;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return driver == null
@@ -530,26 +540,27 @@ class _RequestedRideItemState extends State<RequestedRideItem> {
                               ),
                             ),
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.ac_unit_rounded,
-                                // getIcon(driver!.workingDetails['type']
-                              ),
-                              const SizedBox(width: 5),
-                              Container(
-                                width: Get.width / 2.2,
-                                alignment: Alignment.topLeft,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: CustomText(
-                                    text: "driver!.workingDetails['address']",
-                                    // size: 18,
+                          if (driver!.workingDetails.isNotEmpty)
+                            Row(
+                              children: [
+                                Icon(
+                                    // Icons.ac_unit_rounded,
+                                    getIcon(driver!.workingDetails['type'])),
+                                const SizedBox(width: 5),
+                                Container(
+                                  width: Get.width / 2.2,
+                                  alignment: Alignment.topLeft,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: CustomText(
+                                      text: driver!.workingDetails['type']
+                                          .toString(),
+                                      // size: 18,
+                                    ),
                                   ),
-                                ),
-                              ), //Company detail or anything
-                            ],
-                          ),
+                                ), //Company detail or anything
+                              ],
+                            ),
                         ],
                       ),
                     ],

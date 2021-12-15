@@ -75,7 +75,7 @@ class _RideMapState extends State<RideMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SafeArea(
         child: Stack(
           children: [
             GoogleMap(

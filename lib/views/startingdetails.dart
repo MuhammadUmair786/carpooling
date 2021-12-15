@@ -15,7 +15,7 @@ class StartingDetails extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   // final LoginController _controller = LoginController();
-  late final DateTime pickedDOB;
+  late final DateTime? pickedDOB;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -81,6 +81,7 @@ class StartingDetails extends StatelessWidget {
                     SizedBox(height: 10),
                     InkWell(
                       onTap: () async {
+                        // print("vsdvsd");
                         try {
                           pickedDOB = (await showDatePicker(
                             // currentDate: DateTime.now(),
@@ -89,13 +90,14 @@ class StartingDetails extends StatelessWidget {
                             firstDate: DateTime(1947),
                             lastDate: DateTime.now(),
                           ))!;
-
-                          _dateController.text = Jiffy([
-                            pickedDOB
-                            // .year,
-                            // pickedDOB.month,
-                            // pickedDOB.day
-                          ]).yMMMMd;
+                          if (pickedDOB != null) {
+                            _dateController.text = Jiffy(pickedDOB
+                                    // .year,
+                                    // pickedDOB.month,
+                                    // pickedDOB.day
+                                    )
+                                .yMMMMd;
+                          }
                         } catch (ex) {
                           print(ex);
                         }
@@ -134,7 +136,7 @@ class StartingDetails extends StatelessWidget {
                         //     verificationIdFinal, smsCode, context);
                         if (_formKey.currentState!.validate()) {
                           UserDatabase.createUserDocument(
-                              _nameController.text, pickedDOB);
+                              _nameController.text, pickedDOB!);
                         }
                       },
                       child: Container(
