@@ -75,7 +75,7 @@ class RideModel {
     vehicleId = snapshot['vehicle']['id'];
     totalSeats = snapshot['totalSeats'];
     confirmedSeats = snapshot['confirmedSeats'];
-    vehicleType = snapshot['vehicle']['type'];
+    vehicleType = snapshot['vehicleType'];
     vehicleImg = snapshot['vehicle']['img_url'];
     vehicleMilage = snapshot['vehicle']['milage'];
     isAc = snapshot['vehicle']['isAC'];

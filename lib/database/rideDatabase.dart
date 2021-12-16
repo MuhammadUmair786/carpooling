@@ -79,9 +79,9 @@ class RideDatabase {
         "minute": time.minute,
       },
       "gender": gender,
+      "vehicleType": vehicleType,
       "vehicle": {
         "id": vehicleId,
-        "type": vehicleType,
         "milage": vehicleMilage,
         "img_url": vehicleImg,
         "isAC": isAc,

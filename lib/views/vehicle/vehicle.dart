@@ -58,7 +58,7 @@ class Vehicle extends StatelessWidget {
           Get.to(() => AddVehicle());
           // print(vehicleList);
         },
-        child: Icon(Icons.add,color:Colors.white),
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
@@ -108,10 +108,14 @@ class Vehicle extends StatelessWidget {
               ),
             ],
           ),
-          Icon(
-            Icons.delete,
-            size: 25,
-          )
+          // IconButton(
+          //   onPressed:(){
+          //     UserData
+          //   },
+
+          //  icon: Icon(Icons.delete),
+          //   // size: 25,
+          // )
         ],
       ),
     );

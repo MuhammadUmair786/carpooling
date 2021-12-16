@@ -43,13 +43,21 @@ class PostedRideInfo extends StatelessWidget {
           if (ride.driverId == Get.find<BottomNavBarController>().getUser!.id)
             Container(
               margin: EdgeInsets.only(right: 8),
-              child: IconButton(
-                onPressed: () {},
-                splashRadius: 25,
-                iconSize: 28,
-                icon: Icon(Icons.delete_forever),
-              ),
-            ),
+              child: Row(mainAxisSize: MainAxisSize.min, children: [
+                IconButton(
+                    onPressed: () {},
+                    splashRadius: 25,
+                    iconSize: 28,
+                    icon: Icon(Icons.arrow_upward_outlined)),
+                const SizedBox(width: 5),
+                IconButton(
+                  onPressed: () {},
+                  splashRadius: 25,
+                  iconSize: 28,
+                  icon: Icon(Icons.delete_forever),
+                ),
+              ]),
+            )
         ],
       ),
       body: SafeArea(
@@ -65,7 +73,6 @@ class PostedRideInfo extends StatelessWidget {
                     Container(
                       // height: 155,
                       child: Column(
-                        
                         children: [
                           Row(
                             children: [
@@ -73,7 +80,8 @@ class PostedRideInfo extends StatelessWidget {
                                 flex: 1,
                                 child: Column(
                                   children: [
-                                    Icon(Icons.trip_origin,color: Color(0xFFF4793E)),
+                                    Icon(Icons.trip_origin,
+                                        color: Color(0xFFF4793E)),
                                     DottedLine(
                                       direction: Axis.vertical,
                                       lineLength: 55,
@@ -87,7 +95,8 @@ class PostedRideInfo extends StatelessWidget {
                                       // dashGapGradient: [Colors.red, Colors.blue],
                                       // dashGapRadius: 0.0,
                                     ),
-                                    Icon(Icons.location_on,color:Color(0xFFF4793E)),
+                                    Icon(Icons.location_on,
+                                        color: Color(0xFFF4793E)),
                                   ],
                                 ),
                               ),
@@ -143,7 +152,7 @@ class PostedRideInfo extends StatelessWidget {
                                           // textScaleFactor: 1.2,
                                           style: TextStyle(
                                               decoration: TextDecoration.none,
-                                              fontSize:15,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black),
                                         ),
@@ -193,7 +202,11 @@ class PostedRideInfo extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              CustomText(text: 'Id # ',size: 14,weight: FontWeight.bold,color: Colors.black),
+                              CustomText(
+                                  text: 'Id # ',
+                                  size: 14,
+                                  weight: FontWeight.bold,
+                                  color: Colors.black),
                               CustomText(
                                 text: '353253463464',
                                 size: 14,
@@ -292,7 +305,11 @@ class PostedRideInfo extends StatelessWidget {
       crossAxisAlignment:
           alignmnent == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
-        CustomText(text: title, size: 14,weight: FontWeight.bold,color: Colors.black),
+        CustomText(
+            text: title,
+            size: 14,
+            weight: FontWeight.bold,
+            color: Colors.black),
         CustomText(
           text: value,
           size: 14,
@@ -393,7 +410,6 @@ class RequestSession extends StatelessWidget {
                   Icon(
                     Icons.request_page_sharp,
                     size: 30,
-                    
                   ),
                   // if (requestedListRM.length >= 1)
                   // Align(
@@ -1057,7 +1073,10 @@ class _RequestedPassangerItemState extends State<RequestedPassangerItem> {
                       ),
                       Row(
                         children: [
-                          Icon(Icons.location_pin,color: Color(0xFFF4793E),),
+                          Icon(
+                            Icons.location_pin,
+                            color: Color(0xFFF4793E),
+                          ),
                           Container(
                             width: Get.width / 3,
                             child: Text(

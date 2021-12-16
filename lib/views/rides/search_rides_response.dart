@@ -10,7 +10,7 @@ import 'package:carpooling_app/views/viewProfile.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -54,25 +54,28 @@ class SearchRidesResponse extends StatefulWidget {
 class _SearchRidesResponseState extends State<SearchRidesResponse> {
   String genderFilter = "Both";
   String vehicleFilter = "Both";
-  Query<Map<String, dynamic>> get queryPostalCode => FirebaseFirestore.instance
-      .collection("ride")
-      .where('startPostalCode', isEqualTo: widget.startPostalCode)
-      .where('endPostalCode', isEqualTo: widget.endPostalCode);
+
+  // Query<Map<String, dynamic>> get queryPostalCode => FirebaseFirestore.instance
+  //     .collection("ride")
+  //     .where('startPostalCode', isEqualTo: widget.startPostalCode)
+  //     .where('endPostalCode', isEqualTo: widget.endPostalCode)
+  //     .where('gender', isEqualTo: genderFilter)
+  //     .where('vehicleType', isEqualTo: vehicleFilter);
 
   // Query<Map<String, dynamic>> get queryCordinates => FirebaseFirestore.instance
   // .collection("ride")
   // .where('startPostalCode', isEqualTo: widget.startPostalCode)
   // .where('endPostalCode', isEqualTo: widget.endPostalCode);
 
-  Query<Map<String, dynamic>> get querySubLocality => FirebaseFirestore.instance
-      .collection("ride")
-      .where('startSubLocality', isEqualTo: widget.startSubLocality)
-      .where('endSubLocality', isEqualTo: widget.endSubLocality);
+  // Query<Map<String, dynamic>> get querySubLocality => FirebaseFirestore.instance
+  //     .collection("ride")
+  //     .where('startSubLocality', isEqualTo: widget.startSubLocality)
+  //     .where('endSubLocality', isEqualTo: widget.endSubLocality);
 
-  Query<Map<String, dynamic>> get queryCity => FirebaseFirestore.instance
-      .collection("ride")
-      .where('startCity', isEqualTo: widget.startCity)
-      .where('endCity', isEqualTo: widget.endCity);
+  // Query<Map<String, dynamic>> get queryCity => FirebaseFirestore.instance
+  //     .collection("ride")
+  //     .where('startCity', isEqualTo: widget.startCity)
+  //     .where('endCity', isEqualTo: widget.endCity);
 
   Query<Map<String, dynamic>> getDataQuery({required int queryType}) {
     if (queryType == 1) {
@@ -95,38 +98,51 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
     }
   }
 
-  Query<Map<String, dynamic>> getQueryWithFilters(int queryType,
-      {required String category, required String value}) {
-    // print(xc);
-    // queryCity.where(field)
-    if (queryType == 1) {
-      //
-      return FirebaseFirestore.instance
-          .collection("ride")
-          .where('startPostalCode', isEqualTo: widget.startPostalCode)
-          .where('endPostalCode', isEqualTo: widget.endPostalCode);
-    } else if (queryType == 2) {
-      return FirebaseFirestore.instance
-          .collection("ride")
-          .where('startCity', isEqualTo: widget.startCity)
-          .where('endCity', isEqualTo: widget.endCity);
-    } else if (queryType == 3) {
-      return FirebaseFirestore.instance
-          .collection("ride")
-          .where('startSubLocality', isEqualTo: widget.startSubLocality)
-          .where('endSubLocality', isEqualTo: widget.endSubLocality);
+  Query<Map<String, dynamic>> getQueryWithVehicle(
+      {required int qType, required bool isBoth}) {
+    if (isBoth) {
+      getDataQuery(queryType: qType);
     } else {
-      return FirebaseFirestore.instance.collection("ride");
+      getDataQuery(queryType: qType)
+          .where('vehicleType', isEqualTo: vehicleFilter);
     }
+    return FirebaseFirestore.instance.collection("ride");
   }
 
-  Query<Map<String, dynamic>> x = FirebaseFirestore.instance
-      .collection("ride")
-      .where('startSubLocality', isEqualTo: "widget.startSubLocality")
-      .where('endSubLocality', isEqualTo: "widget.endSubLocality");
+  // Query<Map<String, dynamic>> getQueryWithFilters(int queryType,
+  //     {required String category, required String value}) {
+  //   // print(xc);
+  //   // queryCity.where(field)
+  //   if (queryType == 1) {
+  //     //
+  //     return FirebaseFirestore.instance
+  //         .collection("ride")
+  //         .where('startPostalCode', isEqualTo: widget.startPostalCode)
+  //         .where('endPostalCode', isEqualTo: widget.endPostalCode);
+  //   } else if (queryType == 2) {
+  //     return FirebaseFirestore.instance
+  //         .collection("ride")
+  //         .where('startCity', isEqualTo: widget.startCity)
+  //         .where('endCity', isEqualTo: widget.endCity);
+  //   } else if (queryType == 3) {
+  //     return FirebaseFirestore.instance
+  //         .collection("ride")
+  //         .where('startSubLocality', isEqualTo: widget.startSubLocality)
+  //         .where('endSubLocality', isEqualTo: widget.endSubLocality);
+  //   } else {
+  //     return FirebaseFirestore.instance.collection("ride");
+  //   }
+  // }
+
+  // Query<Map<String, dynamic>> x = FirebaseFirestore.instance
+  //     .collection("ride")
+  //     .where('startSubLocality', isEqualTo: "widget.startSubLocality")
+  //     .where('endSubLocality', isEqualTo: "widget.endSubLocality");
 
 // Query<Map<String, dynamic>>
-  List<bool> isSelected = [false, false, false];
+  List<bool> isSelected = [true, false, false];
+  int requiredQuery = 0;
+  bool isBothRequiredForVehicle = false;
 
   @override
   Widget build(BuildContext context) {
@@ -171,6 +187,9 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
                       for (int i = 0; i < isSelected.length; i++) {
                         isSelected[i] = i == index;
                       }
+                      if (index == 0) {
+                      } else if (index == 1) {
+                      } else {}
                     });
                   },
                   isSelected: isSelected,
@@ -186,8 +205,11 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
               //   ],
               // ),
               StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: FirebaseFirestore.instance
-                      .collection("ride")
+                  stream: getQueryWithVehicle(
+                          qType: requiredQuery,
+                          isBoth: isBothRequiredForVehicle)
+                      .where('gender', isEqualTo: genderFilter)
+
                       // .where('startPostalCode',
                       //     isEqualTo: widget.startPostalCode)
                       // .where('endPostalCode', isEqualTo: widget.endPostalCode)
@@ -383,10 +405,11 @@ class _RideItemState extends State<RideItem> {
                             radius: 45.0,
                             lineWidth: 4.0,
                             animation: true,
-                            percent: 0.8,
+                            percent: 0.75,
                             center: Text(
                               // percent.toString() + "%",
-                              "${Random().nextInt(50) + 50}%",
+                              "75%",
+                              // "${Random().nextInt(50) + 50}%",
                               style: TextStyle(
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w600,
@@ -780,7 +803,8 @@ class _RideItemState extends State<RideItem> {
                                         ),
                                         Row(
                                           children: [
-                                            Text("${Random().nextInt(15)}"
+                                            Text("5 "
+                                                // "${Random().nextInt(15)}"
                                                 // driver!.postedRidesList.length
                                                 //   .toString()
 

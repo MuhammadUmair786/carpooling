@@ -11,7 +11,6 @@ import 'package:carpooling_app/views/vehicle/addvehicle.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:carpooling_app/widgets/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/cupertino.dart';
 
@@ -20,12 +19,8 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'drawer/addCash.dart';
-import 'livetracking/tracking.dart';
-import 'rides/finalReview.dart';
-import 'rides/tempSearchMap.dart';
 
 // Color begroundColor = Colors.purple.withOpacity(0.2);
 
@@ -85,10 +80,10 @@ class _HomeState extends State<Home> {
                               //     .instance.currentUser!.providerData[0].email
                               //     .toString());
                               // Get.to(() => Tracking());
-                              Get.to(() => FinalReview(
-                                    // user: _controller.userData.value,
-                                    rideId: 'IqOrJoz7eC0uJjxpPkb9',
-                                  ));
+                              // Get.to(() => FinalReview(
+                              //       // user: _controller.userData.value,
+                              //       rideId: 'IqOrJoz7eC0uJjxpPkb9',
+                              //     ));
                               // displayNotification();
                               // displayNotification("fddfv",
                               //     DateTime.now().add(Duration(seconds: 5)));
@@ -272,12 +267,13 @@ class _HomeState extends State<Home> {
 
                         Container(
                           // color: Colors.blue[100],
-                          padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(bottom:8.0),
+                                padding: const EdgeInsets.only(bottom: 8.0),
                                 child: CustomText(
                                   text: "Upcomming Rides",
                                   size: 20,
@@ -323,7 +319,7 @@ class _HomeState extends State<Home> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.time_to_leave, size: 30,color:Colors.white),
+            child: Icon(Icons.time_to_leave, size: 30, color: Colors.white),
           ),
           SizedBox(height: 25),
           Column(
@@ -344,7 +340,7 @@ class _HomeState extends State<Home> {
               ),
               CustomText(
                 text: "Tommorrow, 08:00 PM",
-                color: Colors.white ,
+                color: Colors.white,
                 size: 13,
                 //             size: 14,
                 // weight: FontWeight.bold,
@@ -402,11 +398,7 @@ class _HomeState extends State<Home> {
         ),
         child: Column(
           children: [
-            Icon(
-              icon,
-              size: 40,
-              color: Color(0xFFF4793E)
-            ),
+            Icon(icon, size: 40, color: Color(0xFFF4793E)),
             SizedBox(height: 5),
             Container(
               child: CustomText(
