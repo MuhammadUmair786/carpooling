@@ -143,13 +143,13 @@ class AboutUs extends StatelessWidget {
                     text: "Developers",
                     weight: FontWeight.w500,
                     size: 30,
-                    color:Color(0xFFF4793E),
+                    color: Color(0xFFF4793E),
                   ),
                 ),
               ],
             ),
             aboutItems("Muhammad Umair Bin Sajid", "project leader"),
-            aboutItems("Uzair Asghar", "Chota sa chasky wala"),
+            aboutItems("Uzair Asghar", "Back End Developer"),
             Column(
               children: [
                 CustomText(
@@ -164,7 +164,9 @@ class AboutUs extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 10,)
+            SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),
@@ -200,7 +202,7 @@ class AboutUs extends StatelessWidget {
                   ),
                 ),
               ),
-              CustomText(text: detail,size:14)
+              CustomText(text: detail, size: 14)
             ],
           )
         ],

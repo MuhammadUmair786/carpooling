@@ -6,14 +6,13 @@ class AddCash extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Cash"),
-        elevation: 0,
-        backgroundColor: Color(0xFFF4793E)
-      ),
+          title: Text("Add Cash"),
+          elevation: 0,
+          backgroundColor: Color(0xFFF4793E)),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-           // padding: EdgeInsets.symmetric(horizontal: 15),
+            // padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -38,7 +37,7 @@ class AddCash extends StatelessWidget {
     return InkWell(
       onTap: fun,
       child: Padding(
-        padding: const EdgeInsets.only(top:8.0),
+        padding: const EdgeInsets.only(top: 8.0),
         child: Material(
           // padding: EdgeInsets.symmetric(horizontal: 15),
           color: Color(0xFFF4793E),
@@ -59,7 +58,7 @@ class AddCash extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Spacer(),
-                Icon(Icons.arrow_forward_ios_rounded,color:Colors.white)
+                Icon(Icons.arrow_forward_ios_rounded, color: Colors.white)
               ],
             ),
           ),
@@ -68,3 +67,5 @@ class AddCash extends StatelessWidget {
     );
   }
 }
+
+// hbjk

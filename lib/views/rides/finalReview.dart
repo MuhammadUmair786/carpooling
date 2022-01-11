@@ -1,23 +1,32 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carpooling_app/constants/secrets.dart';
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/models/UserModel.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:carpooling_app/widgets/showSnackBar.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/components/rating/gf_rating.dart';
 import 'package:getwidget/getwidget.dart';
 
 class FinalReview extends StatelessWidget {
-  final UserModel user;
+  // final UserModel user;
   final String rideId;
 
-  FinalReview({Key? key, required this.user, required this.rideId})
+  FinalReview(
+      {Key? key,
+
+      // required this.user,
+
+      required this.rideId})
       : super(key: key);
   var _commentCont = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    var _controller = Get.find<BottomNavBarController>();
+
     double ratingValue = 0;
 
     return Scaffold(
@@ -29,7 +38,7 @@ class FinalReview extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CachedNetworkImage(
-                imageUrl: user.img ?? Secrets.NO_IMG,
+                imageUrl: _controller.getUser!.img ?? Secrets.NO_IMG,
                 // fit: BoxFit.cover,
                 // repeat: ImageR,
                 imageBuilder: (context, imageProvider) => Container(
@@ -53,7 +62,7 @@ class FinalReview extends StatelessWidget {
               FittedBox(
                   fit: BoxFit.fitWidth,
                   child: CustomText(
-                    text: user.name,
+                    text: _controller.getUser!.name,
                     size: 30,
                   )),
               SizedBox(height: 20),

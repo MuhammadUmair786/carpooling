@@ -1,6 +1,8 @@
 class Secrets {
   // Add your Google Maps API Key here
   static const API_KEY = 'AIzaSyDEiArRJg8QdgATPevCeNjwRqDl4L3-4Ak';
+  static const StripePublishableKey =
+      "pk_test_51K6YojDPueSKLP7wH1VpBFNZH6ieC2MFuZQ2joMjQsRHy4a8iPh4Zs0oaDrFr6SDtFPplrbNcczbph9wdRrxwcH000AJ1BaGB3";
 
   static const NO_IMG =
       "https://www.pngfind.com/pngs/m/110-1102775_download-empty-profile-hd-png-download.png";

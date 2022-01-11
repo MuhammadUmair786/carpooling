@@ -34,7 +34,8 @@ class UserDatabase {
       "dob": dob.microsecondsSinceEpoch,
       "status": "online",
       "profileImg_url": null,
-      'profileComplete': 10
+      'profileComplete': 10,
+      'balance': 0
     }).then((value) {
       print("User initial Details Added");
       // Get.put(AuthController(), permanent: true);
@@ -376,6 +377,17 @@ class UserDatabase {
         .then((value) {})
         .catchError((error) {
           print("Failed to add user profileComplete value: $error");
+          showErrorSnackBar();
+        });
+  }
+
+  static void updateBalance(int amount) {
+    int currentBalnace = Get.find<BottomNavBarController>().getUser!.balance;
+    userDoc
+        .update({"balance": (currentBalnace + amount)})
+        .then((value) {})
+        .catchError((error) {
+          print("Account balance failed: $error");
           showErrorSnackBar();
         });
   }

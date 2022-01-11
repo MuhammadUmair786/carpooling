@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:carpooling_app/controllers/authController.dart';
-import 'package:carpooling_app/controllers/bottomNavBarController.dart';
+// import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/rideDatabase.dart';
 import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
@@ -31,18 +33,42 @@ class SavedTemplate extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                    ".where(\"driverID\", isEqualTo: Get.find<AuthController>().userfb!.uid)\n\nuse this query and streams"), // templateItem(),
-                // templateItem(),
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: rideList.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (cont, index) {
-                      return templateItem(
-                        rideList[index],
-                      );
+                // Text(
+                //     ".where(\"driverID\", isEqualTo: Get.find<AuthController>().userfb!.uid)\n\nuse this query and streams"), // templateItem(),
+                // // templateItem(),
+                StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: FirebaseFirestore.instance
+                        .collection("ride")
+                        .where('driverID',
+                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .where('isSaved', isEqualTo: true)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.docs.length == 0) {
+                          return Text("No ride found");
+                        }
+                        return Flex(
+                          direction: Axis.vertical,
+                          children: snapshot.data!.docs.map((e) {
+                            return templateItem(
+                              RideModel.fromDocumentSnapshot(snapshot: e),
+                            );
+                          }).toList(),
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
                     }),
+                // ListView.builder(
+                //     shrinkWrap: true,
+                //     itemCount: rideList.length,
+                //     physics: NeverScrollableScrollPhysics(),
+                //     itemBuilder: (cont, index) {
+                //       return templateItem(
+                //         rideList[index],
+                //       );
+                //     }),
               ],
             ),
           ),

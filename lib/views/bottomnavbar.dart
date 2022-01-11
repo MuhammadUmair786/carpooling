@@ -1,4 +1,6 @@
 // import 'package:carpooling_app/controllers/authController.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carpooling_app/constants/secrets.dart';
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/models/userModel.dart';
 
@@ -74,90 +76,112 @@ class BottomNavBar extends StatelessWidget {
         ),
         drawer: SafeArea(
           child: Drawer(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 35),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Get.find<AuthController>()
-                        //             .userfb!
-                        //             .providerData[0]
-                        //             .photoURL ==
-                        //         null
-                        //     ? CircleAvatar(
-                        //         radius: 45,
-                        //         backgroundImage:
-                        //             AssetImage('assets/no_img.jpg'))
-                        //     : CircleAvatar(
-                        //         radius: 45,
-                        //         backgroundImage: NetworkImage(
-                        //           Get.find<AuthController>()
-                        //               .userfb!
-                        //               .providerData[0]
-                        //               .photoURL
-                        //               .toString(),
-                        //         )),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: CustomText(
-                                text: "Uzair Iqbal",
-                                size: 25,
-                              ),
+            child: StatefulBuilder(builder: (context, innerState) {
+              return _controller.getUser == null
+                  ? Text("")
+                  : SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(vertical: 35),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // if (_controller.getUser != null)
+                                CachedNetworkImage(
+                                  imageUrl: _controller.getUser!.img ??
+                                      Secrets.NO_IMG,
+
+                                  // _controller.getUser!.img!.isEmpty
+                                  //     ? Secrets.NO_IMG
+                                  //     : _controller.getUser!.img!,
+                                  // fit: BoxFit.cover,
+                                  // repeat: ImageR,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 80.0,
+                                    height: 80.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          CircularProgressIndicator(
+                                    value: downloadProgress.progress,
+                                    strokeWidth: 2,
+                                  ),
+                                  // placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+
+                                SizedBox(width: 10),
+                                // if (_controller.getUser != null)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 150,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: CustomText(
+                                          text: _controller.getUser!.name,
+                                          size: 25,
+                                        ),
+                                      ),
+                                    ),
+                                    GFRating(
+                                      color: GFColors.SUCCESS,
+                                      borderColor: GFColors.SUCCESS,
+                                      filledIcon: Icon(Icons.star,
+                                          color: Color(0xFFF4793E)),
+                                      defaultIcon: Icon(
+                                        Icons.star,
+                                        color: GFColors.LIGHT,
+                                      ),
+                                      size: GFSize.SMALL,
+                                      value: 3.5,
+                                      onChanged: (value) {},
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
-                            GFRating(
-                              color: GFColors.SUCCESS,
-                              borderColor: GFColors.SUCCESS,
-                              filledIcon:
-                                  Icon(Icons.star, color: Color(0xFFF4793E)),
-                              defaultIcon: Icon(
-                                Icons.star,
-                                color: GFColors.LIGHT,
-                              ),
-                              size: GFSize.SMALL,
-                              value: 3.5,
-                              onChanged: (value) {},
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  drawerItem(Icons.local_car_wash, "Vehicles", () {
-                    Get.to(() => Vehicle());
-                  }),
-                  drawerItem(Icons.account_balance, "Balance", () {
-                    Get.to(() => Balance());
-                  }),
-                  drawerItem(Icons.save, "Saved Templates", () {
-                    Get.to(() => SavedTemplate());
-                  }),
-                  drawerItem(Icons.query_stats, "Statistics", () {
-                    Get.to(() => Statistics());
-                  }),
-                  drawerItem(Icons.support_agent, "Help & Support", () {
-                    Get.to(() => HelpAndSupport());
-                  }),
-                  drawerItem(Icons.history, "History", () {
-                    Get.to(() => History());
-                  }),
-                  drawerItem(Icons.favorite, "Favourite", () {
-                    Get.to(() => Favourites());
-                  }),
-                  drawerItem(Icons.person, "About Us", () {
-                    Get.to(() => AboutUs());
-                  }),
-                ],
-              ),
-            ),
+                          ),
+                          SizedBox(height: 10),
+                          drawerItem(Icons.local_car_wash, "Vehicles", () {
+                            Get.to(() => Vehicle());
+                          }),
+                          drawerItem(Icons.account_balance, "Balance", () {
+                            Get.to(() => Balance());
+                          }),
+                          drawerItem(Icons.save, "Saved Templates", () {
+                            Get.to(() => SavedTemplate());
+                          }),
+                          drawerItem(Icons.query_stats, "Statistics", () {
+                            Get.to(() => Statistics());
+                          }),
+                          drawerItem(Icons.support_agent, "Help & Support", () {
+                            Get.to(() => HelpAndSupport());
+                          }),
+                          drawerItem(Icons.history, "History", () {
+                            Get.to(() => History());
+                          }),
+                          drawerItem(Icons.favorite, "Favourite", () {
+                            Get.to(() => Favourites());
+                          }),
+                          drawerItem(Icons.person, "About Us", () {
+                            Get.to(() => AboutUs());
+                          }),
+                        ],
+                      ),
+                    );
+            }),
           ),
         ),
 
@@ -221,16 +245,35 @@ class BottomNavBar extends StatelessWidget {
           index: _controller.currentIndex.value,
           height: 50.0,
           items: <Widget>[
-            const Icon(Icons.search_off, size: _iconsize,color: Colors.white,),
-            const Icon(Icons.time_to_leave_rounded, size: _iconsize,color: Colors.white,),
-            const Icon(Icons.home, size: _iconsize,color: Colors.white,),
-            const Icon(Icons.chat, size: _iconsize,color: Colors.white,),
-            const Icon(Icons.settings, size: _iconsize,color: Colors.white,),
+            const Icon(
+              Icons.search_off,
+              size: _iconsize,
+              color: Colors.white,
+            ),
+            const Icon(
+              Icons.time_to_leave_rounded,
+              size: _iconsize,
+              color: Colors.white,
+            ),
+            const Icon(
+              Icons.home,
+              size: _iconsize,
+              color: Colors.white,
+            ),
+            const Icon(
+              Icons.chat,
+              size: _iconsize,
+              color: Colors.white,
+            ),
+            const Icon(
+              Icons.settings,
+              size: _iconsize,
+              color: Colors.white,
+            ),
           ],
           color: Color(0xFFF4793E),
           buttonBackgroundColor: Color(0xFFF4793E),
           backgroundColor: Colors.transparent,
-
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),
           onTap: (index) {
@@ -249,7 +292,7 @@ class BottomNavBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Material(
-          color:Color(0xFFF4793E),
+          color: Color(0xFFF4793E),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -263,7 +306,7 @@ class BottomNavBar extends StatelessWidget {
                 SizedBox(width: 10),
                 CustomText(
                   text: title,
-                  color:Colors.white,
+                  color: Colors.white,
                   size: 16,
                 )
               ],

@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   late String id;
   late String name;
-  String? img;
+  String? img = "";
   late DateTime dob;
   late String homeAddress = "null";
   double rating = 4.5; //get from database
@@ -16,6 +16,9 @@ class UserModel {
   List<dynamic> vehicleList = [];
   // List<RideModel> postedRidesList = [];
   List<dynamic> chatList = [];
+
+  late int balance = 0;
+
   // late String id;
 
   UserModel.fromDocumentSnapshot({
@@ -24,8 +27,17 @@ class UserModel {
   }) {
     id = snapshot.data()!["id"];
     name = snapshot.data()!["name"];
-    img = snapshot.data()!["profileImg_ur"];
-    profileComplete = snapshot.data()!["profileComplete"];
+
+    img = snapshot.data()!["profileImg_url"];
+    if (snapshot.data()!.containsKey('profileComplete')) {
+      profileComplete = snapshot.data()!['profileComplete'];
+    }
+    // profileComplete = snapshot.data()!["profileComplete"];
+    if (snapshot.data()!.containsKey('balance')) {
+      balance = snapshot.data()!['balance'];
+    }
+    // balance = snapshot.data()!["balance"];
+
     // img = null;
     //if other data is not requrired
     // if (isLoadOthers) {

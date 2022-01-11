@@ -2,15 +2,15 @@
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/rideDatabase.dart';
 import 'package:carpooling_app/database/userDatabase.dart';
-import 'package:carpooling_app/heplerMethods/setNotification.dart';
 import 'package:carpooling_app/models/userModel.dart';
+import 'package:carpooling_app/payment.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
 import 'package:carpooling_app/views/rides/postedRideInfo.dart';
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
 
 import 'package:carpooling_app/widgets/custom_text.dart';
-import 'package:carpooling_app/widgets/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/cupertino.dart';
 
@@ -19,8 +19,11 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'drawer/addCash.dart';
+import 'drawer/statistics.dart';
+import 'rides/tempSearchMap.dart';
 
 // Color begroundColor = Colors.purple.withOpacity(0.2);
 
@@ -73,24 +76,14 @@ class _HomeState extends State<Home> {
                 : SingleChildScrollView(
                     child: Column(
                       children: [
-                        TextButton(
-                            onPressed: () {
-                              // UserDatabase.unlinkEmail();
-                              // print(FirebaseAuth
-                              //     .instance.currentUser!.providerData[0].email
-                              //     .toString());
-                              // Get.to(() => Tracking());
-                              // Get.to(() => FinalReview(
-                              //       // user: _controller.userData.value,
-                              //       rideId: 'IqOrJoz7eC0uJjxpPkb9',
-                              //     ));
-                              // displayNotification();
-                              // displayNotification("fddfv",
-                              //     DateTime.now().add(Duration(seconds: 5)));
-                              // scheduleAlarm(
-                              //     DateTime.now().add(Duration(seconds: 3)));
-                            },
-                            child: Text("dfsdsdgsd")),
+                        // TextButton(
+                        //     onPressed: () {
+                        //       // UserDatabase.unlinkEmail();
+                        //       print(FirebaseAuth
+                        //           .instance.currentUser!.providerData[0].email
+                        //           .toString());
+                        //     },
+                        //     child: Text("dfsdsdgsd")),
                         // TextButton(
                         // onPressed: () {
                         // currentUser!.reload();
@@ -161,7 +154,8 @@ class _HomeState extends State<Home> {
                                           Flexible(
                                             flex: 3,
                                             child: Text(
-                                              "_controller.userData!.name",
+                                              widget.dataSnapchots
+                                                  .data()!['name'],
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               textAlign: TextAlign.justify,
@@ -193,7 +187,8 @@ class _HomeState extends State<Home> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           CustomText(
-                                            text: "RS. 500",
+                                            text:
+                                                "RS. ${widget.dataSnapchots.data()!['balance']}",
                                             size: 25,
                                             weight: FontWeight.bold,
                                           ),
@@ -212,7 +207,7 @@ class _HomeState extends State<Home> {
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  Get.to(() => AddCash());
+                                                  Get.to(() => PaymentScreen());
                                                 },
                                                 child: Text(
                                                   "Add Cash",
@@ -252,7 +247,7 @@ class _HomeState extends State<Home> {
                                 Get.to(() => AddVehicle());
                               }, Icons.local_taxi_rounded),
                               shortcutButtons("Statistics", () {
-                                // Get.to(() => Statistics());
+                                Get.to(() => Statistics());
                               }, Icons.query_stats),
                               shortcutButtons("Post Ride", () {
                                 Get.to(() => PostRide());

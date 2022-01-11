@@ -36,9 +36,9 @@ dependencies:
   google_sign_in: ^5.1.0
 
   flutter_local_notifications: ^9.1.5
-  
+  url_launcher: ^6.0.17
 
-  
+  flutter_stripe: ^2.0.2
   #image slider
   carousel_slider: ^4.0.0
   #star_rating
@@ -64,7 +64,7 @@ dependencies:
   percent_indicator: ^3.0.1
   jiffy: ^4.1.0
   image_picker: ^0.8.4+2
-  # http: ^0.13.3
+  http: ^0.13.3
   get: ^4.3.8
   otp_text_field: ^1.1.1
   curved_navigation_bar: ^1.0.1

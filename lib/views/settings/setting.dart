@@ -17,7 +17,7 @@ class Setting extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-           // padding: EdgeInsets.symmetric(horizontal: 15),
+            // padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -35,18 +35,19 @@ class Setting extends StatelessWidget {
                 }),
                 InkWell(
                   onTap: () async {
-                    showLoading();
+                    // showLoading();
 
                     await FirebaseAuth.instance.signOut().whenComplete(() {
+                      // dismissLoadingWidget();
+                      Get.reset();
+
                       WidgetsBinding.instance!.addPostFrameCallback((_) {
                         Get.offAll(() => Login());
                       });
-                      Get.reset();
                     });
-                    dismissLoadingWidget();
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(top:8.0),
+                    padding: const EdgeInsets.only(top: 8.0),
                     child: Material(
                       // padding: EdgeInsets.symmetric(horizontal: 15),
                       color: Color(0xFFF4793E),
@@ -84,7 +85,7 @@ class Setting extends StatelessWidget {
     return InkWell(
       onTap: fun,
       child: Padding(
-        padding: const EdgeInsets.only(top:8.0),
+        padding: const EdgeInsets.only(top: 8.0),
         child: Material(
           // padding: EdgeInsets.symmetric(horizontal: 15),
           color: Color(0xFFF4793E),

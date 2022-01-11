@@ -9,6 +9,7 @@ import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/views/chating/chatRoom.dart';
 import 'package:carpooling_app/views/rides/rideMap.dart';
+import 'package:carpooling_app/views/rides/startRide.dart';
 import 'package:carpooling_app/views/viewProfile.dart';
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:carpooling_app/widgets/generateRoomId.dart';
@@ -45,7 +46,9 @@ class PostedRideInfo extends StatelessWidget {
               margin: EdgeInsets.only(right: 8),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => StartRide(ride: this.ride));
+                    },
                     splashRadius: 25,
                     iconSize: 28,
                     icon: Icon(Icons.arrow_upward_outlined)),

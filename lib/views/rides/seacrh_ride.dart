@@ -16,6 +16,13 @@ class _SearchRideState extends State<SearchRide> {
   final startAddressController = new TextEditingController();
   final endAddressController = new TextEditingController();
   bool buttonVisibility = false;
+  late String startCity;
+  late String endCity;
+  late String startPostalCode;
+  late String endPostalCode;
+
+  late String startSubLocality;
+  late String endSubLocality;
 
   // LatLng? _currentPoint;
   // String? _currentAddress;
@@ -167,10 +174,39 @@ class _SearchRideState extends State<SearchRide> {
                       SizedBox(height: 5),
                       ElevatedButton(
                         onPressed: buttonVisibility
-                            ? () {
-                                Get.to(() => SearchRidesResponse(
-                                      startPoint: _startPoint!,
-                                    ));
+                            ? () async {
+                                await placemarkFromCoordinates(
+                                        _endPoint!.latitude,
+                                        _endPoint!.longitude)
+                                    .then((placemarks) {
+                                  endSubLocality =
+                                      placemarks[0].subLocality.toString();
+                                  endCity = placemarks[0].locality.toString();
+                                  endPostalCode =
+                                      placemarks[0].postalCode.toString();
+                                });
+
+                                await placemarkFromCoordinates(
+                                        _startPoint!.latitude,
+                                        _startPoint!.longitude)
+                                    .then((placemarks) {
+                                  startSubLocality =
+                                      placemarks[0].subLocality.toString();
+                                  startCity = placemarks[0].locality.toString();
+                                  startPostalCode =
+                                      placemarks[0].postalCode.toString();
+                                }).then((value) {
+                                  Get.to(() => SearchRidesResponse(
+                                        startPoint: _startPoint!,
+                                        endPoint: _endPoint!,
+                                        endCity: endCity,
+                                        endPostalCode: endPostalCode,
+                                        endSubLocality: endSubLocality,
+                                        startCity: startCity,
+                                        startPostalCode: startPostalCode,
+                                        startSubLocality: startSubLocality,
+                                      ));
+                                });
                               }
                             : null,
                         child: Padding(

@@ -4,8 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 
-class EmailVerificationScreen extends StatelessWidget {
+class EmailVerificationScreen extends StatefulWidget {
   // final _controller = Get.find<AuthController>();
+  @override
+  State<EmailVerificationScreen> createState() =>
+      _EmailVerificationScreenState();
+}
+
+class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
@@ -42,7 +48,9 @@ class EmailVerificationScreen extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          UserDatabase.linkEmail();
+          setState(() {
+            UserDatabase.linkEmail();
+          });
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -99,7 +107,7 @@ class EmailVerificationScreen extends StatelessWidget {
             text: "DOB: 10 Dec, 1999",
             color: Color(0xFFF4793E),
             size: 15,
-           // weight: FontWeight.bold,
+            // weight: FontWeight.bold,
           ),
 
           // title: "Birthday",

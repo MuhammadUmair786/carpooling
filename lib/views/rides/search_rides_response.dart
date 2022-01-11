@@ -18,9 +18,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class SearchRidesResponse extends StatefulWidget {
   final LatLng? startPoint;
-  final String? startAddress;
+  // final String? startAddress;
   final LatLng? endPoint;
-  final String? endAddress;
+  // final String? endAddress;
   final String? startCity;
   final String? endCity;
   final String? startPostalCode;
@@ -36,9 +36,9 @@ class SearchRidesResponse extends StatefulWidget {
   const SearchRidesResponse(
       {Key? key,
       this.startPoint,
-      this.startAddress,
+      // this.startAddress,
       this.endPoint,
-      this.endAddress,
+      // this.endAddress,
       this.startCity,
       this.endCity,
       this.startPostalCode,
@@ -55,40 +55,18 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
   String genderFilter = "Both";
   String vehicleFilter = "Both";
 
-  // Query<Map<String, dynamic>> get queryPostalCode => FirebaseFirestore.instance
-  //     .collection("ride")
-  //     .where('startPostalCode', isEqualTo: widget.startPostalCode)
-  //     .where('endPostalCode', isEqualTo: widget.endPostalCode)
-  //     .where('gender', isEqualTo: genderFilter)
-  //     .where('vehicleType', isEqualTo: vehicleFilter);
-
-  // Query<Map<String, dynamic>> get queryCordinates => FirebaseFirestore.instance
-  // .collection("ride")
-  // .where('startPostalCode', isEqualTo: widget.startPostalCode)
-  // .where('endPostalCode', isEqualTo: widget.endPostalCode);
-
-  // Query<Map<String, dynamic>> get querySubLocality => FirebaseFirestore.instance
-  //     .collection("ride")
-  //     .where('startSubLocality', isEqualTo: widget.startSubLocality)
-  //     .where('endSubLocality', isEqualTo: widget.endSubLocality);
-
-  // Query<Map<String, dynamic>> get queryCity => FirebaseFirestore.instance
-  //     .collection("ride")
-  //     .where('startCity', isEqualTo: widget.startCity)
-  //     .where('endCity', isEqualTo: widget.endCity);
-
   Query<Map<String, dynamic>> getDataQuery({required int queryType}) {
-    if (queryType == 1) {
+    if (queryType == 0) {
       return FirebaseFirestore.instance
           .collection("ride")
           .where('startPostalCode', isEqualTo: widget.startPostalCode)
           .where('endPostalCode', isEqualTo: widget.endPostalCode);
-    } else if (queryType == 2) {
+    } else if (queryType == 1) {
       return FirebaseFirestore.instance
           .collection("ride")
           .where('startCity', isEqualTo: widget.startCity)
           .where('endCity', isEqualTo: widget.endCity);
-    } else if (queryType == 3) {
+    } else if (queryType == 2) {
       return FirebaseFirestore.instance
           .collection("ride")
           .where('startSubLocality', isEqualTo: widget.startSubLocality)
@@ -146,6 +124,7 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
 
   @override
   Widget build(BuildContext context) {
+    print(requiredQuery);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFF4793E),
@@ -188,8 +167,12 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
                         isSelected[i] = i == index;
                       }
                       if (index == 0) {
+                        requiredQuery = 0;
                       } else if (index == 1) {
-                      } else {}
+                        requiredQuery = 1;
+                      } else {
+                        requiredQuery = 2;
+                      }
                     });
                   },
                   isSelected: isSelected,
@@ -205,10 +188,12 @@ class _SearchRidesResponseState extends State<SearchRidesResponse> {
               //   ],
               // ),
               StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: getQueryWithVehicle(
-                          qType: requiredQuery,
-                          isBoth: isBothRequiredForVehicle)
-                      .where('gender', isEqualTo: genderFilter)
+                  stream: FirebaseFirestore.instance
+                      .collection("ride")
+                      // getQueryWithVehicle(
+                      //         qType: requiredQuery,
+                      //         isBoth: isBothRequiredForVehicle)
+                      //     .where('gender', isEqualTo: genderFilter)
 
                       // .where('startPostalCode',
                       //     isEqualTo: widget.startPostalCode)

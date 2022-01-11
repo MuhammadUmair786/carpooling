@@ -1,12 +1,19 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:carpooling_app/constants/secrets.dart';
+import 'package:carpooling_app/controllers/bottomNavBarController.dart';
+import 'package:carpooling_app/models/UserModel.dart';
 import 'package:carpooling_app/models/rideModel.dart';
+import 'package:carpooling_app/models/userModel.dart';
+import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+
+import 'finalReview.dart';
 
 // ignore: camel_case_types
 class StartRide extends StatefulWidget {
@@ -160,14 +167,80 @@ class _StartRideState extends State<StartRide> {
       // appBar: AppBar(
       // title: Text(widget.title),
       // ),
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: initialLocation,
-        markers: Set.of((marker != null) ? [marker!] : []),
-        circles: Set.of((circle != null) ? [circle!] : []),
-        onMapCreated: (GoogleMapController controller) {
-          _controller = controller;
-        },
+      body: Stack(
+        children: [
+          GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: initialLocation,
+            markers: Set.of((marker != null) ? [marker!] : []),
+            circles: Set.of((circle != null) ? [circle!] : []),
+            onMapCreated: (GoogleMapController controller) {
+              _controller = controller;
+              setPolylines();
+            },
+          ),
+          Container(
+            alignment: Alignment.topRight,
+            padding: EdgeInsets.only(top: 80),
+            child: Column(
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    // minimumSize: Size(double.infinity, 35),
+                    primary: Color(0xFFF4793E),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: CustomText(
+                    text: "Call Police",
+                    size: 17,
+                    color: Colors.white,
+                    weight: FontWeight.bold,
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    // minimumSize: Size(double.infinity, 35),
+                    primary: Color(0xFFF4793E),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: CustomText(
+                    text: "Call Nominee",
+                    size: 17,
+                    color: Colors.white,
+                    weight: FontWeight.bold,
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    // minimumSize: Size(double.infinity, 35),
+                    primary: Color(0xFFF4793E),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: () {
+                    // UserModel? user = Get.find<BottomNavBarController>().getUser;
+                    Get.to(() => FinalReview(
+                          rideId: widget.ride.id,
+                        ));
+                  },
+                  child: CustomText(
+                    text: "End Ride",
+                    size: 17,
+                    color: Colors.white,
+                    weight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.location_searching),
