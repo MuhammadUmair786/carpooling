@@ -154,12 +154,12 @@ class _SearchRideState extends State<SearchRide> {
                           ),
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Get.to(() => SearchRidesResponse());
-                        },
-                        child: Text("Temp Search Rides"),
-                      ),
+                      // TextButton(
+                      //   onPressed: () {
+                      //     Get.to(() => SearchRidesResponse());
+                      //   },
+                      //   child: Text("Temp Search Rides"),
+                      // ),
                       SizedBox(height: 10),
                       // Visibility(
                       //   visible: _placeDistance == null ? false : true,

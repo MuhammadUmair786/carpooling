@@ -1,29 +1,15 @@
 // import 'package:carpooling_app/controllers/authController.dart';
 import 'package:carpooling_app/controllers/bottomNavBarController.dart';
-import 'package:carpooling_app/database/rideDatabase.dart';
-import 'package:carpooling_app/database/userDatabase.dart';
-import 'package:carpooling_app/models/userModel.dart';
 import 'package:carpooling_app/payment.dart';
 import 'package:carpooling_app/views/rides/postRide.dart';
-import 'package:carpooling_app/views/rides/postedRideInfo.dart';
 import 'package:carpooling_app/views/vehicle/addvehicle.dart';
 
 import 'package:carpooling_app/widgets/custom_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'drawer/addCash.dart';
 import 'drawer/statistics.dart';
-import 'rides/tempSearchMap.dart';
 
 // Color begroundColor = Colors.purple.withOpacity(0.2);
 
@@ -115,7 +101,7 @@ class _HomeState extends State<Home> {
                           padding: EdgeInsets.only(bottom: 10),
                           // color: Color.fromRGBO(187, 134, 252, 1),
                           // color: begroundColor,
-                          color: Color(0xFFF4793E).withOpacity(0.2),
+                          color: Color(0xFFF4793E).withOpacity(0.5),
                           // Color.fromRGBO(187, 134, 252, 0.5),
 
                           child: Stack(
@@ -434,7 +420,7 @@ class _DisplayDiscountDetailsState extends State<DisplayDiscountDetails> {
       },
       child: AnimatedContainer(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        color: Color(0xFFF4793E).withOpacity(0.2),
+        color: Color(0xFFF4793E).withOpacity(0.5),
         duration: Duration(seconds: 2),
         child: Column(
           children: [
@@ -445,7 +431,6 @@ class _DisplayDiscountDetailsState extends State<DisplayDiscountDetails> {
                   text: "Get Discount",
                   size: 22,
                   weight: FontWeight.bold,
-                  // color: Colors.yellow,
                 ),
                 Icon(
                   _icon,

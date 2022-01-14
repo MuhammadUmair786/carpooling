@@ -18,7 +18,10 @@ class HelpAndSupport extends StatelessWidget {
         onPressed: () {
           Get.to(NewComplain());
         },
-        child: Icon(Icons.add,color: Colors.white,),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         backgroundColor: Color(0xFFF4793E),
       ),
       body: Container(
@@ -48,8 +51,6 @@ class HelpAndSupport extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              requestItem(),
-              requestItem(),
               requestItem(),
             ],
           ),
@@ -113,10 +114,14 @@ class HelpAndSupport extends StatelessWidget {
           Row(
             // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Icon(Icons
-                  .pending_actions,size:18), //add different iccon for solved and pending
+              Icon(Icons.pending_actions,
+                  size: 18), //add different iccon for solved and pending
               SizedBox(width: 5),
-              CustomText(text: "Pending",size: 14,weight: FontWeight.bold,color: Colors.red),
+              CustomText(
+                  text: "Pending",
+                  size: 14,
+                  weight: FontWeight.bold,
+                  color: Colors.red),
               Spacer(),
               CustomText(
                 text: "Last Activity: Today",

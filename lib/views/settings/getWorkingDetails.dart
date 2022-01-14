@@ -19,7 +19,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
   bool isEmployee = false;
   bool isBusiness = false;
 
-  Color selectedColor = Colors.blue;
+  Color selectedColor = Color(0xFFF4793E);
   List<bool> isSelected = [false, false, false];
 
   TextEditingController _statusController = TextEditingController();
@@ -63,17 +63,16 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
     return TextFormField(
       controller: cont,
       style: TextStyle(
-        fontSize: 20,
-        // fontWeight: FontWeight.w500,
-        color: Colors.white,
-      ),
+          fontSize: 20,
+          // fontWeight: FontWeight.w500,
+          color: Colors.black),
       // inputFormatters: [
       //   FilteringTextInputFormatter.allow(RegExp('[0-9]')),
       // ],
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(fontSize: 16, color: Colors.white),
-        fillColor: Colors.grey[500],
+        hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+        fillColor: Color(0xFFF4793E).withOpacity(0.6),
         filled: true,
         errorStyle: TextStyle(fontSize: 18),
         border: OutlineInputBorder(
@@ -99,6 +98,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
         elevation: 0,
         title: Text("Working Details"),
         // centerTitle: true,
+        backgroundColor: Color(0xFFF4793E),
         actions: [
           Container(
               margin: EdgeInsets.only(right: 15),
@@ -122,7 +122,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                 alignment: Alignment.center,
                 child: ToggleButtons(
                   borderColor: Colors.transparent,
-                  fillColor: selectedColor.withOpacity(0.2),
+                  fillColor: selectedColor.withOpacity(0.3),
                   borderWidth: 5,
                   selectedBorderColor: Colors.transparent,
                   // borderRadius: BorderRadius.circular(10),
@@ -178,7 +178,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Institute",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              color: Colors.black,
                             ),
                           ),
                           _textFormFeiled(_instController,
@@ -189,7 +189,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Address",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              // color: Colors.blue,
                             ),
                           ),
                           _textFormFeiled(_stdAddressController,
@@ -200,7 +200,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Degree",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              //color: Colors.blue,
                             ),
                           ),
                           _textFormFeiled(_degreeController,
@@ -220,7 +220,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Job Nature",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              //color: Colors.blue,
                             ),
                           ),
                           Container(
@@ -231,20 +231,21 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                                     subtitle1: TextStyle(
                                   fontSize: 20,
                                   // fontWeight: FontWeight.w500,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 )),
                               ),
                               child: DropdownSearch<String>(
                                 // .collapsed(hintText: "Province",border: Border.),
-                                popupBackgroundColor: Colors.grey[400],
+                                popupBackgroundColor:
+                                    Color(0xFFF4793E).withOpacity(0.9),
 
                                 mode: Mode.MENU,
 
                                 dropdownSearchDecoration: InputDecoration(
                                   hintText: 'Choose nature of your Job',
                                   hintStyle: TextStyle(
-                                      fontSize: 16, color: Colors.white),
-                                  fillColor: Colors.grey,
+                                      fontSize: 16, color: Colors.black),
+                                  fillColor: Color(0xFFF4793E).withOpacity(0.6),
                                   filled: true,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -272,7 +273,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Name",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              //color: Colors.blue,
                             ),
                           ),
                           _textFormFeiled(_companyController,
@@ -283,7 +284,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Address",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              //color: Colors.blue,
                             ),
                           ),
                           _textFormFeiled(_empAddressController,
@@ -294,7 +295,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Designation",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              //color: Colors.blue,
                             ),
                           ),
                           _textFormFeiled(
@@ -314,7 +315,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Name",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              //color: Colors.blue,
                             ),
                           ),
                           _textFormFeiled(_businessNameController,
@@ -325,7 +326,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
                               text: "Address",
                               // weight: FontWeight.bold,
                               size: 22,
-                              color: Colors.blue,
+                              //color: Colors.blue,
                             ),
                           ),
                           _textFormFeiled(
@@ -345,7 +346,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(Get.width / 1.5, 40),
-            primary: Colors.blue,
+            primary: Color(0xFFF4793E),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(35),
             ),
@@ -393,6 +394,7 @@ class _GetWorkingDetailsState extends State<GetWorkingDetails> {
             text: "Submit Details",
             size: 20,
             weight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),

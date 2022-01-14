@@ -76,6 +76,7 @@ class ProfileSetting extends StatelessWidget {
                   ),
                   PercentageIndicatorWidget(
                     percentage: calculatePercentage(snapshot.data!.data()),
+
                     // snapshot.data!["profileComplete"],
                   ),
                 ],
@@ -153,7 +154,7 @@ class PercentageIndicatorWidget extends StatelessWidget {
 
           // Text(),
           linearStrokeCap: LinearStrokeCap.roundAll,
-          progressColor: Colors.green,
+          progressColor: Color(0xFFF4793E),
         ),
       ),
     );

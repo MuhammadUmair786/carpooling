@@ -60,6 +60,7 @@ class _PostRideState extends State<PostRide> {
       vehicleId = widget.templateRide!.vehicleId;
       vehicleImgUrl = widget.templateRide!.vehicleImg;
       vehicleMilage = widget.templateRide!.vehicleMilage;
+      vehicleType = widget.templateRide!.vehicleType;
       isAC = widget.templateRide!.isAc;
       _messageController.text = widget.templateRide!.message;
     }
@@ -690,7 +691,7 @@ class _PostRideState extends State<PostRide> {
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     minimumSize: Size(120, 40),
-                                                    primary: Colors.blue,
+                                                    primary: Color(0xFFF4793E),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
@@ -718,7 +719,7 @@ class _PostRideState extends State<PostRide> {
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     minimumSize: Size(80, 40),
-                                                    primary: Colors.blue,
+                                                    primary: Color(0xFFF4793E),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:

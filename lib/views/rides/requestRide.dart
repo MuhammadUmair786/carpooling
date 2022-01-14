@@ -33,6 +33,7 @@ class RequestRide extends StatelessWidget {
       appBar: AppBar(
         title: Text("Request Ride"),
         elevation: 0,
+        backgroundColor: Color(0xFFF4793E),
       ),
       body: SafeArea(
         child: Container(
@@ -203,7 +204,7 @@ class RequestRide extends StatelessWidget {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 50),
-                        primary: Colors.green,
+                        primary: Color(0xFFF4793E),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),

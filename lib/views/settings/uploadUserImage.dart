@@ -179,7 +179,7 @@ class _UploadUserImageState extends State<UploadUserImage> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(Get.width / 1.5, 40),
-            primary: Colors.blue,
+            primary: Color(0xFFF4793E),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(35),
             ),

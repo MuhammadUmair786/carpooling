@@ -776,11 +776,13 @@ class _RideItemState extends State<RideItem> {
                                             Icon(
                                               Icons
                                                   .airline_seat_legroom_reduced_sharp,
+                                              color: Color(0xFFF4793E),
                                             ),
                                             CustomText(
                                               text:
                                                   "${widget.ride.confirmedSeats}/${widget.ride.totalSeats}",
                                               weight: FontWeight.w300,
+                                              color: Color(0xFFF4793E),
                                             ),
 
                                             // Text("avilable"),
@@ -788,22 +790,31 @@ class _RideItemState extends State<RideItem> {
                                         ),
                                         Row(
                                           children: [
-                                            Text("5 "
-                                                // "${Random().nextInt(15)}"
-                                                // driver!.postedRidesList.length
-                                                //   .toString()
+                                            CustomText(
+                                              text: "5 ",
+                                              color: Color(0xFFF4793E),
 
-                                                ),
-                                            Icon(Icons.visibility)
+                                              // "${Random().nextInt(15)}"
+                                              // driver!.postedRidesList.length
+                                              //   .toString()
+                                            ),
+                                            Icon(
+                                              Icons.visibility,
+                                              color: Color(0xFFF4793E),
+                                            )
                                             // Text("Request send"),
                                           ],
                                         ),
                                       ],
                                     ),
                                     Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 3),
-                                        child: Text("Sent Request")),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 3),
+                                      child: CustomText(
+                                        text: "Sent Request",
+                                        color: Color(0xFFF4793E),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               )

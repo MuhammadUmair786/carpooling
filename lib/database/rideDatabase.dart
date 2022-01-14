@@ -1,21 +1,15 @@
-// import 'package:carpooling_app/controllers/authController.dart';
-import 'package:carpooling_app/controllers/bottomNavBarController.dart';
 import 'package:carpooling_app/database/userDatabase.dart';
 import 'package:carpooling_app/models/requestRideModel.dart';
 import 'package:carpooling_app/models/rideModel.dart';
 import 'package:carpooling_app/views/bottomnavbar.dart';
-import 'package:carpooling_app/views/chating/chatRoom.dart';
 import 'package:carpooling_app/views/drawer/savedTemplate.dart';
-import 'package:carpooling_app/views/rides/rideScreen.dart';
 import 'package:carpooling_app/widgets/generateRoomId.dart';
 import 'package:carpooling_app/widgets/showLoading.dart';
 import 'package:carpooling_app/widgets/showSnackBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RideDatabase {

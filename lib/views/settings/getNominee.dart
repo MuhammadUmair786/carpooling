@@ -47,36 +47,36 @@ class _GetNomineeState extends State<GetNominee> {
     const _textStyle = TextStyle(
       fontSize: 20,
       // fontWeight: FontWeight.w500,
-      color: Colors.white,
+      color: Colors.black,
     );
     return Scaffold(
       appBar: AppBar(
-        elevation: 1,
-        shadowColor: Colors.blue,
-        iconTheme: IconThemeData(color: Colors.blue),
-        // toolbarHeight : 40,
-        title: CustomText(
-          text: "Nominee Detail",
-          size: 27,
-          weight: FontWeight.bold,
-          color: Colors.blue,
-        ),
-        actions: [
-          if (_readOnly)
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    showWidgets = true;
-                    _readOnly = false;
-                  });
-                },
-                splashRadius: 20,
-                icon: Icon(Icons.mode_edit_outline_outlined))
-        ],
-        backgroundColor: Colors.white,
-        // toolbarHeight: 40,
-        // centerTitle: true,
-      ),
+          elevation: 1,
+          shadowColor: Colors.blue,
+          iconTheme: IconThemeData(color: Colors.white),
+          // toolbarHeight : 40,
+          title: CustomText(
+            text: "Nominee Detail",
+            size: 27,
+            weight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          actions: [
+            if (_readOnly)
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showWidgets = true;
+                      _readOnly = false;
+                    });
+                  },
+                  splashRadius: 20,
+                  icon: Icon(Icons.mode_edit_outline_outlined))
+          ],
+          backgroundColor: Color(0xFFF4793E)
+          // toolbarHeight: 40,
+          // centerTitle: true,
+          ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Form(
@@ -97,7 +97,7 @@ class _GetNomineeState extends State<GetNominee> {
                   text: "Name",
                   // weight: FontWeight.bold,
                   size: 22,
-                  color: Colors.blue,
+                  // color: Colors.blue,
                 ),
               ),
               TextFormField(
@@ -111,7 +111,7 @@ class _GetNomineeState extends State<GetNominee> {
                 decoration: InputDecoration(
                   hintText: 'Enter Name',
                   hintStyle: TextStyle(fontSize: 16, color: Colors.white),
-                  fillColor: Colors.grey[400],
+                  fillColor: Color(0xFFF4793E).withOpacity(0.3),
                   errorStyle: TextStyle(fontSize: 16),
                   filled: true,
                   border: OutlineInputBorder(
@@ -136,7 +136,7 @@ class _GetNomineeState extends State<GetNominee> {
                   text: "Relation",
                   // weight: FontWeight.bold,
                   size: 22,
-                  color: Colors.blue,
+                  // color: Colors.blue,
                 ),
               ),
               InkWell(
@@ -196,7 +196,7 @@ class _GetNomineeState extends State<GetNominee> {
                     decoration: InputDecoration(
                       hintText: 'Relation',
                       hintStyle: TextStyle(fontSize: 16, color: Colors.white),
-                      fillColor: Colors.grey[400],
+                      fillColor: Color(0xFFF4793E).withOpacity(0.3),
                       errorStyle: TextStyle(fontSize: 16),
                       filled: true,
                       border: OutlineInputBorder(
@@ -221,7 +221,7 @@ class _GetNomineeState extends State<GetNominee> {
                   text: "Phone Number",
                   // weight: FontWeight.bold,
                   size: 22,
-                  color: Colors.blue,
+                  // color: Colors.blue,
                 ),
               ),
               TextFormField(
@@ -243,13 +243,13 @@ class _GetNomineeState extends State<GetNominee> {
                     child: CustomText(
                       text: "+92",
                       size: 18,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                   hintText: 'Enter Phone Number',
                   hintStyle: TextStyle(fontSize: 16, color: Colors.white),
                   errorStyle: TextStyle(fontSize: 16),
-                  fillColor: Colors.grey[400],
+                  fillColor: Color(0xFFF4793E).withOpacity(0.3),
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -284,7 +284,7 @@ class _GetNomineeState extends State<GetNominee> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: Size(Get.width / 1.5, 40),
-              primary: Colors.blue,
+              primary: Color(0xFFF4793E),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(35),
               ),
