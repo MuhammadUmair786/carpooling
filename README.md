@@ -1,4 +1,4 @@
-# carpooling_app
+# Carpooling
 
 It is my Final Year Project. I worked as both Frontend and Backend side.
 
@@ -11,6 +11,25 @@ Pakistan is a developing country. Currently, it is facing many challenges. Pollu
 
 ## Problem Solution
 If we put a maximum of people in a single car, we resolve such problems. It also provides an additional benefit to both the car owner and passengers in the sense that they both save their money and also their social circle increases. Furthermore, our app ensures a person's identity by conforming his/her profile, so in case of any mishap, we could provide a complete detail to the police along with their location. Our app offers a trusted platform where anyone can share his car with a  minimal effort.
+
+## Technology
+- Dart
+- Flutter
+- Firebase
+
+## Modules
+- Registration and Authentication
+- Post Ride
+- Search Ride
+- Location Management on Map
+- Cost estimation
+- Chat box
+- Rides cancelation and Feedback management
+- Tracking
+- Security management
+- Payment Methods
+- Discounts management
+- User profile management
 
 ## Screenshots
 ![main Home sdsd kuh](https://user-images.githubusercontent.com/64140593/152844243-8281a7b2-198e-451a-a03f-819d7ed8ebe6.png)
