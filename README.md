@@ -1,6 +1,6 @@
 # Carpooling
 
-It is my Final Year Project. I worked as both Frontend and Backend side.
+It is my Final Year Project. I worked at both Frontend and Backend side.
 
 ## Vision Statement
 
